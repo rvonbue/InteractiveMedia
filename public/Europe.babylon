@@ -1,0 +1,11 @@
+{"producer":{"name":"Blender","version":"2.79 (sub 0)","exporter_version":"5.4.0","file":"Europe.babylon"},
+"autoClear":true,"clearColor":[0.0509,0.0509,0.0509],"ambientColor":[0,0,0],"gravity":[0,-9.81,0],
+"materials":[],
+"multiMaterials":[],
+"skeletons":[],
+"meshes":[],
+"morphTargetManagers":[],
+"cameras":[],"activeCamera":"Camera",
+"lights":[],
+"shadowGenerators":[]
+}
