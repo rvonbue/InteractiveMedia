@@ -16,7 +16,11 @@ var SceneLoader = Backbone.View.extend({
       // { url: "models3d/europe.json", name: "europe" },
       { url: "models3d/portugal.json", name: "portugal" },
       { url: "models3d/spain.json", name: "spain" },
-      { url: "models3d/france.json", name: "france" }
+      { url: "models3d/france.json", name: "france" },
+      { url: "models3d/germany.json", name: "germany" },
+      { url: "models3d/unitedkingdom.json", name: "unitedkingdom" },
+      { url: "models3d/poland.json", name: "poland" },
+      { url: "models3d/ireland.json", name: "ireland" }
     ];
 
     _.each(models, function (modelsArrObj) {
@@ -43,7 +47,7 @@ var SceneLoader = Backbone.View.extend({
     eventController.trigger(eventController.SCENE_MODEL_READY, sceneModel);
   },
   getSceneModelInteractiveObjects: function () {
-    var objects3d = this.sceneModelCollection
+    let objects3d = this.sceneModelCollection
     .where({interactive: true})
     .map(function (model) { return model.get('rayCasterMesh'); });
     return objects3d;
@@ -53,7 +57,7 @@ var SceneLoader = Backbone.View.extend({
   },
   addNonInteractive: function (obj) {
     obj.interactive = false;
-    var sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
+    let sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {

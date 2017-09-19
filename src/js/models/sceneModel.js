@@ -68,23 +68,6 @@ var SceneModel = Backbone.Model.extend({
     }, delay);
   },
   showHide: function (visBool, hideText) { // show = true
-    visBool = visBool ? visBool : this.get("selected");
-    var text3d = this.get("text3d");
-    var sceneDetails = this.get("sceneDetails");
-
-
-    this.get("object3d").visible = visBool;
-    _.each(this.get("object3d").children, function (mesh) {
-        if ( mesh.type === "Mesh"
-          && mesh.rayCasterMesh !== false
-          && (text3d && text3d.id !== mesh.id)
-       ) {
-          mesh.visible = visBool; // do not turn on lights or raycaster
-        }
-    });
-
-    if ( text3d ) text3d.visible = hideText ? !hideText : visBool;
-    if ( sceneDetails ) sceneDetails.showHide(visBool, this.get("selected"));
 
   },
   enteringScene: function () {

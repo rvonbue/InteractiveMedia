@@ -3,32 +3,58 @@
 
 module.exports = {
   portugal :{
-    props: {
-      color: "#FF0000"
-    }
+    maps: [
+      { map: "textures/portugal.jpg" },
+      // { normalMap: "textures/portugal_NRM.jpg" }
+    ]
   },
   spain :{
-    props: {
-      color: "#0000FF"
-    }
-  },
-  redCarpet: {
     maps: [
-      { map: "textures/3dAnimation/redCarpet.jpg" },
-      // { specularMap: "textures/leather/leather_SPEC.jpg" },
+      { map: "textures/spain.jpg" },
+      // { normalMap: "textures/spain_NRM.jpg" }
+    ]
+  },
+  france: {
+    maps: [
+      { map: "textures/france.jpg" },
       // { normalMap: "textures/leather/leather_NRM.jpg" }
+    ]
+  },
+  unitedkingdom: {
+    maps: [
+      { map: "textures/unitedkingdom.jpg" },
+      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
+    ]
+  },
+  germany: {
+    maps: [
+      { map: "textures/germany.png" },
+      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
     ],
     mapProps: {
-      repeatScale: 5,
+      repeatScale: 1,
       shading: "flat"
     },
-      // props: {color: "#FF0000" }
   },
-  wallTan: {
-    props: {
-      shadingType: "MeshLambertMaterial",
-      color: "#CCB68D"
-    }
+  poland: {
+    maps: [
+      { map: "textures/poland.png" },
+      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
+    ],
+    mapProps: {
+      repeatScale: 1,
+      shading: "flat"
+    },
+  },
+  ireland: {
+    maps: [
+      { map: "textures/ireland.png" },
+      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
+    ],
+    mapProps: {
+      repeatScale: 1,
+      shading: "flat"
+    },
   },
   movieLight: {
     maps: [
@@ -41,15 +67,5 @@ module.exports = {
       colorEmissive: "#FFFFFF",
       emissiveIntensity: 0.3,
      }
-  },
-  goldRedSeamless: {
-    maps: [
-      { map: "textures/3dAnimation/goldRedSeamless/goldRedSeamless.png" },
-    ],
-    mapProps: { repeatScale: 20, shading: "flat" },
-    props: {
-      shadingType: "MeshPhongMaterial",
-     }
-
   }
 };

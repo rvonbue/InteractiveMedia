@@ -59,9 +59,6 @@ let AppView3d = Backbone.View.extend({
   initSceneLoader: function () {
     let sceneLoader = new SceneLoader();
   },
-  addChildViews: function (childViews) {
-    this.childViews = this.childViews.concat(childViews);
-  },
   addHelpers: function () {
     let axisHelper = new THREE.AxisHelper( 50 );
     axisHelper.position.y = 40;
@@ -86,7 +83,7 @@ let AppView3d = Backbone.View.extend({
     let step = 1;
 
     let gridHelper = new THREE.GridHelper( size, step );
-    gridHelper.position.y = 0;
+    gridHelper.position.y = -0.5;
     this.scene.add( gridHelper );
 
   },
