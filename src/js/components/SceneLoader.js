@@ -12,19 +12,36 @@ var SceneLoader = Backbone.View.extend({
     this.sceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
     this.addListeners();
+    let urlBase = "models3d/";
     let models = [
-      // { url: "models3d/europe.json", name: "europe" },
-      { url: "models3d/portugal.json", name: "portugal" },
-      { url: "models3d/spain.json", name: "spain" },
-      { url: "models3d/france.json", name: "france" },
-      { url: "models3d/germany.json", name: "germany" },
-      { url: "models3d/unitedkingdom.json", name: "unitedkingdom" },
-      { url: "models3d/poland.json", name: "poland" },
-      { url: "models3d/ireland.json", name: "ireland" }
+      { name: "albania" },
+      { name: "belgium" },
+      { name: "bulgaria" },
+      { name: "denmark" },
+      { name: "estonia" },
+      { name: "finland" },
+      { name: "france" },
+      { name: "germany" },
+      { name: "greece" },
+      { name: "hungary" },
+      { name: "ireland" },
+      { name: "italy" },
+      { name: "latvia" },
+      { name: "lithuana" },
+      { name: "netherlands" },
+      { name: "norway" },
+      { name: "poland" },
+      { name: "portugal" },
+      { name: "rumania" },
+      { name: "spain" },
+      { name: "switzerland" },
+      { name: "sweden" },
+      { name: "unitedkingdom" },
+      { name: "yugoslovia" }
     ];
 
     _.each(models, function (modelsArrObj) {
-      eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, modelsArrObj.name ); //load scene Models
+      eventController.trigger(eventController.LOAD_JSON_MODEL, urlBase +  modelsArrObj.name + ".json", modelsArrObj.name ); //load scene Models
     }, this);
 
   },
@@ -61,27 +78,10 @@ var SceneLoader = Backbone.View.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
-
-    // var object3dArr = this.sceneModelCollection.where({ interactive: true })
-    // .map(function (scModel, i) { // position floors on top of each other
-    //   var object3d = scModel.get("object3d");
-    //   // object3d.position.set(0, i * scModel.getSize().h + 14.75, 0); //TODO: MAGIC NUMBER its the height of the bottom floor
-    //   return object3d;
-    // });
-    console.log('obj', obj);
-
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [obj]);
-    // this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
-
   modelLoaded: function (obj) {
-    console.log('modelLoaded', obj);
     this.sceneModelLoaded(obj);
-    // if (obj.name === this.SCENE_MODEL_NAME) {
-    //   this.sceneModelLoaded(obj);
-    // } else {this.sceneModelLoaded(obj);
-    //   this.addNonInteractive(obj);
-    // }
   }
 });
 

@@ -5,7 +5,7 @@ import MaterialLibrary from "./MaterialLibrary";
 // import materialMapList from "../data/materials/combinedMaterials";
 import utils from "../components/utils";
 
-var ModelLoader = Backbone.Model.extend({
+let ModelLoader = Backbone.Model.extend({
   initialize: function () {
     this.initLoadingManager();
     this.materialLibrary = new MaterialLibrary({ manager: this.manager });
@@ -34,18 +34,18 @@ var ModelLoader = Backbone.Model.extend({
 
   },
   loadModel: function (url, name) {
-    var self = this;
-    var loader = new THREE.JSONLoader( this.manager );
+    let self = this;
+    let loader = new THREE.JSONLoader( this.manager );
 
     loader.load(url, function ( geometry, materials ) {
-      // var bufferGeo = new THREE.BufferGeometry();
+      // let bufferGeo = new THREE.BufferGeometry();
       //     bufferGeo.fromGeometry ( geometry );
       //     bufferGeo.computeBoundingBox();
 
-      var newMaterials = self.getMeshMaterials(materials);
+      let newMaterials = self.getMeshMaterials(materials);
       materials = null;
 
-      var mesh3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(newMaterials) );
+      let mesh3d = new THREE.Mesh( geometry, newMaterials[0] );
           mesh3d.name = name;
 
       eventController.trigger(eventController.MODEL_LOADED, mesh3d);
@@ -53,9 +53,9 @@ var ModelLoader = Backbone.Model.extend({
     });
   },
   getMeshMaterials: function (materials) {
-    var matLib = this.materialLibrary;
-    var newMaterials = [];
-    console.log("Trigger materials", materials);
+    let matLib = this.materialLibrary;
+    let newMaterials = [];
+
     materials.forEach( function (mat) {
       newMaterials.push(this.materialLibrary.getMaterial(mat));
     }, this);
@@ -70,14 +70,14 @@ var ModelLoader = Backbone.Model.extend({
     };
   },
   parseJSON: function (json) {
-    var loader = new THREE.JSONLoader(this.manager);
-    var model = loader.parse(json);
+    let loader = new THREE.JSONLoader(this.manager);
+    let model = loader.parse(json);
     model.materials = this.getMeshMaterials(model.materials);
 
     return model;
   },
   parseJSONModelGetMesh: function (json) {
-    var model = this.parseJSON(json);
+    let model = this.parseJSON(json);
     return new THREE.Mesh(model.geometry, model.materials[0]);
   }
 });

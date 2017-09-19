@@ -67,24 +67,15 @@ var MaterialLibrary = Backbone.Model.extend({
     var texture = null;
 
     _.each(mapObj, function (mapURL, mapKey) {
-
-      switch(mapKey) {
-        case "envMap":
-          mat[mapKey] = this.getReflectionCube(mapURL);
-          break;
-        default:
-          mat[mapKey] = this.getImageTexture(mapURL, options);
-      }
-
+        mat[mapKey] = this.getImageTexture(mapURL, options);
     }, this);
 
   },
   getImageTexture: function (mapURL, options) {
     var texture = new THREE.TextureLoader(this.get("manager")).load( mapURL, function (texture) {
       if (options && options.repeatScale) {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set( options.repeatScale, options.repeatScale );
-        texture.shading = options.shading === "smooth" ? THREE.SmoothShading : THREE.FlatShading ;
+        texture.shading = options.shading === "smooth" ? THREE.FlatShading : THREE.FlatShading ;
       }
     });
     return texture;

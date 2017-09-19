@@ -2,70 +2,25 @@
 // var colorPallete = utils.getColorPallete();
 
 module.exports = {
-  portugal :{
-    maps: [
-      { map: "textures/portugal.jpg" },
-      // { normalMap: "textures/portugal_NRM.jpg" }
-    ]
-  },
-  spain :{
-    maps: [
-      { map: "textures/spain.jpg" },
-      // { normalMap: "textures/spain_NRM.jpg" }
-    ]
-  },
-  france: {
-    maps: [
-      { map: "textures/france.jpg" },
-      // { normalMap: "textures/leather/leather_NRM.jpg" }
-    ]
-  },
-  unitedkingdom: {
-    maps: [
-      { map: "textures/unitedkingdom.jpg" },
-      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
-    ]
-  },
-  germany: {
-    maps: [
-      { map: "textures/germany.png" },
-      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
-    ],
-    mapProps: {
-      repeatScale: 1,
-      shading: "flat"
-    },
-  },
-  poland: {
-    maps: [
-      { map: "textures/poland.png" },
-      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
-    ],
-    mapProps: {
-      repeatScale: 1,
-      shading: "flat"
-    },
-  },
-  ireland: {
-    maps: [
-      { map: "textures/ireland.png" },
-      // { normalMap: "textures/leather/unitedkingdom_NRM.jpg" }
-    ],
-    mapProps: {
-      repeatScale: 1,
-      shading: "flat"
-    },
-  },
-  movieLight: {
-    maps: [
-      { map: "textures/3dAnimation/movieLight.png" },
-    ],
-    mapProps: { repeatScale: 1, shading: "flat" },
-    props: {
-      shadingType: "MeshBasicMaterial",
-      color:"#FFFFFF",
-      colorEmissive: "#FFFFFF",
-      emissiveIntensity: 0.3,
-     }
-  }
+  albania: {maps: [{ map: "textures/blackwhite/albania.png" }] },
+  bulgaria: {maps: [{ map: "textures/blackwhite/bulgaria.png" }] },
+  belgium: {maps: [{ map: "textures/blackwhite/belgium.png" }] },
+  denmark: {maps: [{ map: "textures/blackwhite/denmark.png" }] },
+  france: {maps: [{ map: "textures/blackwhite/france.png" }] },
+  finland: {maps: [{ map: "textures/blackwhite/finland.png" }] },
+  germany: {maps: [{ map: "textures/blackwhite/germany.png" }] },
+  greece: {maps: [{ map: "textures/blackwhite/greece.png" }] },
+  hungary: {maps: [{ map: "textures/blackwhite/hungary.png" }] },
+  italy: { maps: [{ map: "textures/blackwhite/italy.png" }] },
+  ireland: { maps: [{ map: "textures/blackwhite/ireland.png" }] },
+  netherlands: { maps: [{ map: "textures/blackwhite/netherlands.png" }] },
+  norway: { maps: [{ map: "textures/blackwhite/norway.png" }] },
+  poland: {maps: [{ map: "textures/blackwhite/poland.png" }] },
+  portugal: {maps: [ { map: "textures/blackwhite/portugal.png" }] },
+  rumania: {maps: [{ map: "textures/blackwhite/rumania.png" }] },
+  switzerland: {maps: [{ map: "textures/blackwhite/switzerland.png" }] },
+  sweden: {maps: [{ map: "textures/blackwhite/sweden.png" }] },
+  spain: {maps: [{ map: "textures/blackwhite/spain.png" }] },
+  unitedkingdom: { maps: [{ map: "textures/blackwhite/unitedkingdom.png" }] },
+  yugoslovia: {maps: [{ map: "textures/blackwhite/yugoslovia.png" }] }
 };
