@@ -19,8 +19,8 @@
         "DbgName": "netherlands",
         "opacity": 1,
         "colorEmissive": [0,0,0],
-        "DbgIndex": 0,
-        "colorAmbient": [0.64,0.64,0.64]
+        "DbgIndex": 0
+        
     }],
     "metadata": {
         "generator": "io_three",
