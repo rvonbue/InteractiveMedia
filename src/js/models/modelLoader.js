@@ -33,37 +33,29 @@ var ModelLoader = Backbone.Model.extend({
     };
 
   },
-  loadModel: function (url, options) {
+  loadModel: function (url, name) {
     var self = this;
     var loader = new THREE.JSONLoader( this.manager );
-    var n = url.lastIndexOf('/');
-    var name = url.substring(n + 1).slice(0,-5);
 
     loader.load(url, function ( geometry, materials ) {
-      var bufferGeo = new THREE.BufferGeometry();
-          bufferGeo.fromGeometry ( geometry );
-          bufferGeo.computeBoundingBox();
+      // var bufferGeo = new THREE.BufferGeometry();
+      //     bufferGeo.fromGeometry ( geometry );
+      //     bufferGeo.computeBoundingBox();
 
       var newMaterials = self.getMeshMaterials(materials);
       materials = null;
 
-      var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(newMaterials) );
-          object3d.name = name;
+      var mesh3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(newMaterials) );
+          mesh3d.name = name;
 
-      var modelDetails = self.getModelDetailsObj(object3d, options);
-
-      if ( options.sceneModelName ) {
-        eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
-      } else {
-        eventController.trigger(eventController.MODEL_LOADED, modelDetails);
-      }
+      eventController.trigger(eventController.MODEL_LOADED, mesh3d);
 
     });
   },
   getMeshMaterials: function (materials) {
     var matLib = this.materialLibrary;
     var newMaterials = [];
-
+    console.log("Trigger materials", materials);
     materials.forEach( function (mat) {
       newMaterials.push(this.materialLibrary.getMaterial(mat));
     }, this);

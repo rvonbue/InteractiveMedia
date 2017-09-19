@@ -13,12 +13,16 @@ var SceneLoader = Backbone.View.extend({
     this.modelLoader = new ModelLoader();
     this.addListeners();
     let models = [
-      { url: "models3d/ground2.json", name: "ground" }
+      // { url: "models3d/europe.json", name: "europe" },
+      { url: "models3d/portugal.json", name: "portugal" },
+      { url: "models3d/spain.json", name: "spain" },
+      { url: "models3d/france.json", name: "france" }
     ];
 
     _.each(models, function (modelsArrObj) {
-      eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, { name: modelsArrObj.name, sceneModelName: null }); //load scene Models
+      eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, modelsArrObj.name ); //load scene Models
     }, this);
+
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
@@ -53,25 +57,27 @@ var SceneLoader = Backbone.View.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
-    this.createFloors(obj.object3d);
 
-    var object3dArr = this.sceneModelCollection.where({ interactive: true })
-    .map(function (scModel, i) { // position floors on top of each other
-      var object3d = scModel.get("object3d");
-      object3d.position.set(0, i * scModel.getSize().h + 14.75, 0); //TODO: MAGIC NUMBER its the height of the bottom floor
-      return object3d;
-    });
+    // var object3dArr = this.sceneModelCollection.where({ interactive: true })
+    // .map(function (scModel, i) { // position floors on top of each other
+    //   var object3d = scModel.get("object3d");
+    //   // object3d.position.set(0, i * scModel.getSize().h + 14.75, 0); //TODO: MAGIC NUMBER its the height of the bottom floor
+    //   return object3d;
+    // });
+    console.log('obj', obj);
 
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
-    this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [obj]);
+    // this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
 
   modelLoaded: function (obj) {
-    if (obj.name === this.SCENE_MODEL_NAME) {
-      this.sceneModelLoaded(obj);
-    } else {
-      this.addNonInteractive(obj);
-    }
+    console.log('modelLoaded', obj);
+    this.sceneModelLoaded(obj);
+    // if (obj.name === this.SCENE_MODEL_NAME) {
+    //   this.sceneModelLoaded(obj);
+    // } else {this.sceneModelLoaded(obj);
+    //   this.addNonInteractive(obj);
+    // }
   }
 });
 

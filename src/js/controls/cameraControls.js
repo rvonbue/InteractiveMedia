@@ -5,8 +5,8 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 var OrbitControls = require('three-orbit-controls')(THREE);
 
-let CAMERA_INTIAL_POSITION = { x: 0, y: 10, z: 15 };
-let TARGET_INITIAL_POSITION = { x: 0, y: 5, z: 0 };
+let CAMERA_INTIAL_POSITION = { x: 0, y: 5, z: 5 };
+let TARGET_INITIAL_POSITION = { x: 0, y: 0, z: 0 };
 
 let CameraControls = Backbone.Model.extend({
   animating: false,

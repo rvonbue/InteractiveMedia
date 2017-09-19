@@ -20,7 +20,6 @@ var SceneModel = Backbone.Model.extend({
     "sceneDetails": null, // sceneDetailsModel
   },
   initialize: function( options ) {
-    this.showHide(false);
     this.once("change:sceneDetails", function () {
       this.set({ loading: true });
     });

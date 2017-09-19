@@ -43,7 +43,6 @@ let AppView3d = Backbone.View.extend({
     this.initSceneLoader();
     this.lightControls = new LightControls();
 
-    this.loadAllAssests();
     this.animate();
 
     setTimeout(()=> {
@@ -67,16 +66,6 @@ let AppView3d = Backbone.View.extend({
     let axisHelper = new THREE.AxisHelper( 50 );
     axisHelper.position.y = 40;
     this.scene.add( axisHelper );
-  },
-  loadAllAssests: function () {
-    console.log("loadAllAssests");
-    const RADIUS = 5;
-    const SEGMENTS = 16;
-    const RINGS = 16;
-
-    let sphere = new THREE.Mesh(new THREE.SphereGeometry( RADIUS, SEGMENTS, RINGS), new THREE.MeshLambertMaterial( { color: "#0000FF" }));
-
-    this.scene.add(sphere);
   },
   addModelsToScene: function (sceneModelArray) {
     let scene = this.scene;
@@ -121,7 +110,6 @@ let AppView3d = Backbone.View.extend({
       width: size.w,
       height: size.h
     });
-    console.log("SIZE:", size);
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
