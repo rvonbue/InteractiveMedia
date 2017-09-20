@@ -22,11 +22,13 @@ var SceneLoader = Backbone.Model.extend({
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
      eventController.on(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
+     eventController.on(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
      commandController.reply(commandController.GET_SCENE_MODEL, this.getSceneModel, this );
   },
   removeListeners: function () {
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     eventController.off(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
+    eventController.off(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
     commandController.stopReplying(commandController.GET_SCENE_MODEL, this.getSceneModel, this );
   },
   getSceneModel: function (raycastObj) {
@@ -48,6 +50,13 @@ var SceneLoader = Backbone.Model.extend({
   },
   allSceneModelsLoaded: function () {
     eventController.trigger(eventController.RESET_RAYCASTER, this.getAllMesh3d());
+  },
+  sceneModelHoverSet: function (bool) {
+    let hoverSceneModels = this.sceneModelCollection.where({"hover": true});
+    console.log("hoverSceneModels:", hoverSceneModels);
+    _.each(hoverSceneModels, (sm)=>{
+      sm.set("hover", bool);
+    });
   },
   getAllMesh3d: function () {
     let objects3d = this.sceneModelCollection

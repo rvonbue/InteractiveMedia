@@ -21,6 +21,7 @@
     "extract-text-webpack-plugin": "^2.1.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
+    "postprocessing": "^2.3.1",
     "raf": "^3.3.2",
     "style-loader": "^0.18.2",
     "three-orbit-controls": "^82.1.0",

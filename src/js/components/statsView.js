@@ -4,7 +4,6 @@ var Stats = require("stats-js");
 var StatsView = Backbone.View.extend({
   className: "stats",
   initialize: function () {
-    BaseView.prototype.initialize.apply(this, arguments);
     _.bindAll(this, "render");
     this.stats = new Stats();
     this.faceCountEl = $("<div class='face-count'></div>");

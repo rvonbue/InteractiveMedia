@@ -14,9 +14,11 @@ var SceneModel = Backbone.Model.extend({
     "ready": false,  //ready if sceneDetails are loaded
     "interactive": true,
     "sceneDetails": null, // sceneDetailsModel
+    "animating": false
   },
   initialize: function( options ) {
     this.addModelListeners();
+    this.set("initPos", _.clone(this.get("mesh3d").position));
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
@@ -32,18 +34,21 @@ var SceneModel = Backbone.Model.extend({
   },
   animateSelected: function (yPosMod) {
     let mesh3d = this.get("mesh3d");
-    let yPos = mesh3d.position.y;
-    console.log("mesh3d", mesh3d);
+    let self = this;
 
     var tween = new TWEEN.Tween(mesh3d.position)
       .easing(TWEEN.Easing.Circular.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
-      .to({ y: yPos + yPosMod }, 500)
-      .onComplete(function () {})
+      .to({ y: self.get("initPos").y + yPosMod }, 500)
+      .onComplete(function () {
+        self.set("animating", false);
+      })
       .start();
   },
   onChangeHover: function () {
     if ( this.get("selected") ) return;
+    let yPos = this.get("hover") ? 0.1 : 0;
+    this.animateSelected(yPos);
   },
   reset: function (showHideBool) {
     this.set("selected", false);

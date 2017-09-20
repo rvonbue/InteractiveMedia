@@ -1,11 +1,11 @@
 import TWEEN from "tween.js";
 // import THREE from "three";
-import eventController from "../controllers/eventController";
-import commandController from "../controllers/commandController";
-var OrbitControls = require('three-orbit-controls')(THREE);
+// import eventController from "../controllers/eventController";
+// import commandController from "../controllers/commandController";
+const OrbitControls = require('three-orbit-controls')(THREE);
 
-let CAMERA_INTIAL_POSITION = { x: -1, y: 3, z: 5 };
-let TARGET_INITIAL_POSITION = { x: -1, y: 0, z: 1 };
+let CAMERA_INTIAL_POSITION = { x: -0.5, y: 5, z: 4.0 };
+let TARGET_INITIAL_POSITION = { x: -0.5, y: 0, z: 1 };
 
 let CameraControls = Backbone.Model.extend({
   animating: false,
