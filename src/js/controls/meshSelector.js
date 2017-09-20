@@ -1,11 +1,9 @@
 import TWEEN from "tween.js";
-import THREE from "three";
 
-import eventController from "../../../controllers/eventController";
-import BaseModel from "../../../models/BaseModel";
-import utils from "../../../util/utils";
+import eventController from "../controllers/eventController";
+import utils from "../components/utils";
 
-var SceneControls = BaseModel.extend({
+var MeshSelector = Backbone.Model.extend({
   defaults: {
     raycasterObjects: [],
   },
@@ -60,7 +58,7 @@ var SceneControls = BaseModel.extend({
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
-    var raycastIntersect = this.shootRaycaster(evt);
+    let raycastIntersect = this.shootRaycaster(evt);
 
     if ((raycastIntersect && this.lastRaycastObjectId === raycastIntersect.object.id)  // if nothing intersected
       || this.lastRaycastObjectId === 0 && !raycastIntersect ) {      // if intersected object is the same
@@ -92,27 +90,6 @@ var SceneControls = BaseModel.extend({
     });
     return closestObject;
   },
-  loadEnvironmentMap: function (reflectionCube) {
-    var size = 500;
-  	var materialArray = this.getMaterialArray();
-
-  	var skyBox = new THREE.Mesh(
-      new THREE.CubeGeometry( size, size, size ),
-      new THREE.MeshFaceMaterial( materialArray )
-    );
-    // scene.background = skyBox;
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
-  },
-  getUrls: function () {
-    var format = '.jpg';
-    var path = "textures/cubeMap/aboveClouds/";
-
-    return [
-      path + 'posx' + format, path + 'negx' + format,
-      path + 'posy' + format, path + 'negy' + format,
-      path + 'posz' + format, path + 'negz' + format
-    ];
-  },
   getMaterialArray: function () {
     var urls = this.getUrls();
   	var materialArray = [];
@@ -140,7 +117,6 @@ var SceneControls = BaseModel.extend({
   getMeshCenter: function (selectedMesh) {
     var center = selectedMesh.geometry.boundingSphere.center;
 
-    console.log("center", center);
     return {
       x: selectedMesh.position.x + center.x,
       y: selectedMesh.position.y + center.y,
@@ -181,7 +157,7 @@ var SceneControls = BaseModel.extend({
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
+    // eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   removeListeners: function () {
     this.canvasEl.off("mousemove", this.throttledMouseMove);
@@ -191,10 +167,10 @@ var SceneControls = BaseModel.extend({
 
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    eventController.off(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
+    // eventController.off(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   render: function () {
     return this;
   }
 });
-module.exports = SceneControls;
+module.exports = MeshSelector;

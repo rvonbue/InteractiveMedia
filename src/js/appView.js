@@ -6,13 +6,14 @@ import eventController from "./controllers/eventController";
 import LightControls from "./controls/LightControls";
 import CameraControls from "./controls/cameraControls";
 import SceneLoader from "./components/SceneLoader";
+import MeshSelector from "./controls/meshSelector";
+import SceneAnimator from "./controls/sceneAnimator";
 import StatsView from "./components/statsView";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
   initialize: function (options) {
     _.bindAll(this, "animate", "addModelsToScene", "resize");
-    this.parentEl = options.parentEl;
     this.clock = new THREE.Clock();
   },
   addListeners: function () {
@@ -25,34 +26,37 @@ let AppView3d = Backbone.View.extend({
     eventController.off(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).off("resize", this.resize);
   },
-  cancelAnimate: function () {
-    raf.cancel(this.renderLoop);
-    this.renderLoop = null;
-  },
+  // cancelAnimate: function () {
+  //   raf.cancel(this.renderLoop);
+  //   this.renderLoop = null;
+  // },
   initScene: function () {
     this.addListeners();
     let size = this.getWidthHeight();
-    this.scene = window.scene = new THREE.Scene();
-    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas: this.canvasEl[0] });
-    this.renderer.setSize( size.w, size.h );
-    this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.setClearColor( 0x000000, 0 );
+    this.scene = new THREE.Scene();
+
+    this.setupRenderer(size);
     this.initCamera(size);
-    this.initControls();
     this.addHelpers();
     this.initSceneLoader();
-    this.lightControls = new LightControls();
+    new LightControls();
+    new MeshSelector({ canvasEl: this.canvasEl, camera: this.camera });
+    new SceneAnimator();
 
     this.animate();
     setTimeout(()=> {
       this.resize(); },
     5);
   },
+  setupRenderer: function (size) {
+    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas: this.canvasEl[0] });
+    this.renderer.setSize( size.w, size.h );
+    this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.setClearColor( 0x000000, 0 );
+  },
   initCamera: function (size) {
     this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 0.1, 1000 );
     this.camera.lookAt(new THREE.Vector3( 1, 0, 0 ));
-  },
-  initControls: function () {
     this.controls = new CameraControls({ camera:this.camera, canvasEl: this.canvasEl[0] })
   },
   initSceneLoader: function () {
@@ -109,10 +113,8 @@ let AppView3d = Backbone.View.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
-
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);
-    // this.renderDev();
 
     return this;
   }

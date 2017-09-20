@@ -36,14 +36,14 @@ let ModelLoader = Backbone.Model.extend({
     let loader = new THREE.JSONLoader( this.manager );
 
     loader.load(url, function ( geometry, materials ) {
-      // let bufferGeo = new THREE.BufferGeometry();
-      //     bufferGeo.fromGeometry ( geometry );
-      //     bufferGeo.computeBoundingBox();
+      let bufferGeo = new THREE.BufferGeometry();
+          bufferGeo.fromGeometry ( geometry );
+          bufferGeo.computeBoundingBox();
 
       let newMaterials = self.getMeshMaterials(materials);
       materials = null;
 
-      let mesh3d = new THREE.Mesh( geometry, newMaterials[0] );
+      let mesh3d = new THREE.Mesh( bufferGeo, newMaterials[0] );
           mesh3d.name = name;
       eventController.trigger(eventController.MODEL_LOADED, mesh3d);
 
