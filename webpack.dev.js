@@ -26,13 +26,13 @@ module.exports = {
           options: { presets: ['env',"es2015"] }
         }
       },
-      { // exposes module to the window
-        test: require.resolve('three'),
-        use: [{
-            loader: 'expose-loader',
-            options: 'THREE'
-        }]
-      },
+      // { // exposes module to the window
+      //   test: require.resolve('three'),
+      //   use: [{
+      //       loader: 'expose-loader',
+      //       options: 'THREE'
+      //   }]
+      // },
       { test: /\.less$/, use: [
         { loader: "style-loader"},
         { loader: "css-loader", options: { sourceMap: true }},
@@ -51,6 +51,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery","window.jQuery": "jquery" }),
     new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
+    new webpack.ProvidePlugin({	"THREE": "THREE" })
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),

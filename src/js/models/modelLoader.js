@@ -1,8 +1,6 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
-import THREE from "three";
 import MaterialLibrary from "./MaterialLibrary";
-// import materialMapList from "../data/materials/combinedMaterials";
 import utils from "../components/utils";
 
 let ModelLoader = Backbone.Model.extend({

@@ -1,3 +1,4 @@
+'use strict';
 import TWEEN from "tween.js";
 import raf from "raf";
 

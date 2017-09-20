@@ -1,17 +1,15 @@
-import THREE from "three";
 import TWEEN from "tween.js";
 
 import eventController from "../controllers/eventController";
-// import navigationList from "../../data/navigationList";
 import SceneModelCollection from "../collections/SceneModelCollection";
 import ModelLoader from "../models/ModelLoader";
-// import utils from "../components/utils";
 
 var SceneLoader = Backbone.View.extend({
   initialize: function (options) {
     this.sceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
     this.addListeners();
+    
     let urlBase = "models3d/";
     let models = [
       // { name: "mapground" },

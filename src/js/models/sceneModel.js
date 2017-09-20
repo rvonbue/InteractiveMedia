@@ -1,7 +1,6 @@
 // import eventController from "../controllers/eventController";
 import utils from "../components/utils";
 import TWEEN from "tween.js";
-import { Color } from "three";
 
 var SceneModel = Backbone.Model.extend({
   defaults: {
@@ -142,7 +141,7 @@ var SceneModel = Backbone.Model.extend({
     });
   },
   setEmissiveMaterial: function (mat, color) {
-    mat.emissive = new Color(color);
+    mat.emissive = new THREE.Color(color);
   },
   getLampLightMaterial: function () {
     return _.find(this.get("hoverLamps")[0].material.materials, function(item) {
@@ -155,7 +154,7 @@ var SceneModel = Backbone.Model.extend({
   },
   toggleTextMaterial: function (mat) {
     var textColor = this.get("hover") ? utils.getColorPallete().text.color2 : utils.getColorPallete().text.color;
-    mat.emissive = new Color(textColor);
+    mat.emissive = new THREE.Color(textColor);
   },
   setFadeInMaterial:function (mat) {
       mat.opacity = 0;

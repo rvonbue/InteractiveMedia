@@ -1,6 +1,5 @@
 import TWEEN from "tween.js";
-import THREE from "three";
-
+// import THREE from "three";
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 var OrbitControls = require('three-orbit-controls')(THREE);

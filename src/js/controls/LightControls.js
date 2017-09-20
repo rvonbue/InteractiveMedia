@@ -1,4 +1,3 @@
-import THREE from "three";
 import TWEEN from "tween.js";
 
 import eventController from "../controllers/eventController";

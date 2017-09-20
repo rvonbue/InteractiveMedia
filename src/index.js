@@ -1,6 +1,7 @@
-import stylesheet from "./styles/index.less";
 import Radio from "backbone.radio";
 window.Backbone.Radio = Radio;
+
+import stylesheet from "./styles/index.less";
 import AppView from "./js/appView";
 
 $(function () {

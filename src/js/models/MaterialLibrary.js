@@ -1,6 +1,5 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
-import THREE from "three";
 import materialMapList from "../materials/combinedMaterials";
 import utils from "../components/utils";
 
