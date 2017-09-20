@@ -47,7 +47,6 @@ let ModelLoader = Backbone.Model.extend({
 
       let mesh3d = new THREE.Mesh( geometry, newMaterials[0] );
           mesh3d.name = name;
-      if (name === "russia") console.log("MESHRUSSIA:", mesh3d);
       eventController.trigger(eventController.MODEL_LOADED, mesh3d);
 
     });

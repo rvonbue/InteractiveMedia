@@ -14,7 +14,6 @@ let CameraControls = Backbone.Model.extend({
     this.addListeners();
     this.orbitControls = new OrbitControls(options.camera, options.canvasEl);
     this.setCameraInitialPosition(options.camera);
-    console.log("this.orbitControls:", this.orbitControls);
   },
   getControls: function () {
     return this.orbitControls;

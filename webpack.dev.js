@@ -26,17 +26,7 @@ module.exports = {
           options: { presets: ['env',"es2015"] }
         }
       },
-      {
-        test: require.resolve('jquery'),
-        use: [{
-            loader: 'expose-loader',
-            options: 'jQuery'
-        },{
-            loader: 'expose-loader',
-            options: '$'
-        }]
-      },
-      {
+      { // exposes module to the window
         test: require.resolve('three'),
         use: [{
             loader: 'expose-loader',
