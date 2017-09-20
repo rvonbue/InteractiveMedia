@@ -1,4 +1,3 @@
-import THREE from "three";
 import TWEEN from "tween.js";
 import raf from "raf";
 
@@ -7,7 +6,6 @@ import LightControls from "./controls/LightControls";
 import CameraControls from "./controls/cameraControls";
 import SceneLoader from "./components/SceneLoader";
 import StatsView from "./components/statsView";
-import shapeMaker from "./models/shapeMaker";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -45,7 +43,6 @@ let AppView3d = Backbone.View.extend({
     this.lightControls = new LightControls();
 
     this.animate();
-    new shapeMaker();
     setTimeout(()=> {
       this.resize(); },
     5);

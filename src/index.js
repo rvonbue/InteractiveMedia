@@ -1,7 +1,6 @@
 require("expose-loader?$!jquery");
 
 import stylesheet from "./styles/index.less";
-import THREE from "three";
 
 import _ from "underscore";
 window._ = _;
