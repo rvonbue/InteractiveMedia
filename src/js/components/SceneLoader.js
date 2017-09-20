@@ -14,11 +14,13 @@ var SceneLoader = Backbone.View.extend({
     this.addListeners();
     let urlBase = "models3d/";
     let models = [
+      // { name: "mapground" },
       { name: "albania" },
       { name: "belgium" },
       { name: "bulgaria" },
       { name: "denmark" },
       { name: "estonia" },
+      { name: "eastprussia" },
       { name: "finland" },
       { name: "france" },
       { name: "germany" },
@@ -27,12 +29,13 @@ var SceneLoader = Backbone.View.extend({
       { name: "ireland" },
       { name: "italy" },
       { name: "latvia" },
-      { name: "lithuana" },
+      { name: "lithuania" },
       { name: "netherlands" },
       { name: "norway" },
       { name: "poland" },
       { name: "portugal" },
       { name: "rumania" },
+      { name: "russia" },
       { name: "spain" },
       { name: "switzerland" },
       { name: "sweden" },

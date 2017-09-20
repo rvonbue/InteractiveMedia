@@ -7,6 +7,7 @@ import LightControls from "./controls/LightControls";
 import CameraControls from "./controls/cameraControls";
 import SceneLoader from "./components/SceneLoader";
 import StatsView from "./components/statsView";
+import shapeMaker from "./models/shapeMaker";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -44,7 +45,7 @@ let AppView3d = Backbone.View.extend({
     this.lightControls = new LightControls();
 
     this.animate();
-
+    new shapeMaker();
     setTimeout(()=> {
       this.resize(); },
     5);
@@ -76,9 +77,9 @@ let AppView3d = Backbone.View.extend({
     }, this);
   },
   addHelpers: function () {
-    let axisHelper = new THREE.AxisHelper( 50 );
-    axisHelper.position.y = 0;
-    this.scene.add( axisHelper );
+    // let axisHelper = new THREE.AxisHelper( 50 );
+    // axisHelper.position.y = 0;
+    // this.scene.add( axisHelper );
     let size = 10;
     let step = 1;
 
