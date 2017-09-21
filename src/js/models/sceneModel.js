@@ -5,50 +5,76 @@ import TWEEN from "tween.js";
 var SceneModel = Backbone.Model.extend({
   defaults: {
     "name": "Caesar_Salad",
-    "className": "myClass",
     "mesh3d": null,
     "text3d": null,  // mesh
     "selected": false,
     "hover": false,
-    "loading": false, //loading scene Details currently
-    "ready": false,  //ready if sceneDetails are loaded
+    "loading": false,
+    "ready": false,
     "interactive": true,
-    "sceneDetails": null, // sceneDetailsModel
-    "animating": false
+    "animating": false,
+    "power": null
   },
   initialize: function( options ) {
     this.addModelListeners();
-    this.set("initPos", _.clone(this.get("mesh3d").position));
+    // this.set("initPos", _.clone(this.get("mesh3d").position));
+    // console.log("power", options);
+    // this.set("power", options.power);
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
     this.on("change:hover", this.onChangeHover);
+    let self = this;
+    this.once("change:mesh3d", ()=> {
+        self.set("initPos", _.clone(self.get("mesh3d").position));
+    })
   },
   removeModelListeners: function () {
     this.off("change:selected", this.onChangeSelected);
     this.off("change:hover", this.onChangeHover);
   },
   onChangeSelected: function () {
-    let yPos = this.get("selected") ? -0.1 : 0.1;
-    this.animateSelected(yPos);
-  },
-  animateSelected: function (yPosMod) {
-    let mesh3d = this.get("mesh3d");
-    let self = this;
+    if (this.get("hover")) return;
 
-    var tween = new TWEEN.Tween(mesh3d.position)
+    this.getTween(
+      this.getMesh3d().position,                                        // start position
+      { y: this.get("initPos").y + this.get("selected") ? -0.1 : 0.1 }  // Y position
+    ).start();
+  },
+  getMesh3d: function () {
+    return this.get("mesh3d");
+  },
+  unhighlightMaterial: function () {
+    let tween = this.getTween(this.getMesh3d().material.emissive, { r: 0 });
+    tween.start();
+  },
+  highlightMaterial: function () {
+    let tween = this.getTween(this.getMesh3d().material.emissive, { r: 0.5 });
+    tween.start();;
+  },
+  getTween: function (to, from) {
+    return new TWEEN.Tween(to)
       .easing(TWEEN.Easing.Circular.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
-      .to({ y: self.get("initPos").y + yPosMod }, 500)
-      .onComplete(function () {
-        self.set("animating", false);
-      })
-      .start();
+      .to(from, 500);
   },
   onChangeHover: function () {
     if ( this.get("selected") ) return;
-    let yPos = this.get("hover") ? 0.1 : 0;
-    this.animateSelected(yPos);
+
+    if (this.get("hover") === true ) {
+      this.highlightMaterial();
+    } else {
+      this.unhighlightMaterial();
+    }
+
+    let self = this;
+    this.getTween(
+      this.getMesh3d().position,
+      { y: this.get("initPos").y + this.get("hover") ? 0.1 : 0 }
+    )
+    .onComplete(function () {
+      self.set("animating", false);
+    }).start();
   },
   reset: function (showHideBool) {
     this.set("selected", false);
@@ -57,8 +83,12 @@ var SceneModel = Backbone.Model.extend({
   isReady: function () {
     return this.get("ready") && !this.get("loading");
   },
-  showHide: function (visBool, hideText) { // show = true
+  showHide: function () { // show = true
 
+  },
+  getZoomPoint: function () {
+    var mesh3d = this.get("mesh3d");
+    return utils.getMeshCenterRadius(_.clone(mesh3d.position), _.clone(mesh3d.geometry.boundingSphere));
   },
   getSize: function (mesh) {
     mesh = mesh ? mesh : this.get("mesh3d");
@@ -66,10 +96,6 @@ var SceneModel = Backbone.Model.extend({
     var width = Math.abs(mesh.geometry.boundingBox.max.x) + Math.abs(mesh.geometry.boundingBox.min.x);
     var length = Math.abs(mesh.geometry.boundingBox.max.z) + Math.abs(mesh.geometry.boundingBox.min.z);
     return { w: width, h: height, l: length };
-  },
-  toggleTextMaterial: function (mat) {
-    var textColor = this.get("hover") ? utils.getColorPallete().text.color2 : utils.getColorPallete().text.color;
-    mat.emissive = new THREE.Color(textColor);
   },
   setFadeInMaterial:function (mat) {
       mat.opacity = 0;

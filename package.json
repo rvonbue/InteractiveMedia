@@ -27,6 +27,7 @@
     "three-orbit-controls": "^82.1.0",
     "three-simplicial-complex": "^69.0.6",
     "underscore": "^1.8.3",
+    "underscore-template-loader": "^0.8.0",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-merge": "^4.1.0"

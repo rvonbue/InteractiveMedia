@@ -9,7 +9,8 @@ import SceneLoader from "./components/SceneLoader";
 import MeshSelector from "./controls/meshSelector";
 import SceneAnimator from "./controls/sceneAnimator";
 import StatsView from "./components/statsView";
-// import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
+import { EffectComposer, FilmPass, RenderPass } from "postprocessing";
+import InfoPaneHover from "./views/infoPaneHover";
 
 
 let AppView3d = Backbone.View.extend({
@@ -56,7 +57,7 @@ let AppView3d = Backbone.View.extend({
     this.composer.addPass(new RenderPass(this.scene, this.camera));
 
     console.log("this.composer", this.composer);
-    const pass = new GlitchPass();
+    const pass = new FilmPass(0.8, 0.325, 256, false);
     this.composer.renderToScreen = true;
     this.composer.addPass(pass);
   },
@@ -64,11 +65,11 @@ let AppView3d = Backbone.View.extend({
     this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:true, canvas: this.canvasEl[0] });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.setClearColor( 0x000000, 0 );
+    // this.renderer.setClearColor( "#778899", 0 );
   },
   initCamera: function (size) {
     this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 0.1, 1000 );
-    this.camera.lookAt(new THREE.Vector3( 1, 0, 0 ));
+    // this.camera.lookAt(new THREE.Vector3( 1, 0, 0 ));
     this.controls = new CameraControls({ camera:this.camera, canvasEl: this.canvasEl[0] })
   },
   initSceneLoader: function () {
@@ -107,8 +108,9 @@ let AppView3d = Backbone.View.extend({
     this.statsView.stats.begin();
     TWEEN.update(time);
     this.controls.orbitControls.update(this.clock.getDelta());
-		this.renderer.render(this.scene, this.camera);
+
     // this.composer.render(this.clock.getDelta());
+    this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
   },
   getWidthHeight: function () {
@@ -126,10 +128,14 @@ let AppView3d = Backbone.View.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
-    this.canvasEl = $("<canvas>");
-    this.$el.append(this.canvasEl);
+    this.$el.append(new InfoPaneHover().render().el);
+
     this.statsView = new StatsView();
     this.$el.append(this.statsView.render().el);
+
+    this.canvasEl = $("<canvas>");
+    this.$el.append(this.canvasEl);
+
     return this;
   }
 });

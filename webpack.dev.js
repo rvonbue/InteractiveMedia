@@ -26,6 +26,12 @@ module.exports = {
           options: { presets: ['env',"es2015"] }
         }
       },
+      { test: /\.html$/,
+        use: [{
+          loader: "underscore-template-loader"
+       }]
+
+     },
       // { // exposes module to the window
       //   test: require.resolve('three'),
       //   use: [{

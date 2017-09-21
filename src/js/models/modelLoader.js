@@ -31,9 +31,11 @@ let ModelLoader = Backbone.Model.extend({
     };
 
   },
-  loadModel: function (url, name) {
+  loadModel: function (modelsArrObj) {
     let self = this;
     let loader = new THREE.JSONLoader( this.manager );
+    let urlBase = "models3d/";
+    let url = urlBase +  modelsArrObj.name + ".json"
 
     loader.load(url, function ( geometry, materials ) {
       let bufferGeo = new THREE.BufferGeometry();
@@ -44,8 +46,8 @@ let ModelLoader = Backbone.Model.extend({
       materials = null;
 
       let mesh3d = new THREE.Mesh( bufferGeo, newMaterials[0] );
-          mesh3d.name = name;
-      eventController.trigger(eventController.MODEL_LOADED, mesh3d);
+          mesh3d.name = modelsArrObj.name;
+      eventController.trigger(eventController.MODEL_LOADED, mesh3d, modelsArrObj);
 
     });
   },
