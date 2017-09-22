@@ -2,7 +2,7 @@
 import utils from "../components/utils";
 import TWEEN from "tween.js";
 
-var SceneModel = Backbone.Model.extend({
+let SceneModel = Backbone.Model.extend({
   defaults: {
     "name": "Caesar_Salad",
     "mesh3d": null,
@@ -27,7 +27,7 @@ var SceneModel = Backbone.Model.extend({
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
-    })
+    });
   },
   removeModelListeners: function () {
     this.off("change:selected", this.onChangeSelected);
@@ -37,7 +37,7 @@ var SceneModel = Backbone.Model.extend({
     if (this.get("hover")) return;
 
     this.getTween(
-      this.getMesh3d().position,                                        // start position
+      this.getMesh3d().position,
       { y: this.get("initPos").y + this.get("selected") ? -0.1 : 0.1 }  // Y position
     ).start();
   },
@@ -45,21 +45,29 @@ var SceneModel = Backbone.Model.extend({
     return this.get("mesh3d");
   },
   unhighlightMaterial: function () {
-    let tween = this.getTween(this.getMesh3d().material.emissive, { r: 0 });
+    let tween = this.getTween(this.getMesh3d().material.emissive, { r: 0, g: 0, b: 0 });
     tween.start();
   },
   highlightMaterial: function () {
-    let tween = this.getTween(this.getMesh3d().material.emissive, { r: 0.5 });
+    let r = (this.get("power") === 0) ? 0.5 : 0;
+    let b = (this.get("power") === 1) ? 0.5 : 0;
+    let rgb = {r: r, b: b };
+    let tween = this.getTween(this.getMesh3d().material.emissive, rgb);
     tween.start();;
   },
   getTween: function (to, from) {
+    let self = this;
+    self.set("animating", true);
     return new TWEEN.Tween(to)
       .easing(TWEEN.Easing.Circular.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
-      .to(from, 500);
+      .to(from, 500)
+      .onComplete(function () {
+        self.set("animating", false);
+      });
   },
   onChangeHover: function () {
-    if ( this.get("selected") ) return;
+    if ( this.get("selected") === true || this.get("animating" === true)) return;
 
     if (this.get("hover") === true ) {
       this.highlightMaterial();
@@ -67,14 +75,11 @@ var SceneModel = Backbone.Model.extend({
       this.unhighlightMaterial();
     }
 
-    let self = this;
     this.getTween(
       this.getMesh3d().position,
-      { y: this.get("initPos").y + this.get("hover") ? 0.1 : 0 }
+      { y: this.get("initPos").y + this.get("hover") ? 0.05 : 0 }
     )
-    .onComplete(function () {
-      self.set("animating", false);
-    }).start();
+    .start();
   },
   reset: function (showHideBool) {
     this.set("selected", false);
@@ -87,15 +92,17 @@ var SceneModel = Backbone.Model.extend({
 
   },
   getZoomPoint: function () {
-    var mesh3d = this.get("mesh3d");
+    let mesh3d = this.get("mesh3d");
     return utils.getMeshCenterRadius(_.clone(mesh3d.position), _.clone(mesh3d.geometry.boundingSphere));
   },
   getSize: function (mesh) {
     mesh = mesh ? mesh : this.get("mesh3d");
-    var height = Math.abs(mesh.geometry.boundingBox.max.y) + Math.abs(mesh.geometry.boundingBox.min.y);
-    var width = Math.abs(mesh.geometry.boundingBox.max.x) + Math.abs(mesh.geometry.boundingBox.min.x);
-    var length = Math.abs(mesh.geometry.boundingBox.max.z) + Math.abs(mesh.geometry.boundingBox.min.z);
-    return { w: width, h: height, l: length };
+    let bb = mesh.geometry.boundingBox;
+    return {
+      w: Math.abs(bb.max.x) + Math.abs(bb.min.x),
+      h: Math.abs(bb.max.y) + Math.abs(bb.min.y),
+      l: Math.abs(bb.max.z) + Math.abs(bb.min.z)
+    };
   },
   setFadeInMaterial:function (mat) {
       mat.opacity = 0;
@@ -106,7 +113,7 @@ var SceneModel = Backbone.Model.extend({
       mat.opacity = 1;
   },
   fadeMaterials: function (opacityEnd, materials) {
-    var allMaterials = materials ? materials : this.getAllMaterials();
+    let allMaterials = materials ? materials : this.getAllMaterials();
 
     allMaterials.forEach(function (mat) {
       this.fadeMaterial(mat, opacityEnd, utils.getAnimationSpeed().materialsFade);
@@ -114,10 +121,10 @@ var SceneModel = Backbone.Model.extend({
 
   },
   fadeMaterial: function (mat, opacityEnd, tweenSpeed) {
-    var newOpacityEnd = mat.opacityMax ? mat.opacityMax : opacityEnd;
+    let newOpacityEnd = mat.opacityMax ? mat.opacityMax : opacityEnd;
     newOpacityEnd === 0 ? this.setFadeOutMaterial(mat) : this.setFadeInMaterial(mat);
 
-    var tween = new TWEEN.Tween(mat)
+    let tween = new TWEEN.Tween(mat)
         .easing(TWEEN.Easing.Circular.Out)
         .interpolation(TWEEN.Interpolation.Bezier)
         .to({ opacity: newOpacityEnd }, tweenSpeed)

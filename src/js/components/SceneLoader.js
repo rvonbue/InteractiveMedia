@@ -8,28 +8,16 @@ import model3dList from "../data/model3dList";
 
 var SceneLoader = Backbone.Model.extend({
   initialize: function (options) {
+    _.bindAll(this, "addModelsToScene");
     window.sceneModelCollection = this.sceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
+    this.scene = options.scene;
     this.addListeners();
 
     _.each(model3dList, function (modelsArrObj) {
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj); //load scene Models
     }, this);
 
-  },
-  addListeners: function () {
-     eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
-     eventController.on(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
-     eventController.on(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
-     commandController.reply(commandController.GET_SCENE_MODEL, this.getSceneModel, this );
-     commandController.reply(commandController.GET_SCENE_MODELS, this.getSceneModels, this );
-  },
-  removeListeners: function () {
-    eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
-    eventController.off(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
-    eventController.off(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
-    commandController.stopReplying(commandController.GET_SCENE_MODEL, this.getSceneModel, this );
-    commandController.stopReplying(commandController.GET_SCENE_MODELS, this.getSceneModels, this );
   },
   getSceneModels: function (options) {
     return this.sceneModelCollection.where(options);
@@ -42,7 +30,7 @@ var SceneLoader = Backbone.Model.extend({
   },
   modelLoaded: function (mesh3d, modelsArrObj) {
     this.addModelSceneCollection(mesh3d, modelsArrObj); //adding to collection returns sceneModel
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [mesh3d]);
+    this.addModelsToScene([ mesh3d ]);
   },
   addModelSceneCollection: function (mesh3d, modelsArrObj) {
     let sceneModel = this.sceneModelCollection.add(modelsArrObj);
@@ -53,9 +41,7 @@ var SceneLoader = Backbone.Model.extend({
   },
   sceneModelHoverSet: function (bool) {
     let hoverSceneModels = this.sceneModelCollection.where({"hover": true});
-    _.each(hoverSceneModels, (sm)=>{
-      sm.set("hover", bool);
-    });
+    _.each(hoverSceneModels, ( sm )=> { sm.set("hover", bool); });
   },
   getAllMesh3d: function () {
     let objects3d = this.sceneModelCollection
@@ -63,6 +49,27 @@ var SceneLoader = Backbone.Model.extend({
     .map(function (model) { return model.get('mesh3d'); });
 
     return objects3d;
+  },
+  addModelsToScene: function (sceneModelArray) {
+    let scene = this.scene;
+    _.each(sceneModelArray, function (object3d) {
+      console.log("object3d::--", object3d);
+      scene.add(object3d);
+    }, this);
+  },
+  removeModelsFromScene: function (modelArray) {
+    _.each(modelArray, function (object3d) {
+      this.scene.add(object3d);
+    }, this);
+  },
+  addListeners: function () {
+     eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
+     eventController.on(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
+     eventController.on(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
+     commandController.reply(commandController.GET_SCENE_MODEL, this.getSceneModel, this );
+     commandController.reply(commandController.GET_SCENE_MODELS, this.getSceneModels, this );
+     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
+     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
   }
 });
 

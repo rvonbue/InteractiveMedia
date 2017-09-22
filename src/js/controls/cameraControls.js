@@ -4,7 +4,7 @@ import eventController from "../controllers/eventController";
 // import commandController from "../controllers/commandController";
 const OrbitControls = require('three-orbit-controls')(THREE);
 
-let CAMERA_INTIAL_POSITION =  { x: -0.5, y: 5, z: 4.0 };
+let CAMERA_INTIAL_POSITION =  { x: -0.5, y: 4.5, z: 3.25 };
 let TARGET_INITIAL_POSITION = { x: -0.5, y: 0, z: 1 };
 
 let CameraControls = Backbone.Model.extend({
@@ -13,12 +13,16 @@ let CameraControls = Backbone.Model.extend({
   },
   initialize: function (options) {
     this.addListeners();
-    this.orbitControls = new OrbitControls(options.camera, options.canvasEl);
+    let size = options.size;
+    this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 0.1, 1000 );
+    this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
+    this.applySettings();
+    this.resetCameraPositionTarget();
+  },
+  applySettings: function () {
     this.orbitControls.enableDamping = true;
     this.orbitControls.dampingFactor = 0.1;
     this.orbitControls.rotateSpeed = 0.15;
-    window.orbitControls = this.orbitControls;
-    this.resetCameraPositionTarget();
   },
   getControls: function () {
     return this.orbitControls;
@@ -41,6 +45,11 @@ let CameraControls = Backbone.Model.extend({
   },
   addListeners: function () {
     eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);
+    eventController.on(eventController.ON_RESIZE, this.onResize, this);
+  },
+  onResize: function (size) {  // this.orbitControls.object  is the camera
+    this.orbitControls.object.aspect = size.w / size.h;
+    this.orbitControls.object.updateProjectionMatrix();
   },
   removeListeners: function () {
   }

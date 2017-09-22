@@ -1,17 +1,24 @@
 import eventController from "../controllers/eventController";
-import template from "./infoPaneHover.html";
+import template from "./sliderBar.html";
 
-let InfoPaneHover = Backbone.View.extend({
-  className: "info-pane-hover",
+let SliderBar = Backbone.View.extend({
+  className: "slider-bar",
   events: {
     "mouseenter .power-hover": "powerMouseEnter",
     "mouseleave .power-hover": "powerMouseLeave"
   },
+  initialize: function (options) {
+    this.addListeners();
+  },
   powerMouseEnter: function (evt) {
-    eventController.trigger(eventController.HOVER_ALL_AXIS_OR_ALLY, $(evt.currentTarget).index(".power-hover") );
+    eventController.trigger(eventController.HOVER_ALL_AXIS_OR_ALLY, $(evt.currentTarget).index() );
   },
   powerMouseLeave: function (evt) {
     eventController.trigger(eventController.UNSET_ALL_HOVER_MODELS);
+  },
+  addListeners: function () {
+  },
+  removeListeners: function () {
   },
   render: function () {
     this.$el.append(template);
@@ -19,4 +26,4 @@ let InfoPaneHover = Backbone.View.extend({
   }
 });
 
-module.exports = InfoPaneHover;
+module.exports = SliderBar;
