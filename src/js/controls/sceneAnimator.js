@@ -11,7 +11,6 @@ let SceneAnimator = Backbone.Model.extend({
     _.each(allHoverModels, (sceneModel) => {
       sceneModel.set("hover", true);
     });
-
   },
   mouseClickSelect: function (raycast) {
     let sceneModel = this.requestSceneModel({ name: raycast.object.name });

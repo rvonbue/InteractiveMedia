@@ -2,6 +2,7 @@ import eventController from "../controllers/eventController";
 import TWEEN from "tween.js";
 import raf from "raf";
 import StatsView from "../components/statsView";
+import { EffectComposer, FilmPass, RenderPass } from "postprocessing";
 
 let Renderer = Backbone.Model.extend({
   defaults: {},
@@ -11,6 +12,7 @@ let Renderer = Backbone.Model.extend({
     this.initRenderer(options.size, options.canvas);
     this.clock = new THREE.Clock();
     this.scene = options.scene;
+    this.controls = options.controls;
   },
   initRenderer: function (size, canvas) {
     this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:true, canvas: canvas });
@@ -32,6 +34,14 @@ let Renderer = Backbone.Model.extend({
     raf.cancel(this.renderLoop);
     this.renderLoop = null;
   },
+  // addPostProcessing: function () {
+  //   this.composer = new EffectComposer(this.renderer);
+  //   this.composer.addPass(new RenderPass(this.scene, this.camera));
+  //
+  //   const pass = new FilmPass(0.8, 0.325, 256, false);
+  //   this.composer.renderToScreen = true;
+  //   this.composer.addPass(pass);
+  // },
   onResize: function (size) {
     console.log("rendere::onResize:", size);
     this.renderer.setSize( size.w, size.h );

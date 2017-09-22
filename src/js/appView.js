@@ -7,8 +7,8 @@ import SceneLoader from "./components/SceneLoader";
 import MeshSelector from "./controls/meshSelector";
 import SceneAnimator from "./controls/sceneAnimator";
 import Renderer from "./controls/renderer";
-import StatsView from "./components/statsView";
-import { EffectComposer, FilmPass, RenderPass } from "postprocessing";
+
+// import StatsView from "./components/statsView";
 import InfoPaneHover from "./views/infoPaneHover";
 
 
@@ -25,33 +25,32 @@ let AppView3d = Backbone.View.extend({
     let size = this.getWidthHeight();
     this.scene = new THREE.Scene();
 
+    this.controls = new CameraControls({
+      camera:this.camera,
+      canvasEl: this.canvasEl[0],
+      size: size
+    });
+
     this.renderer = new Renderer({
       size: size,
       canvas: this.canvasEl[0],
       scene: this.scene,
+      controls: this.controls
      });
 
-    this.controls = new CameraControls({ camera:this.camera, canvasEl: this.canvasEl[0], size: size })
+
     new SceneLoader({ scene: this.scene });
     new LightControls();
     new MeshSelector({ canvasEl: this.canvasEl, camera: this.controls.orbitControls.object });
     new SceneAnimator();
     // this.addPostProcessing();
 
-    this.renderer.controls = this.controls
+    // this.renderer.controls = this.controls
     this.renderer.animate();
 
     setTimeout(()=> {
       this.resize(); },
     10);
-  },
-  addPostProcessing: function () {
-    this.composer = new EffectComposer(this.renderer);
-    this.composer.addPass(new RenderPass(this.scene, this.camera));
-
-    const pass = new FilmPass(0.8, 0.325, 256, false);
-    this.composer.renderToScreen = true;
-    this.composer.addPass(pass);
   },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() };
@@ -65,8 +64,8 @@ let AppView3d = Backbone.View.extend({
   render: function () {
     this.$el.append(new InfoPaneHover().render().el);
 
-    this.statsView = new StatsView();
-    this.$el.append(this.statsView.render().el);
+    // this.statsView = new StatsView();
+    // this.$el.append(this.statsView.render().el);
 
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);

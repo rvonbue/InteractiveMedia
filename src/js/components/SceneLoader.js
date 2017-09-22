@@ -51,11 +51,7 @@ var SceneLoader = Backbone.Model.extend({
     return objects3d;
   },
   addModelsToScene: function (sceneModelArray) {
-    let scene = this.scene;
-    _.each(sceneModelArray, function (object3d) {
-      console.log("object3d::--", object3d);
-      scene.add(object3d);
-    }, this);
+    _.each(sceneModelArray, function (object3d) { this.scene.add(object3d); }, this);
   },
   removeModelsFromScene: function (modelArray) {
     _.each(modelArray, function (object3d) {
