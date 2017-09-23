@@ -13,7 +13,7 @@ module.exports = {
   },
   resolve : {
     alias: {
-       modules: path.join(__dirname, "node_modules"),
+       modules: path.join(__dirname, "node_modules")
     }
   },
   module: {
@@ -30,15 +30,7 @@ module.exports = {
         use: [{
           loader: "underscore-template-loader"
        }]
-
-     },
-      // { // exposes module to the window
-      //   test: require.resolve('three'),
-      //   use: [{
-      //       loader: 'expose-loader',
-      //       options: 'THREE'
-      //   }]
-      // },
+      },
       { test: /\.less$/, use: [
         { loader: "style-loader"},
         { loader: "css-loader", options: { sourceMap: true }},
@@ -49,7 +41,7 @@ module.exports = {
             sourceMap: true
           }
         }]
-      },
+      }
     ]
   },
   plugins: [

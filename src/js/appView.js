@@ -1,5 +1,3 @@
-'use strict';
-
 import eventController from "./controllers/eventController";
 import LightControls from "./controls/LightControls";
 import CameraControls from "./controls/cameraControls";

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:dev": "webpack-dev-server --hot --inline --progress --env=dev ",
+    "build:dev": "webpack-dev-server --hot --inline --progress --env=dev --color --watch ",
     "build:dist": "webpack --env=prod --progress --profile --colors"
   },
   "author": "Rick von Buelow",
@@ -19,6 +19,7 @@
     "backbone.radio": "^2.0.0",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.1.2",
+    "file-system": "^2.2.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "postprocessing": "^2.3.1",
@@ -26,11 +27,13 @@
     "style-loader": "^0.18.2",
     "three-orbit-controls": "^82.1.0",
     "three-simplicial-complex": "^69.0.6",
+    "tween.js": "^16.6.0",
     "underscore": "^1.8.3",
     "underscore-template-loader": "^0.8.0",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "xml-js": "^1.4.2"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
