@@ -8,7 +8,7 @@ import Renderer from "./controls/renderer";
 
 // import StatsView from "./components/statsView";
 import InfoPaneHover from "./views/infoPaneHover";
-
+import CountryInfo from "./views/CountryInfo";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -63,6 +63,7 @@ let AppView3d = Backbone.View.extend({
   },
   render: function () {
     this.$el.append(new InfoPaneHover().render().el);
+    this.$el.append(new CountryInfo().render().el);
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);
 

@@ -69,7 +69,7 @@ let SceneModel = Backbone.Model.extend({
     this.resetImageTexture(context);
 
     new TWEEN.Tween(0)
-      // .easing(TWEEN.Easing.Circular.Out)
+      .easing(TWEEN.Easing.Quadratic.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
       .to(1, 2000)
       .onUpdate(function (val) {
@@ -78,7 +78,6 @@ let SceneModel = Backbone.Model.extend({
         context.fill();
         context.drawImage(self.getBorderImage(), 0,0);
         self.updateTextureMap();
-        console.log("sfsadf");
       })
       .onComplete(function () {
         self.set("animating", false);
@@ -129,8 +128,9 @@ let SceneModel = Backbone.Model.extend({
   },
   highlightMaterial: function () {
     let context = this.getCanvasContext();
-    context.fillStyle = this.getHighlightColor();
-    context.fillRect(0,0,512,512);
+    // context.fillStyle = this.getHighlightColor();
+    // context.fillRect(0,0,512,512);
+    this.createNoise(context);
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0,0);
   },
@@ -143,6 +143,13 @@ let SceneModel = Backbone.Model.extend({
   },
   showHide: function () { // show = true
 
+  },
+  createNoise: function (ctx) {
+    let idata = ctx.createImageData(512, 512); // create image data
+    let buffer32 = new Uint32Array(idata.data.buffer);
+    let len = buffer32.length - 1;
+    while(len--) buffer32[len] = Math.random() < 0.5 ? 0 : -1>>0;
+    ctx.putImageData(idata, 0, 0);
   },
   getZoomPoint: function () {
     let mesh3d = this.get("mesh3d");

@@ -17,7 +17,7 @@ let Renderer = Backbone.Model.extend({
     this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:true, canvas: canvas });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
-    // this.renderer.setClearColor( "#778899", 0 );
+    this.renderer.setClearColor( "#778899", 0 );
   },
   animate: function (time) {
     this.renderLoop = raf( this.animate );
