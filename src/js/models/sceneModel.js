@@ -128,9 +128,9 @@ let SceneModel = Backbone.Model.extend({
   },
   highlightMaterial: function () {
     let context = this.getCanvasContext();
-    // context.fillStyle = this.getHighlightColor();
-    // context.fillRect(0,0,512,512);
-    this.createNoise(context);
+    context.fillStyle = this.getHighlightColor();
+    context.fillRect(0,0,512,512);
+    // this.createNoise(context);
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0,0);
   },

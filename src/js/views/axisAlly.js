@@ -1,7 +1,7 @@
 import eventController from "../controllers/eventController";
-import template from "./infoPaneHover.html";
+import template from "./axisAlly.html";
 
-let InfoPaneHover = Backbone.View.extend({
+let axisAlly = Backbone.View.extend({
   className: "info-pane-hover",
   events: {
     "mouseenter .power-hover": "powerMouseEnter",
@@ -19,4 +19,4 @@ let InfoPaneHover = Backbone.View.extend({
   }
 });
 
-module.exports = InfoPaneHover;
+module.exports = axisAlly;

@@ -7,8 +7,9 @@ import SceneAnimator from "./controls/sceneAnimator";
 import Renderer from "./controls/renderer";
 
 // import StatsView from "./components/statsView";
-import InfoPaneHover from "./views/infoPaneHover";
-import CountryInfo from "./views/CountryInfo";
+import axisAllyView from "./views/axisAlly";
+import countryInfoView from "./views/CountryInfo";
+import template from "./appView.html";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -62,11 +63,11 @@ let AppView3d = Backbone.View.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
-    this.$el.append(new InfoPaneHover().render().el);
-    this.$el.append(new CountryInfo().render().el);
+    this.$el.append(template);
+    this.$el.append(new axisAllyView().render().el);
+    this.$el.append(new countryInfoView().render().el);
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);
-
     return this;
   }
 });
