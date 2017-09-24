@@ -1,6 +1,4 @@
 .*/
 node_modules/
-public/
 *.log
-src/images
-
+public/

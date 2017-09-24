@@ -157,17 +157,6 @@ var MeshSelector = Backbone.Model.extend({
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    // eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
-  },
-  removeListeners: function () {
-    this.canvasEl.off("mousemove", this.throttledMouseMove);
-    this.canvasEl.off("mouseleave", this.triggerHoverNav);
-    this.canvasEl.off("mouseup",this.onMouseClick);
-    this.canvasEl.off("mousedown", this.onMouseDown);
-
-    eventController.off(eventController.ON_RESIZE, this.onResize, this);
-    eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    // eventController.off(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   render: function () {
     return this;

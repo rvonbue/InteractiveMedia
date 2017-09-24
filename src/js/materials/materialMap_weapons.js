@@ -9,10 +9,5 @@ module.exports = {
             },
   },
   tank1 :{props: {color: "#00FF00"}},
-  ground: { maps: [{ map: "textures/water.jpg" }],
-            mapProps: {
-              repeatScale: 1,
-              shading: "flat"
-            },
-  }
+  ground: { props: {color: "#143EBE"}  }
 };

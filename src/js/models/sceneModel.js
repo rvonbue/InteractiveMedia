@@ -17,9 +17,6 @@ let SceneModel = Backbone.Model.extend({
   },
   initialize: function( options ) {
     this.addModelListeners();
-    // this.set("initPos", _.clone(this.get("mesh3d").position));
-    // console.log("power", options);
-    // this.set("power", options.power);
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
@@ -33,27 +30,66 @@ let SceneModel = Backbone.Model.extend({
     this.off("change:selected", this.onChangeSelected);
     this.off("change:hover", this.onChangeHover);
   },
-  onChangeSelected: function () {
-    if (this.get("hover")) return;
+  onChangeHover: function () {
+    if ( this.get("selected") === true || this.get("animating" === true)) return;
+    if (this.get("hover") === true ) {
+      this.highlightMaterial();
+    } else {
+      this.unhighlightMaterial();
+    }
 
     this.getTween(
       this.getMesh3d().position,
-      { y: this.get("initPos").y + this.get("selected") ? -0.1 : 0.1 }  // Y position
-    ).start();
+      { y: this.get("initPos").y + this.get("hover") ? 0.05 : 0 }
+    )
+    .start();
+  },
+  onChangeSelected: function () {
+    // if (this.get("hover")) return;
+    if ( this.get("selected") ) {
+      this.animateBleed();
+    } else {
+      TWEEN.removeAll();
+      this.unhighlightMaterial();
+    }
+  },
+  resetImageTexture: function (context) {
+    context.beginPath();
+    context.clearRect(0, 0, 512,512);
+    context.closePath();
+    context.fillStyle = "#000000";
+    context.fillRect(0,0,512,512);
+    this.updateTextureMap();
+    context.drawImage(this.getBorderImage(), 0, 0);
+  },
+  animateBleed: function () {
+    let canvas = this.getTextureCanvas();
+    let context = canvas.getContext( '2d' );
+    let self = this;
+    this.resetImageTexture(context);
+
+    new TWEEN.Tween(0)
+      // .easing(TWEEN.Easing.Circular.Out)
+      .interpolation(TWEEN.Interpolation.Bezier)
+      .to(1, 2000)
+      .onUpdate(function (val) {
+        context.fillStyle = self.getHighlightColor();
+        context.arc(256, 256, 350 * val, 0, 2 * Math.PI, false);
+        context.fill();
+        context.drawImage(self.getBorderImage(), 0,0);
+        self.updateTextureMap();
+        console.log("sfsadf");
+      })
+      .onComplete(function () {
+        self.set("animating", false);
+      })
+      .start();
   },
   getMesh3d: function () {
     return this.get("mesh3d");
   },
-  unhighlightMaterial: function () {
-    let tween = this.getTween(this.getMesh3d().material.emissive, { r: 0, g: 0, b: 0 });
-    tween.start();
-  },
-  highlightMaterial: function () {
-    let r = (this.get("power") === 0) ? 0.5 : 0;
-    let b = (this.get("power") === 1) ? 0.5 : 0;
-    let rgb = {r: r, b: b };
-    let tween = this.getTween(this.getMesh3d().material.emissive, rgb);
-    tween.start();;
+  getHighlightColor: function () {
+    return this.get("power") === 0 ? utils.getColorPallete().ally : utils.getColorPallete().axis;
   },
   getTween: function (to, from) {
     let self = this;
@@ -66,20 +102,37 @@ let SceneModel = Backbone.Model.extend({
         self.set("animating", false);
       });
   },
-  onChangeHover: function () {
-    if ( this.get("selected") === true || this.get("animating" === true)) return;
+  getBorderImage: function () {
+    return this.get("mesh3d").material.map.borderImage;
+  },
+  getTextureCanvas: function () {
+    return this.get("mesh3d").material.map.image;
+  },
+  getCanvasContext: function () {
+    return this.getTextureCanvas().getContext( '2d' );
+  },
+  updateTextureMap: function () {
+    this.get("mesh3d").material.map.needsUpdate = true;
+  },
+  highlightHover: function () {
 
-    if (this.get("hover") === true ) {
-      this.highlightMaterial();
-    } else {
-      this.unhighlightMaterial();
-    }
+  },
+  unhighlightHover: function () {
 
-    this.getTween(
-      this.getMesh3d().position,
-      { y: this.get("initPos").y + this.get("hover") ? 0.05 : 0 }
-    )
-    .start();
+  },
+  unhighlightMaterial: function () {
+    let context = this.getCanvasContext();
+    context.fillStyle = "#000000";
+    context.fillRect(0,0,512,512);
+    this.updateTextureMap();
+    context.drawImage(this.getBorderImage(), 0,0);
+  },
+  highlightMaterial: function () {
+    let context = this.getCanvasContext();
+    context.fillStyle = this.getHighlightColor();
+    context.fillRect(0,0,512,512);
+    this.updateTextureMap();
+    context.drawImage(this.getBorderImage(), 0,0);
   },
   reset: function (showHideBool) {
     this.set("selected", false);

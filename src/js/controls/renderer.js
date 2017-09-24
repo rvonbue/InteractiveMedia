@@ -1,8 +1,7 @@
 import eventController from "../controllers/eventController";
 import TWEEN from "tween.js";
 import raf from "raf";
-import StatsView from "../components/statsView";
-import { EffectComposer, FilmPass, RenderPass } from "postprocessing";
+// import StatsView from "../components/statsView";
 
 let Renderer = Backbone.Model.extend({
   defaults: {},
@@ -25,8 +24,6 @@ let Renderer = Backbone.Model.extend({
     // this.statsView.stats.begin();
     TWEEN.update(time);
     this.controls.orbitControls.update(this.clock.getDelta());
-
-    // this.composer.render(this.clock.getDelta());
     this.renderer.render(this.scene, this.controls.orbitControls.object);
     // this.statsView.stats.end();
   },
@@ -34,16 +31,7 @@ let Renderer = Backbone.Model.extend({
     raf.cancel(this.renderLoop);
     this.renderLoop = null;
   },
-  // addPostProcessing: function () {
-  //   this.composer = new EffectComposer(this.renderer);
-  //   this.composer.addPass(new RenderPass(this.scene, this.camera));
-  //
-  //   const pass = new FilmPass(0.8, 0.325, 256, false);
-  //   this.composer.renderToScreen = true;
-  //   this.composer.addPass(pass);
-  // },
   onResize: function (size) {
-    console.log("rendere::onResize:", size);
     this.renderer.setSize( size.w, size.h );
   }
 });

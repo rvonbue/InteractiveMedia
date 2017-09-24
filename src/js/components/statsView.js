@@ -30,7 +30,6 @@ var StatsView = Backbone.View.extend({
     // }
   },
   render: function () {
-    console.log("this.stats", this.stats);
     this.$el.append(this.stats.domElement);
     this.$el.append(this.faceCountEl);
     return this;

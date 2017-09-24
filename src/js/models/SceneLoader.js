@@ -1,13 +1,9 @@
 import TWEEN from "tween.js";
-// import fs from "fs";
-
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 import SceneModelCollection from "../collections/SceneModelCollection";
 import ModelLoader from "../models/ModelLoader";
 import model3dList from "../data/model3dList";
-import convert from 'xml-js';
-// var json = require('fs').readFileSync('test.json', 'utf8');
 
 var SceneLoader = Backbone.Model.extend({
   initialize: function (options) {

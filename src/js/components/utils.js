@@ -1,5 +1,4 @@
 module.exports = {
-  worldScale: 1,
   size: { width: null, height: null },
   getAnimationSpeed: function () {
     return { materialsFade: 500, cameraMove: 1500, speed: 1000, lightOut: 3000 };
@@ -47,13 +46,8 @@ module.exports = {
   },
   getColorPallete: function () {
     return {
-      color1: {hex: "#b5651d" }, //brown
-      color2: {hex: "#B82601" },  //green
-      color3: {hex: "#062f4f" },
-      color4: {hex: "#813772" },
-      lampLight: { color: "#B82601", colorEmissive: "#B82601"},  //red //663399 purple
-      text: { color:"#0090FF", color2: "#00cece"  },
-
+      axis: "#0000FF",
+      ally: "#FF0000"
     };
   }
-}
+};

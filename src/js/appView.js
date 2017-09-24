@@ -1,7 +1,7 @@
 import eventController from "./controllers/eventController";
 import LightControls from "./controls/LightControls";
 import CameraControls from "./controls/cameraControls";
-import SceneLoader from "./components/SceneLoader";
+import SceneLoader from "./models/SceneLoader";
 import MeshSelector from "./controls/meshSelector";
 import SceneAnimator from "./controls/sceneAnimator";
 import Renderer from "./controls/renderer";
@@ -36,14 +36,16 @@ let AppView3d = Backbone.View.extend({
       controls: this.controls
      });
 
+    new SceneLoader({
+       scene: this.scene
+    });
 
-    new SceneLoader({ scene: this.scene });
-    new LightControls();
-    new MeshSelector({ canvasEl: this.canvasEl, camera: this.controls.orbitControls.object });
+    new MeshSelector({
+      canvasEl: this.canvasEl,
+      camera: this.controls.orbitControls.object
+    });
     new SceneAnimator();
-    // this.addPostProcessing();
-
-    // this.renderer.controls = this.controls
+    new LightControls();
     this.renderer.animate();
 
     setTimeout(()=> {
@@ -61,10 +63,6 @@ let AppView3d = Backbone.View.extend({
   },
   render: function () {
     this.$el.append(new InfoPaneHover().render().el);
-
-    // this.statsView = new StatsView();
-    // this.$el.append(this.statsView.render().el);
-
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);
 

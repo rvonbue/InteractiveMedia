@@ -2,17 +2,12 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
 import materialMapList from "../materials/combinedMaterials";
 import utils from "../components/utils";
+// import countryBordersBase64 from "../data/countryBordersBase64.json";
+// console.log("asdfasjljdfs", countryBordersBase64);
 
 var MaterialLibrary = Backbone.Model.extend({
   initialize: function () {
     this.materialCollection = [];
-    this.addListeners();
-  },
-  addListeners: function () {
-    commandController.reply(commandController.LOAD_ENV_MAP, this.getReflectionCube, this);
-    commandController.reply(commandController.LOAD_MATERIAL, this.loadMaterial, this);
-    commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
-    commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
   },
   getMaterial: function (oldMat) {
     var matFromLib = this.doesMaterialExist(oldMat);
@@ -35,10 +30,12 @@ var MaterialLibrary = Backbone.Model.extend({
     var hasShadingType = hasProps && matmaplist.props.shadingType ? true : false;
     var shadingType = hasShadingType ? matmaplist.props.shadingType : false;
 
+
     if ( hasShadingType ) {
-      return new THREE[shadingType]({ name: mat.name });
+      return new THREE[shadingType]({ name: mat.name, side: THREE.FrontSide });
     } else {
-      return new THREE[mat.type]({ name: mat.name });
+      mat.side = THREE.FrontSide;
+      return mat;
     }
 
   },
@@ -49,7 +46,6 @@ var MaterialLibrary = Backbone.Model.extend({
     var materialObj = materialMapList[mat.name];
 
     _.each(materialObj, function (value, key) {
-
       if (key === "maps") {
         _.each(value, function (mapObj) {
           self.setNewTexture(mapObj, mat, materialObj.mapProps);
@@ -68,15 +64,36 @@ var MaterialLibrary = Backbone.Model.extend({
     _.each(mapObj, function (mapURL, mapKey) {
         mat[mapKey] = this.getImageTexture(mapURL, options);
     }, this);
-
   },
   getImageTexture: function (mapURL, options) {
-    var texture = new THREE.TextureLoader(this.get("manager")).load( mapURL, function (texture) {
-      if (options && options.repeatScale) {
+    let loader = new THREE.ImageLoader();
+    let canvas = document.createElement( 'canvas' );
+  	let context = canvas.getContext( '2d' );
+    canvas.width  = 512;
+    canvas.height = 512;
+    context.fillStyle = "#000000";
+    context.fillRect(0,0,512,512);
+    let texture = new THREE.Texture(canvas);
+
+    // let image = new Image();
+    // image.onload = function() {
+    //     ctx.drawImage(image, 0, 0);
+    // };
+    // image.src =
+
+    loader.load(
+    	mapURL,
+    	function ( image ) {
+    		context = canvas.getContext( '2d' );
+    		context.drawImage( image, 0, 0 );
+        texture.needsUpdate = true;
+        texture.borderImage = image;
+    	}
+    );
+    if (options && options.repeatScale) {
         texture.repeat.set( options.repeatScale, options.repeatScale );
         texture.shading = options.shading === "smooth" ? THREE.FlatShading : THREE.FlatShading ;
       }
-    });
     return texture;
   },
   setMaterialAttributes: function (mat, props) {

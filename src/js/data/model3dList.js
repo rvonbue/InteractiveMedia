@@ -2,7 +2,7 @@ let urlBase = "models3d/";
 
 module.exports = [
   // { name: "mapground", interactive: false },
-  { name: "weapons/tank", power: 3 },
+  // { name: "weapons/tank", power: 3 },
   // { name: "weapons/hedgehog", power: 3 },
   { name: "albania", power: 1 },
   { name: "belgium", power: 1 },
