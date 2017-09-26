@@ -2,6 +2,7 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
 import materialMapList from "../materials/combinedMaterials";
 import utils from "../components/utils";
+let color = utils.getColorPallete();
 // import countryBordersBase64 from "../data/countryBordersBase64.json";
 // console.log("asdfasjljdfs", countryBordersBase64);
 
@@ -71,7 +72,7 @@ var MaterialLibrary = Backbone.Model.extend({
   	let context = canvas.getContext( '2d' );
     canvas.width  = 512;
     canvas.height = 512;
-    context.fillStyle = "#000000";
+    context.fillStyle = color.countryMap;
     context.fillRect(0,0,512,512);
     let texture = new THREE.Texture(canvas);
 

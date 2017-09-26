@@ -1,6 +1,7 @@
 // import eventController from "../controllers/eventController";
 import utils from "../components/utils";
 import TWEEN from "tween.js";
+let color = utils.getColorPallete();
 
 let SceneModel = Backbone.Model.extend({
   defaults: {
@@ -57,7 +58,7 @@ let SceneModel = Backbone.Model.extend({
     context.beginPath();
     context.clearRect(0, 0, 512,512);
     context.closePath();
-    context.fillStyle = "#000000";
+    context.fillStyle = color.countryMap;
     context.fillRect(0,0,512,512);
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0, 0);
@@ -121,7 +122,7 @@ let SceneModel = Backbone.Model.extend({
   },
   unhighlightMaterial: function () {
     let context = this.getCanvasContext();
-    context.fillStyle = "#000000";
+    context.fillStyle = color.countryMap;
     context.fillRect(0,0,512,512);
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0,0);

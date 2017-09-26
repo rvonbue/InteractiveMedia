@@ -1,9 +1,5 @@
 import eventController from "../controllers/eventController";
-// import template from "./countryInfo.html";
 import template from './countryInfo.html';
-// template({name: "world"});
-console.log("template:", template({name: "DEFAULT NAME"}));
-// let templatemade = template({hello: "asdkjfldasjkl"});
 
 let CountryInfo = Backbone.View.extend({
   className: "country-info",
@@ -14,7 +10,6 @@ let CountryInfo = Backbone.View.extend({
     eventController.on(eventController.HOVER_NAVIGATION, this.mouseHover, this);
   },
   mouseHover: function (raycast) {
-    console.log("model", raycast);
     this.$el.empty();
     if (raycast && raycast.object)  this.$el.append(template({name: this.jsUcfirst(raycast.object.name)}));
   },
