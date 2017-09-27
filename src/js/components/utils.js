@@ -48,7 +48,7 @@ module.exports = {
     return {
       axis: "#0000FF",
       ally: "#FF0000",
-      countryMap: "#FF0000"
+      countryMap: "#708090"
     };
   }
 };

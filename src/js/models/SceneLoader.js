@@ -16,7 +16,6 @@ var SceneLoader = Backbone.Model.extend({
     _.each(model3dList, function (modelsArrObj) {
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj); //load scene Models
     }, this);
-    // console.log("fs", fs);
   },
   getSceneModels: function (options) {
     return this.sceneModelCollection.where(options);
@@ -37,6 +36,7 @@ var SceneLoader = Backbone.Model.extend({
   },
   allSceneModelsLoaded: function () {
     eventController.trigger(eventController.RESET_RAYCASTER, this.getAllMesh3d());
+    eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
   },
   sceneModelHoverSet: function (bool) {
     let hoverSceneModels = this.sceneModelCollection.where({"hover": true});
@@ -59,7 +59,7 @@ var SceneLoader = Backbone.Model.extend({
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
-     eventController.on(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
+     eventController.once(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
      eventController.on(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
      commandController.reply(commandController.GET_SCENE_MODEL, this.getSceneModel, this );
      commandController.reply(commandController.GET_SCENE_MODELS, this.getSceneModels, this );

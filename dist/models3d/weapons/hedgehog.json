@@ -20,7 +20,7 @@
         "colorDiffuse": [0.64,0.64,0.64],
         "specularCoef": 50,
         "blending": "NormalBlending",
-        "shading": "phong",
+        "shading": "lambert",
         "colorSpecular": [0.5,0.5,0.5],
         "DbgName": "rusty",
         "visible": true,

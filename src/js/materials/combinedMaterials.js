@@ -1,9 +1,11 @@
-import materialMap_countries from "./materialMap_countries";
-import materialMap_weapons from "./materialMap_weapons";
+import countries from "./materialMap_countries";
+import weapons from "./materialMap_weapons";
+import britishAirRaid from "./materialMap_britishAirRaid";
 
 var materialMapList = _.extendOwn(
-  materialMap_countries,
-  materialMap_weapons
+  countries,
+  weapons,
+  britishAirRaid
 );
 
 module.exports = materialMapList;

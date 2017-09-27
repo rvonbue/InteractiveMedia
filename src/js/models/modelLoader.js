@@ -23,7 +23,6 @@ let ModelLoader = Backbone.Model.extend({
     this.manager.onProgress = function ( item, loaded, total ) {
       eventController.trigger(eventController.ITEM_LOADED, loaded, total);
     };
-
     this.manager.onLoad = function ( item, loaded, total ) {
       // setTimeout(function () {
       eventController.trigger(eventController.ALL_ITEMS_LOADED);
@@ -34,8 +33,7 @@ let ModelLoader = Backbone.Model.extend({
   loadModel: function (modelsArrObj) {
     let self = this;
     let loader = new THREE.JSONLoader( this.manager );
-    let urlBase = "models3d/";
-    let url = urlBase +  modelsArrObj.name + ".json"
+    let url = modelsArrObj.baseUrl +  modelsArrObj.name + ".json"
 
     loader.load(url, function ( geometry, materials ) {
       let bufferGeo = new THREE.BufferGeometry();
@@ -47,6 +45,7 @@ let ModelLoader = Backbone.Model.extend({
 
       let mesh3d = new THREE.Mesh( bufferGeo, newMaterials[0] );
           mesh3d.name = modelsArrObj.name;
+          mesh3d.parentName = modelsArrObj.parentName;
           // console.log("MESH3D:---", mesh3d);
       eventController.trigger(eventController.MODEL_LOADED, mesh3d, modelsArrObj);
 

@@ -5,7 +5,7 @@ import SceneLoader from "./models/SceneLoader";
 import MeshSelector from "./controls/meshSelector";
 import SceneAnimator from "./controls/sceneAnimator";
 import Renderer from "./controls/renderer";
-
+import TimelineManager from "./models/timelineManager";
 // import StatsView from "./components/statsView";
 import axisAllyView from "./views/axisAlly";
 import countryInfoView from "./views/CountryInfo";
@@ -46,8 +46,10 @@ let AppView3d = Backbone.View.extend({
       canvasEl: this.canvasEl,
       camera: this.controls.orbitControls.object
     });
+
     new SceneAnimator();
     new LightControls();
+    new TimelineManager();
     this.renderer.animate();
 
     setTimeout(()=> {
