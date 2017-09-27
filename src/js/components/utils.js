@@ -32,14 +32,14 @@ module.exports = {
         cssSkyGradient: 5 // 0 - 23 is valid
       },
       hemisphere: {
-        sky:"#9be2fe",
-        ground: "#FFFFFF",
-        intensity: 0
+        sky:"#FFFFFF",
+        ground: "#000000",
+        intensity: 1
 
       },
       directional: {
-        color: "#FFFFFF",
-        intensity: 0.5, //0.3
+        color: "#FD7D01",
+        intensity: 0, //0.3
         position: {x: 0, y: 10, z: 5}
       }
     };

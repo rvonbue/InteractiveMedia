@@ -70,22 +70,16 @@ var MaterialLibrary = Backbone.Model.extend({
     let loader = new THREE.ImageLoader();
     let canvas = document.createElement( 'canvas' );
   	let context = canvas.getContext( '2d' );
-    canvas.width  = 512;
-    canvas.height = 512;
-    context.fillStyle = color.countryMap;
-    context.fillRect(0,0,512,512);
     let texture = new THREE.Texture(canvas);
 
-    // let image = new Image();
-    // image.onload = function() {
-    //     ctx.drawImage(image, 0, 0);
-    // };
-    // image.src =
 
     loader.load(
     	mapURL,
     	function ( image ) {
-    		context = canvas.getContext( '2d' );
+        canvas.width  = image.width;
+        canvas.height = image.height;
+        context.fillStyle = color.countryMap;
+        context.fillRect(0,0,512,512);
     		context.drawImage( image, 0, 0 );
         texture.needsUpdate = true;
         texture.borderImage = image;

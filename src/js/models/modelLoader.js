@@ -46,7 +46,6 @@ let ModelLoader = Backbone.Model.extend({
       let mesh3d = new THREE.Mesh( bufferGeo, newMaterials[0] );
           mesh3d.name = modelsArrObj.name;
           mesh3d.parentName = modelsArrObj.parentName;
-          // console.log("MESH3D:---", mesh3d);
       eventController.trigger(eventController.MODEL_LOADED, mesh3d, modelsArrObj);
 
     });

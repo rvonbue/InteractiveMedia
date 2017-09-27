@@ -8,7 +8,6 @@ let BritishAirRaid = Backbone.Model.extend({
     animatedModels: [spitfireModel],
   },
   initialize: function () {
-    console.log("init:BritishAirRaid", this);
     this.animatedModelsCollection = new AnimatedModelCollection();
     this.addListeners();
     this.createModels();
@@ -19,25 +18,25 @@ let BritishAirRaid = Backbone.Model.extend({
   },
   loadAnimatedModels: function () {
     let modelUrls = [];
+
     this.animatedModelsCollection.models.forEach( (model)=> {
       modelUrls = [...modelUrls, ...model.getModelUrls()];
     });
-
     modelUrls.forEach( (modelUrl)=>{
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelUrl);
-    })
-
-    console.log("modelUrls", modelUrls);
+    });
   },
   createModels: function () {
     let animatedModels = [];
+
     _.each(this.get("animatedModels"), (model)=> {
       this.animatedModelsCollection.add(new model());
     });
   },
   modelLoaded: function (mesh3d) {
     let name = mesh3d.parentName !== null ? mesh3d.parentName : mesh3d.name;
-    let animatedModel = this.animatedModelsCollection.findWhere({name: name });
+    let animatedModel = this.animatedModelsCollection.findWhere({ name: name });
+
     animatedModel.setMesh3d(mesh3d);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [animatedModel.get("mesh3d")]);
   },

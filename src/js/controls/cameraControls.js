@@ -13,8 +13,7 @@ let CameraControls = Backbone.Model.extend({
   },
   initialize: function (options) {
     this.addListeners();
-    let size = options.size;
-    this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 0.1, 1000 );
+    this.camera = new THREE.PerspectiveCamera( 75, options.size.w / options.size.h, 0.1, 1000 );
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
     this.applySettings();
     this.resetCameraPositionTarget();
@@ -42,6 +41,21 @@ let CameraControls = Backbone.Model.extend({
       .easing(TWEEN.Easing.Circular.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
       .to(from, 500);
+  },
+  frustum: function (object) {
+    let frustum = new THREE.Frustum();
+    let cameraViewProjectionMatrix = new THREE.Matrix4();
+
+    // every time the camera or objects change position (or every frame)
+
+    this.camera.updateMatrixWorld(); // make sure the camera matrix is updated
+    this.camera.matrixWorldInverse.getInverse( this.camera.matrixWorld );
+    cameraViewProjectionMatrix.multiplyMatrices( this.camera.projectionMatrix, this.camera.matrixWorldInverse );
+    frustum.setFromMatrix( cameraViewProjectionMatrix );
+
+    // frustum is now ready to check all the objects you need
+
+    console.log( frustum.intersectsObject( object ) );
   },
   addListeners: function () {
     eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);

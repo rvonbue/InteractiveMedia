@@ -1,9 +1,8 @@
 import TWEEN from "tween.js";
-
 import eventController from "../controllers/eventController";
 import utils from "../components/utils";
 
-var MeshSelector = Backbone.Model.extend({
+let MeshSelector = Backbone.Model.extend({
   defaults: {
     raycasterObjects: [],
   },
@@ -28,32 +27,33 @@ var MeshSelector = Backbone.Model.extend({
     eventController.trigger(eventController.HOVER_NAVIGATION, null);
   },
   addSelectMesh: function () {
-    var geo = new THREE.OctahedronGeometry(0.25, 0);
-    var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
+    let geo = new THREE.OctahedronGeometry(0.25, 0);
+    let material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
     this.selectMesh = new THREE.Mesh( geo, material );
+    this.selectMesh.position.set(-5, 0 , 0);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },
   onResize: function (size) {
     this.height = size.h;
     this.width = size.w;
-    var canvasOffsetY = 0; //  this.canvasEl.offset().top);
+    let canvasOffsetY = 0; //  this.canvasEl.offset().top);
     this.raycasterOffset = { x: 1, y: canvasOffsetY };
   },
   onMouseDown: function (evt) {
     this.clickStartPos = {x: evt.pageX | evt.clientX, y: evt.pageY | evt.clientY };
   },
   onMouseClick: function (evt) {
-    var dragTolerance = 10;
-    var x = evt.pageX | evt.clientX;
-    var y = evt.pageY | evt.clientY;
+    let dragTolerance = 10;
+    let x = evt.pageX | evt.clientX;
+    let y = evt.pageY | evt.clientY;
 
 
-    var xDiff = Math.abs(this.clickStartPos.x - x);
-    var yDiff = Math.abs(this.clickStartPos.y - y);
+    let xDiff = Math.abs(this.clickStartPos.x - x);
+    let yDiff = Math.abs(this.clickStartPos.y - y);
 
     if ( xDiff > dragTolerance || yDiff > dragTolerance) return;
 
-    var closestObject = this.shootRaycaster(evt);
+    let closestObject = this.shootRaycaster(evt);
     if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
   },
   onMouseMove: function (evt) {
@@ -70,7 +70,7 @@ var MeshSelector = Backbone.Model.extend({
     }
   },
   updateHoverMouseCursor: function (raycastIntersect) {
-    var hoveredBool = raycastIntersect ? true : false;
+    let hoveredBool = raycastIntersect ? true : false;
     this.canvasEl.toggleClass("hovered-3d", hoveredBool);
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
@@ -80,7 +80,7 @@ var MeshSelector = Backbone.Model.extend({
     return this.findClosestObject(this.raycaster.intersectObjects( this.get("raycasterObjects") ));
   },
   findClosestObject: function (intersects) {
-    var closestObject = null;
+    let closestObject = null;
     _.each(intersects, function (inter, i ) {
       if (i === 0) {
         closestObject = inter;
@@ -91,10 +91,10 @@ var MeshSelector = Backbone.Model.extend({
     return closestObject;
   },
   getMaterialArray: function () {
-    var urls = this.getUrls();
-  	var materialArray = [];
+    let urls = this.getUrls();
+  	let materialArray = [];
 
-  	for (var i = 0; i < 6; i++)
+  	for (let i = 0; i < 6; i++)
   		materialArray.push( new THREE.MeshBasicMaterial({
   			map: new THREE.TextureLoader().load( urls[i] ),
   			side: THREE.BackSide
@@ -115,7 +115,7 @@ var MeshSelector = Backbone.Model.extend({
 
   },
   getMeshCenter: function (selectedMesh) {
-    var center = selectedMesh.geometry.boundingSphere.center;
+    let center = selectedMesh.geometry.boundingSphere.center;
 
     return {
       x: selectedMesh.position.x + center.x,
@@ -127,7 +127,7 @@ var MeshSelector = Backbone.Model.extend({
     this.cancelSelectMeshTimer();
 
     if (!selectedMesh) {
-      var self = this;
+      let self = this;
       this.selectMeshTimer = setTimeout( function () {
         self.selectMesh.visible = false;
       }, 1000);
@@ -135,12 +135,12 @@ var MeshSelector = Backbone.Model.extend({
     }
     this.selectMesh.visible = true;
 
-    var tweenMove = new TWEEN.Tween(this.selectMesh.position)
+    let tweenMove = new TWEEN.Tween(this.selectMesh.position)
     .to(this.getMeshCenter(selectedMesh), 500)
     .easing(TWEEN.Easing.Exponential.Out)
     .start();
 
-    var tweenRotate = new TWEEN.Tween(this.selectMesh.rotation)
+    let tweenRotate = new TWEEN.Tween(this.selectMesh.rotation)
     .to({x: "+6.28319", y: "+6.28319", z: "+6.28319" }, 750)  //6.28319 = 260 degrees
     .easing(TWEEN.Easing.Exponential.In)
     // .delay(250)
@@ -153,7 +153,6 @@ var MeshSelector = Backbone.Model.extend({
     this.canvasEl.on("mouseleave", this.triggerHoverNav);
     this.canvasEl.on("mouseup", this.onMouseClick);
     this.canvasEl.on("mousedown", this.onMouseDown);
-
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);

@@ -26,7 +26,6 @@ let AppView3d = Backbone.View.extend({
     this.scene = new THREE.Scene();
 
     this.controls = new CameraControls({
-      camera:this.camera,
       canvasEl: this.canvasEl[0],
       size: size
     });
@@ -51,6 +50,7 @@ let AppView3d = Backbone.View.extend({
     new LightControls();
     new TimelineManager();
     this.renderer.animate();
+
 
     setTimeout(()=> {
       this.resize(); },

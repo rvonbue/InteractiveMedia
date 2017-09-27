@@ -16,7 +16,7 @@ var LightControls = Backbone.View.extend({
   },
   addLight: function () {
     this.addHemisphereLight();
-    this.addDirectionalLight();
+    // this.addDirectionalLight();
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.worldLights);
   },
   resetScene: function () {

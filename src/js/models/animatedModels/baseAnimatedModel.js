@@ -12,7 +12,6 @@ let BaseAnimatedModel = Backbone.Model.extend({
   initialize: function( options ) {
     this.addModelListeners();
     this.set("mesh3d", new THREE.Group());
-    console.log("init:BaseAnimatedModel", this);
   },
   getModelUrls: function () {
     let baseUrl =  this.get("baseUrl");

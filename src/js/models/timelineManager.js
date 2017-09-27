@@ -11,6 +11,9 @@ let TimelineManager = Backbone.Model.extend({
   },
   initialize: function () {
     this.addListeners();
+    setTimeout(()=> {
+      this.updateTimeline(0);
+    },2000);
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MANAGER_UPDATE, this.updateTimeline, this);
