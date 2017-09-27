@@ -10,7 +10,7 @@ let BaseAnimatedModel = Backbone.Model.extend({
     "ready": false,
   },
   initialize: function( options ) {
-    this.addModelListeners();
+    this.addListeners();
     this.set("mesh3d", new THREE.Group());
   },
   getModelUrls: function () {
@@ -29,7 +29,7 @@ let BaseAnimatedModel = Backbone.Model.extend({
       this.set("ready", true);
     }
   },
-  addModelListeners: function () {
+  addListeners: function () {
     // this.once("change:mesh3d", ()=> {
     //     self.set("initPos", _.clone(self.get("mesh3d").position));
     // });
