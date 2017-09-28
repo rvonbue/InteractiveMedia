@@ -1,7 +1,6 @@
 import TWEEN from "tween.js";
-// import THREE from "three";
 import eventController from "../controllers/eventController";
-// import commandController from "../controllers/commandController";
+import commandController from "../controllers/commandController";
 const OrbitControls = require('three-orbit-controls')(THREE);
 
 let CAMERA_INTIAL_POSITION =  { x: -0.5, y: 4.5, z: 3.25 };
@@ -42,24 +41,53 @@ let CameraControls = Backbone.Model.extend({
       .interpolation(TWEEN.Interpolation.Bezier)
       .to(from, 500);
   },
-  frustum: function (object) {
+  testOffscreen: function (object) {
+      return this.getMaxFrustum(object);
+  },
+  frustumCheck: function (object) {
     let frustum = new THREE.Frustum();
     let cameraViewProjectionMatrix = new THREE.Matrix4();
-
-    // every time the camera or objects change position (or every frame)
 
     this.camera.updateMatrixWorld(); // make sure the camera matrix is updated
     this.camera.matrixWorldInverse.getInverse( this.camera.matrixWorld );
     cameraViewProjectionMatrix.multiplyMatrices( this.camera.projectionMatrix, this.camera.matrixWorldInverse );
     frustum.setFromMatrix( cameraViewProjectionMatrix );
+    return frustum.intersectsBox( object );
+  },
+  getNewPos: function () {
 
-    // frustum is now ready to check all the objects you need
+  },
+  translateBox: function (bbox, key, moveVal) {
+    bbox.max[key] = bbox.max[key] += moveVal;
+    bbox.min[key] = bbox.min[key] += moveVal;
+  },
+  getMaxFrustum: function (object) {
+    var bbox = new THREE.Box3().setFromObject(object);
+    let isVisible = false;
+    let translateDist = -1;
+    let n = 0;
 
-    console.log( frustum.intersectsObject( object ) );
+
+    do {
+      n++;
+      this.translateBox(bbox, "x", translateDist);
+      isVisible = this.frustumCheck(bbox);
+      // console.log("bbox.max.x:::isHidden", isVisible);
+    }
+    while(isVisible);
+
+    // console.log("bbox", this.frustumCheck(bbox));
+    // this.frustumCheck(object);
+    //
+    return { x: n * translateDist, y: 0, z: 0 };
+  },
+  getMinFrustum: function () {
+
   },
   addListeners: function () {
     eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
+    commandController.reply(commandController.TEST_OFFSCREEN, this.testOffscreen, this);
   },
   onResize: function (size) {  // this.orbitControls.object  is the camera
     this.orbitControls.object.aspect = size.w / size.h;

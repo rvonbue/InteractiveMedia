@@ -43,6 +43,11 @@ module.exports = {
         }]
       },
       {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        exclude: /node_modules/,
+        loader: "url-loader?limit=4096"
+      },
+      {
         test: /\.json$/,
         loader: 'json-loader'
       }

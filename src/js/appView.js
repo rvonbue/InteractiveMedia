@@ -7,9 +7,11 @@ import SceneAnimator from "./controls/sceneAnimator";
 import Renderer from "./controls/renderer";
 import TimelineManager from "./models/timelineManager";
 // import StatsView from "./components/statsView";
+
 import axisAllyView from "./views/axisAlly";
 import countryInfoView from "./views/CountryInfo";
 import sliderBar from "./views/sliderBar";
+import loadingBarView from "./views/loadingBarView";
 import template from "./appView.html";
 
 let AppView3d = Backbone.View.extend({
@@ -70,6 +72,7 @@ let AppView3d = Backbone.View.extend({
     this.$el.append(new axisAllyView().render().el);
     this.$el.append(new countryInfoView().render().el);
     this.$el.append(new sliderBar().render().el);
+    this.$el.append(new loadingBarView().render().el);
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);
     return this;

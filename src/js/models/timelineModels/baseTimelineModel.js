@@ -15,12 +15,7 @@ let BaseTimelineModel = Backbone.Model.extend({
   },
   addListeners: function () {
     eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
-    eventController.once(eventController.ALL_ITEMS_LOADED, this.allItemsLoaded, this);
-  },
-  allItemsLoaded: function () {
-    this.animatedModelsCollection.each( (model)=> {
-      model.setVisibility(true);
-    });
+    eventController.on(eventController.ALL_ITEMS_LOADED, this.isModelReady, this );
   },
   loadAnimatedModels: function () {
     let modelUrls = [];
@@ -28,8 +23,6 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.animatedModelsCollection.models.forEach( (model)=> {
       modelUrls = [...modelUrls, ...model.getModelUrls()];
     });
-
-    this.set("modelUrls", modelUrls.length);
     modelUrls.forEach( (modelUrl)=>{
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelUrl);
     });
@@ -46,10 +39,10 @@ let BaseTimelineModel = Backbone.Model.extend({
     let animatedModel = this.animatedModelsCollection.findWhere({ name: name });
 
     animatedModel.setMesh3d(mesh3d);
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [animatedModel.get("mesh3d")]);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [animatedModel.get("meshGroup")]);
   },
   isModelReady: function () {
-
+    
   }
 });
 

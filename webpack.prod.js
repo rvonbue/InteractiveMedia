@@ -4,15 +4,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: [
+    './src/index.js',
+  ],
   output: {
     filename: 'alljs.js',
     path: path.resolve(__dirname, 'dist')
   },
   resolve : {
     alias: {
-      // bind version of jquery-ui
-       modules: path.join(__dirname, "node_modules"),
+       modules: path.join(__dirname, "node_modules")
     }
   },
   module: {
@@ -25,22 +26,31 @@ module.exports = {
           options: { presets: ['env',"es2015"] }
         }
       },
+      { test: /\.html$/,
+        use: [{
+          loader: "underscore-template-loader"
+       }]
+      },
+      { test: /\.less$/, use: [
+        { loader: "style-loader"},
+        { loader: "css-loader", options: { sourceMap: true }},
+        { loader: "less-loader",
+          options: {
+            strictMath: true,
+            noIeCompat: true,
+            sourceMap: true
+          }
+        }]
+      },
       {
-          test: require.resolve('jquery'),
-          use: [{
-              loader: 'expose-loader',
-              options: 'jQuery'
-          },{
-              loader: 'expose-loader',
-              options: '$'
-          }]
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        exclude: /node_modules/,
+        loader: "url-loader?limit=4096"
       },
-      {test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          use: ["css-loader", "less-loader"],
-          fallback: "style-loader",
-        })
-      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }
     ]
   },
   plugins: [
@@ -50,18 +60,20 @@ module.exports = {
       minimize: true,
       debug: false
     }),
+    new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
+    new webpack.ProvidePlugin({	"THREE": "THREE" }),
     new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery","window.jQuery": "jquery" }),
     new webpack.optimize.UglifyJsPlugin(),
-  //   new webpack.optimize.UglifyJsPlugin({
-  //     beautify: false,
-  //     mangle: {
-  //       screw_ie8: true,
-  //       keep_fnames: true
-  //     },
-  //     compress: {
-  //       screw_ie8: true
-  //     },
-  //     comments: false
-  //   })
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        screw_ie8: true
+      },
+      comments: false
+    })
   ]
 };
