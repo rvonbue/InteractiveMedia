@@ -3,7 +3,7 @@ import BritishAirRaid from "./timelineModels/britishAirRaid";
 
 let TimelineManager = Backbone.Model.extend({
   defaults:{
-    position: 1,
+    currentPosition: 1,
     timeEventModels: [
       BritishAirRaid,
     ],
@@ -11,9 +11,9 @@ let TimelineManager = Backbone.Model.extend({
   },
   initialize: function () {
     this.addListeners();
-    setTimeout(()=> {
-      this.updateTimeline(0);
-    },2000);
+    // setTimeout(()=> {
+    //   this.updateTimeline(0);
+    // },2000);
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MANAGER_UPDATE, this.updateTimeline, this);
@@ -22,14 +22,32 @@ let TimelineManager = Backbone.Model.extend({
     return this.get("timeEvents")[timePosition] ? true : false;
   },
   updateTimeline: function (timePosition) {
-    this.set("position", timePosition);
+    let currentTimeEventExist = this.doesTimeEventExist(this.get("currentPosition"));
+    let newTimeEventExist = this.doesTimeEventExist(timePosition);
 
-    if (!this.doesTimeEventExist(timePosition)) {
-      let timeEvents = this.get("timeEvents");
-      let timeEventModel = this.get("timeEventModels")[timePosition];
-      timeEvents[timePosition] =  new timeEventModel();
-      this.set("timeEvents", timeEvents);
+    if (currentTimeEventExist) this.stopTimeline();
+
+    this.set("currentPosition", timePosition);
+    if (!newTimeEventExist && timePosition === "0" ) {
+      this.createTimeEvent(timePosition);
+    } else if (newTimeEventExist && timePosition === "0" ) {
+      this.startTimeline();
+    } else {
+
     }
+
+  },
+  startTimeline: function () {
+    this.get("timeEvents")[this.get("currentPosition")].startAnimation();
+  },
+  stopTimeline: function () {
+    this.get("timeEvents")[this.get("currentPosition")].stopAnimation();
+  },
+  createTimeEvent: function (timePosition) {
+    let timeEvents = this.get("timeEvents");
+    let BaseTimelineModel = this.get("timeEventModels")[timePosition];
+    timeEvents[timePosition] =  new BaseTimelineModel();
+    this.set("timeEvents", timeEvents);
   }
 });
 

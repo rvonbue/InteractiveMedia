@@ -9,36 +9,41 @@ let SpitfireModel = BaseAnimatedModel.extend({
   },
   addListeners: function () {
     BaseAnimatedModel.prototype.addListeners.apply(this, arguments);
-    this.once("change:ready", ()=> {
-      this.setRandomFlightNoise();
-    });
+
+    this.once("change:ready", this.initAnimationTweens);
+    let pivot = this.getPivot();
+    pivot.rotation.set(0, (Math.PI / 180 * 90), 0.10 );
+    this.get("meshGroup").position.y = 1;
   },
   setMesh3d: function (mesh3d) {
     BaseAnimatedModel.prototype.setMesh3d.apply(this, arguments);
-
-    if ( mesh3d.name === "spitfirePropeller" ) this.setPropellerRotation(mesh3d);
-
-    this.setIntialposition();
+    if ( mesh3d.name === "spitfirePropeller" ) this.translateInitPropeller(mesh3d);
   },
-  setIntialposition: function () {
-    // this.get("meshGroup").scale.set(0.25, 0.25, 0.25);
-
-    let pivot = this.getPivot();
-    pivot.rotation.set(0, (Math.PI / 180 * 90), 0.05 );
-    this.get("meshGroup").position.y = 1;
-  },
-  setRandomFlightNoise: function () {
-    this.getTween(this.getPivot().rotation,  { z: -0.05 }, 1000).start();
-  },
-  getTween: function (from, to, duration) {
-    return new TWEEN.Tween( from )
+  createTween: function (from, to, duration) {
+    let tween = new TWEEN.Tween( from, {override:true} )
         .to( to, duration )
-        .repeat( Infinity )
         .yoyo( true );
+    this.get("tweens").push(tween);
+    return tween;
   },
-  setPropellerRotation: function (mesh3d) {
+  translateInitPropeller: function (mesh3d) {
     this.translateCenterPoint(mesh3d);
-    this.getTween(mesh3d.rotation,  { z: 4 * Math.PI }, 500).start();
+  },
+  startAnimation: function () {
+    this.get("tweens").forEach( (tween)=> {
+      tween.start();
+    });
+  },
+  stopAnimation: function () {
+    this.get("tweens").forEach( (tween)=> { tween.stop(); });
+  },
+  getPropellerMesh: function () {
+    return _.find(this.getPivot().children, (mesh3d)=> { return mesh3d.name === "spitfirePropeller"; });
+  },
+  initAnimationTweens: function () {
+    let propellerMesh3d = this.getPropellerMesh();
+    this.createTween(propellerMesh3d.rotation,  { z: "+150" }, 5000);   // startPropellerRotation
+    this.createTween(this.getPivot().rotation,  { z: -0.10 }, 5000)    // setRandomFlightNoise
   },
   translateCenterPoint: function (mesh3d) {
     let distX = 0.00097;  // Magic Number propeller THREEjs cannot computer center correctly

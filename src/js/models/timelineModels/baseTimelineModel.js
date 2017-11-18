@@ -1,11 +1,14 @@
 import eventController from "../../controllers/eventController";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
+import TWEEN from "tween.js";
 
 let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
     name: "DEFAULT",
     modelUrls:[],
-    animatedModels: [],
+    animatedModels: [], //this.animatedModelsCollection
+    tweens:[],
+    ready: false
   },
   initialize: function () {
     this.animatedModelsCollection = new AnimatedModelCollection();
@@ -27,6 +30,11 @@ let BaseTimelineModel = Backbone.Model.extend({
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelUrl);
     });
   },
+  getModelNames: function () {
+    return this.animatedModelsCollection.map( (model)=> {
+      return model.get("name");
+    });
+  },
   createModels: function () {
     let animatedModels = [];
 
@@ -41,8 +49,18 @@ let BaseTimelineModel = Backbone.Model.extend({
     animatedModel.setMesh3d(mesh3d);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [animatedModel.get("meshGroup")]);
   },
+  allModelsReady: function () {
+    let allModelsReady = true;
+    this.animatedModelsCollection.each( (model)=> {
+      if(!model.get("ready")) allModelsReady = false;
+    })
+    return allModelsReady;
+  },
   isModelReady: function () {
-    
+    if ( this.allModelsReady) {
+      this.initAnimation();
+      this.startAnimation();
+    }
   }
 });
 

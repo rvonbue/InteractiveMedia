@@ -54,9 +54,6 @@ let CameraControls = Backbone.Model.extend({
     frustum.setFromMatrix( cameraViewProjectionMatrix );
     return frustum.intersectsBox( object );
   },
-  getNewPos: function () {
-
-  },
   translateBox: function (bbox, key, moveVal) {
     bbox.max[key] = bbox.max[key] += moveVal;
     bbox.min[key] = bbox.min[key] += moveVal;
@@ -72,17 +69,10 @@ let CameraControls = Backbone.Model.extend({
       n++;
       this.translateBox(bbox, "x", translateDist);
       isVisible = this.frustumCheck(bbox);
-      // console.log("bbox.max.x:::isHidden", isVisible);
     }
-    while(isVisible);
+    while(isVisible || n > 35); // Magic number to avoid Infinite loop
 
-    // console.log("bbox", this.frustumCheck(bbox));
-    // this.frustumCheck(object);
-    //
     return { x: n * translateDist, y: 0, z: 0 };
-  },
-  getMinFrustum: function () {
-
   },
   addListeners: function () {
     eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);

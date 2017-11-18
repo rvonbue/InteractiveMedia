@@ -14,7 +14,6 @@ let MeshSelector = Backbone.Model.extend({
     this.raycasterOffset = { x: 1, y: 47 };  //ozzffset of canvas;
     this.mouse = new THREE.Vector2();
     this.addListeners();
-    // this.loadEnvironmentMap();
     this.setRaycasterOptions();
     this.addSelectMesh();
   },

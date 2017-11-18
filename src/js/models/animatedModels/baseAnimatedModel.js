@@ -8,12 +8,13 @@ let BaseAnimatedModel = Backbone.Model.extend({
     "totalLoaded": 0,
     "meshGroup": null,
     "ready": false,
+    "tweens": []
   },
   initialize: function( options ) {
-    this.addListeners();
     let group = new THREE.Group();
     group.add(new THREE.Object3D()); // add pivot
     this.set("meshGroup", group);
+    this.addListeners();
   },
   getModelUrls: function () {
     let baseUrl =  this.get("baseUrl");
@@ -22,6 +23,12 @@ let BaseAnimatedModel = Backbone.Model.extend({
        return { name: modelName, baseUrl: baseUrl, parentName: parentName };
      });
     return loaderObjArr;
+  },
+  hide: function () {
+    this.getPivot().visible = false;
+  },
+  show: function () {
+    this.getPivot().visible = true;
   },
   getPivot: function () {
     return this.get("meshGroup").children[0];
@@ -32,13 +39,8 @@ let BaseAnimatedModel = Backbone.Model.extend({
 
     if ( this.get("totalLoaded") === this.get("modelNames").length) this.set("ready", true);
   },
-  getTestMesh: function () {
-    return this.get("meshGroup");
-  },
   addListeners: function () {
-    // this.once("change:mesh3d", ()=> {
-    //     self.set("initPos", _.clone(self.get("mesh3d").position));
-    // });
+
   }
 });
 
