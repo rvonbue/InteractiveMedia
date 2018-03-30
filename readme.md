@@ -1,5 +1,5 @@
-## npm run build:dev
+## npm run start
 Starts dev server at localhost:8080
 
-## npm run build:dist
+## npm run build
 builds production files

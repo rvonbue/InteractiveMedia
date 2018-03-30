@@ -36,10 +36,9 @@ let BaseTimelineModel = Backbone.Model.extend({
     });
   },
   createModels: function () {
-    let animatedModels = [];
 
     _.each(this.get("animatedModels"), (model)=> {
-      this.animatedModelsCollection.add(new model());
+      this.animatedModelsCollection.add(new model(model));
     });
   },
   modelLoaded: function (mesh3d) {

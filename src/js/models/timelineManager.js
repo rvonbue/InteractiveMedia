@@ -3,7 +3,7 @@ import BritishAirRaid from "./timelineModels/britishAirRaid";
 
 let TimelineManager = Backbone.Model.extend({
   defaults:{
-    currentPosition: 1,
+    currentPosition: 0,
     timeEventModels: [
       BritishAirRaid,
     ],

@@ -1,10 +1,8 @@
-import TWEEN from "tween.js";
 import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import BaseTimelineModel from "./BaseTimelineModel";
 import spitfireModel from "../animatedModels/spitfireModel";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
-window.TWEEN = TWEEN;
 
 let BritishAirRaid = BaseTimelineModel.extend({
   defaults:{
@@ -16,19 +14,25 @@ let BritishAirRaid = BaseTimelineModel.extend({
     offsetCenter: null
   },
   initAnimation: function () {
-    let spitfireModel = this.animatedModelsCollection.findWhere({ name: "spitfire" });
-    let meshGroup = spitfireModel.get("meshGroup");
-    let pos = this.getStartPosition(meshGroup);
-    spitfireModel.set("initialPosition",{ x: pos.x, y: 1, z: pos.z });
-    spitfireModel.set("offsetCenter", { x: pos.x * -1, y: 1, z: pos.z });
-    this.flyPlaneAcrossScreen(spitfireModel, { x: pos.x * -1, y: 1, z: pos.z });
+    let spitfireModel = this.getSpitfireModel();
+    let pos = this.getStartPosition(spitfireModel.get("meshGroup"));
+    spitfireModel.setInitPosition(pos);
+
   },
   startAnimation: function () {
-    let spitfireModel = this.animatedModelsCollection.findWhere({ name: "spitfire" });
-    this.setStartPosition(spitfireModel);
-    this.animatedModelsCollection.each((model)=> { model.startAnimation(); });
-    this.get("tweens").forEach((tween)=> { tween.start(); });
+    TWEEN.removeAll();
+    this.animatedModelsCollection.each( (model)=> model.startAnimation() );
+    this.flyPlaneAcrossScreen();
     this.showModels();
+  },
+  stopAnimation: function () {
+    this.animatedModelsCollection.each( ( model )=> {
+      model.stopAnimation();
+      model.resetPosition();
+    });
+    this.get("tweens").forEach( (tween)=> { tween.stop(); });
+    this.set("tweens", []);
+    // this.hideModels();
   },
   hideModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.hide(); });
@@ -36,23 +40,22 @@ let BritishAirRaid = BaseTimelineModel.extend({
   showModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.show(); });
   },
-  stopAnimation: function () {
-    this.get("tweens").forEach( (tween)=> { tween.stop(); });
-    this.animatedModelsCollection.each( ( model )=> { model.stopAnimation(); });
-    this.hideModels();
-  },
-  setStartPosition: function (spitfireModel) {
-    let pos = spitfireModel.get("initialPosition");
-    spitfireModel.get("meshGroup").position.set(pos.x, pos.y, pos.z);
-  },
   getStartPosition: function (meshGroup) {
     return commandController.request(commandController.TEST_OFFSCREEN, meshGroup);
   },
-  flyPlaneAcrossScreen: function (spitfireModel, finalPos) {
+  getSpitfireModel: function () {
+     return this.animatedModelsCollection.findWhere({ name: "spitfire" });
+  },
+  flyPlaneAcrossScreen: function () {
+    let spitfireModel = this.getSpitfireModel();
+    let finalPos = spitfireModel.get("offsetCenter");
     let tween = this.getTween(spitfireModel.get("meshGroup").position, finalPos, this.get("animationDuration"));
+    tween.start();
   },
   getTween: function (from, to, duration) {
-    let tween = new TWEEN.Tween(from, {override:true} ).to( to, duration );
+    let tween = new TWEEN.Tween(from, {override:true} )
+    .to( to, duration );
+
     tween.timelineName = this.get("name");
     this.get("tweens").push(tween);
     return tween;

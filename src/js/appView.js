@@ -14,6 +14,9 @@ import sliderBar from "./views/sliderBar";
 import loadingBarView from "./views/loadingBarView";
 import template from "./appView.html";
 
+import TWEEN from "tween.js";
+window.TWEEN = TWEEN;
+
 let AppView3d = Backbone.View.extend({
   className: "appView",
   initialize: function (options) {
