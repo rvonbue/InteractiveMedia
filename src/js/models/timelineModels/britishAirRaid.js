@@ -14,7 +14,7 @@ let BritishAirRaid = BaseTimelineModel.extend({
     historyDetails: {
       countries: ["unitedkingdom", "germany"],
       eventPositions: {
-          targetPosition: {x: -1.8986, y: 0, z: 1.2249},
+          targetPosition: {x: -1.898, y: 0, z: 1.2249},
           cameraPosition: {x: -2.016, y: 1.086, z: 2.018},
           messerschmitt: {
             startPosition: {x: -1, y: 0.15, z: 1.5},
