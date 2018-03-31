@@ -97,10 +97,9 @@ let CameraControls = Backbone.Model.extend({
 
     return { x: n * translateDist, y: 0, z: 0 };
   },
-  animateCamera: function (pos) {
-    // this.orbitControls.enabled = false;
-    this.setCameraTarget(pos);
-    this.setCameraAnimatePosition({x: pos.x, y: pos.y + 2, z:pos.z});
+  animateCamera: function (eventPositions) {
+    this.setCameraTarget(eventPositions.targetPosition);
+    this.setCameraAnimatePosition(eventPositions.cameraPosition);
   },
   addListeners: function () {
     eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);

@@ -13,11 +13,16 @@ let BritishAirRaid = BaseTimelineModel.extend({
     animationDuration: 5000,
     historyDetails: {
       countries: ["unitedkingdom", "germany"],
-      event: {
+      eventPositions: {
           targetPosition: {x: -1.8986, y: 0, z: 1.2249},
+          cameraPosition: {x: -2.016, y: 1.086, z: 2.018},
           messerschmitt: {
-            startPosition: {x: -1.2, y: 0, z: 1.5},
-            endPosition: {x: -2.9476, y: 0, z: 0.75}
+            startPosition: {x: -1, y: 0.15, z: 1.5},
+            endPosition: {x: -2.9476, y: 0.075, z: 0.75}
+          },
+          spitfire: {
+            startPosition: {x: -1.2, y: 1, z: 1.5},
+            endPosition: {x: -2.9476, y: 1, z: 0.75}
           },
           text: "Battle Of Britain"
         }
@@ -28,7 +33,8 @@ let BritishAirRaid = BaseTimelineModel.extend({
 
     this.animatedModelsCollection.forEach( function (model) {
       let pos = this.getStartPosition(model.get("meshGroup"), model.get("power"));
-      model.setInitPosition(pos);
+      console.log("asjkdhfjkasdhkfasdf", this.get("historyDetails").eventPositions[model.get("name")]);
+      model.setInitPosition(this.get("historyDetails").eventPositions[model.get("name")]);
     }, this);
 
   },
@@ -41,7 +47,7 @@ let BritishAirRaid = BaseTimelineModel.extend({
   },
   setCamera: function () {
     let getCountryPosition = commandController.request(commandController.GET_COUNTRY_MESH, this.get("historyDetails").countries);
-    eventController.trigger(eventController.ANIMATE_CAMERA, this.get("historyDetails").event.targetPosition);
+    eventController.trigger(eventController.ANIMATE_CAMERA, this.get("historyDetails").eventPositions);
   },
   stopAnimation: function () {
     this.animatedModelsCollection.each( ( model )=> {
@@ -83,7 +89,7 @@ let BritishAirRaid = BaseTimelineModel.extend({
   },
   getTween: function (from, to, duration) {
     let tween = new TWEEN.Tween(from, {override:true} )
-    .to( to, duration );
+    .to( {x:[to.x], y:[from.y, 0.45, to.y], z: [to.z]}, duration ); // fly up dive bomb
 
     tween.timelineName = this.get("name");
     this.get("tweens").push(tween);
