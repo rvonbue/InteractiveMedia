@@ -1,4 +1,5 @@
 import BaseAnimatedModel from "./BaseAnimatedModel";
+import eventController from "../../controllers/eventController";
 import TWEEN from "tween.js";
 
 let MesserschmittModel = BaseAnimatedModel.extend({
@@ -11,6 +12,17 @@ let MesserschmittModel = BaseAnimatedModel.extend({
   addListeners: function () {
     BaseAnimatedModel.prototype.addListeners.apply(this, arguments);
     this.setInitPivot();
+  },
+  modelReady: function () {
+
+    this.getPivot().children.forEach( (mesh)=> {
+      let clone = mesh.clone();
+      eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [clone]);
+      clone.position.x += 1.5;
+      clone.position.z += 1.5;
+      this.getPivot().add(clone);
+    });
+
   },
   setMesh3d: function (mesh3d) {
     BaseAnimatedModel.prototype.setMesh3d.apply(this, arguments);
@@ -37,22 +49,20 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     this.set("tweens", []);
   },
   getPropellerMesh: function () {
-    return _.find(this.getPivot().children, (mesh3d)=> { return mesh3d.name === "spitfirePropeller"; });
+    return _.filter(this.getPivot().children, (mesh3d)=> { return mesh3d.name === "spitfirePropeller"; });
   },
   initAnimationTweens: function () {
     let propellerMesh3d = this.getPropellerMesh();
-    this.createTween(propellerMesh3d.rotation,  { z: "+150" }, 5000);   // startPropellerRotation
+
+    propellerMesh3d.forEach( (mesh3d)=> {
+      this.createTween(mesh3d.rotation,  { z: "+150" }, 5000);
+    }, this);
+
     this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
-  },
-  setInitPosition: function (pos) {
-    console.log("setInitPosition", pos);
-    this.set("startPosition",pos.startPosition);
-    this.set("endPosition", pos.endPosition);
-    this.getPivot().position.set(pos.startPosition.x, pos.startPosition.y, pos.startPosition.z);
   },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, Math.PI / -2, 0 );
-    this.getPivot().scale.set(0.10,0.1,0.1 );
+    this.getPivot().scale.set(0.1,0.1,0.1 );
   },
   resetPosition: function () {
     let pos = this.get("startPosition");

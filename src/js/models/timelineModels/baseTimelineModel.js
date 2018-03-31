@@ -36,17 +36,18 @@ let BaseTimelineModel = Backbone.Model.extend({
     });
   },
   createModels: function () {
-
     _.each(this.get("animatedModels"), (model)=> {
-      this.animatedModelsCollection.add(new model(model));
+      this.animatedModelsCollection.add(new model());
     });
   },
   modelLoaded: function (mesh3d) {
     let name = mesh3d.parentName !== null ? mesh3d.parentName : mesh3d.name;
-    let animatedModel = this.animatedModelsCollection.findWhere({ name: name });
-
-    animatedModel.setMesh3d(mesh3d);
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [animatedModel.get("meshGroup")]);
+    let animatedModels = this.animatedModelsCollection.where({ name: name });
+    
+    animatedModels.forEach((animatedModel)=> {
+      animatedModel.setMesh3d(mesh3d);
+      eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [animatedModel.get("meshGroup")]);
+    });
   },
   allModelsReady: function () {
     let allModelsReady = true;

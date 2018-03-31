@@ -14,7 +14,14 @@ let BaseAnimatedModel = Backbone.Model.extend({
     let group = new THREE.Group();
     group.add(new THREE.Object3D()); // add pivot
     this.set("meshGroup", group);
+
     this.addListeners();
+  },
+  addListeners: function () {
+    this.once("change:ready", ()=> { this.modelReady(); });
+  },
+  modelReady: function () {
+    console.log("ready");
   },
   getModelUrls: function () {
     let baseUrl =  this.get("baseUrl");
@@ -39,8 +46,10 @@ let BaseAnimatedModel = Backbone.Model.extend({
 
     if ( this.get("totalLoaded") === this.get("modelNames").length) this.set("ready", true);
   },
-  addListeners: function () {
-
+  setInitPosition: function (pos) {
+    this.set("startPosition",pos.startPosition);
+    this.set("endPosition", pos.endPosition);
+    this.getPivot().position.set(pos.startPosition.x, pos.startPosition.y, pos.startPosition.z);
   }
 });
 

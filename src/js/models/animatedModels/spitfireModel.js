@@ -44,13 +44,9 @@ let SpitfireModel = BaseAnimatedModel.extend({
     this.createTween(propellerMesh3d.rotation,  { z: "+150" }, 5000);   // startPropellerRotation
     this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
   },
-  setInitPosition: function (pos) {
-    this.set("startPosition",{ x: pos.x, y: 1, z: pos.z}); 
-    this.set("endPosition", { x: pos.x * -1, y: 1, z: pos.z });
-    this.getPivot().position.set(pos.x , 1, pos.z);
-  },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, (Math.PI / 180 * 90), 0 );
+    this.getPivot().scale.set(0.1,0.1,0.1 );
   },
   resetPosition: function () {
     let pos = this.get("startPosition");
