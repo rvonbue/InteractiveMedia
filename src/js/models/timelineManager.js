@@ -5,6 +5,7 @@ let TimelineManager = Backbone.Model.extend({
   defaults:{
     currentPosition: 0,
     timeEventModels: [
+      null,
       BritishAirRaid,
     ],
     timeEvents: {}
@@ -12,7 +13,7 @@ let TimelineManager = Backbone.Model.extend({
   initialize: function () {
     this.addListeners();
     setTimeout(()=> {
-      this.updateTimeline(0);
+      this.updateTimeline(1);
     },2000);
   },
   addListeners: function () {
@@ -26,11 +27,11 @@ let TimelineManager = Backbone.Model.extend({
     let newTimeEventExist = this.doesTimeEventExist(timePosition);
 
     if (currentTimeEventExist) this.stopTimeline();
-    console.log("timePosition", timePosition);
+    console.log("newTimeEventExist", newTimeEventExist);
     this.set("currentPosition", timePosition);
-    if (!newTimeEventExist && timePosition === 0 ) {
+    if (!newTimeEventExist && timePosition === 1 ) {
       this.createTimeEvent(timePosition);
-    } else if (newTimeEventExist && timePosition === 0 ) {
+    } else if (newTimeEventExist && timePosition === 1 ) {
       this.startTimeline();
     } else {
 

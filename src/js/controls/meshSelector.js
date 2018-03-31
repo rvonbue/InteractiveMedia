@@ -1,5 +1,6 @@
 import TWEEN from "tween.js";
 import eventController from "../controllers/eventController";
+import commandController from "../controllers/commandController";
 import utils from "../components/utils";
 
 let MeshSelector = Backbone.Model.extend({
@@ -104,6 +105,7 @@ let MeshSelector = Backbone.Model.extend({
   },
   resetRaycaster: function (arr) {
     this.set("raycasterObjects", arr);
+    console.log("arr", arr);
   },
   cancelSelectMeshTimer: function () {
 
@@ -113,6 +115,29 @@ let MeshSelector = Backbone.Model.extend({
     }
 
   },
+  getCountryMesh: function (names) {
+    let meshes = [];
+
+    names.forEach( (name)=> {
+      meshes.push(_.findWhere(this.get("raycasterObjects"), {name: name}));
+    });
+
+    let x =0, y = 0,z = 0;
+
+    meshes.forEach((mesh)=> {
+      let meshcenter = this.getMeshCenter(mesh);
+      console.log(", meshesCenter.y, meshesCenter.z)", meshcenter);
+      x += meshcenter.x,
+      y += meshcenter.y;
+      z += meshcenter.z;
+
+    }, this);
+
+    let meshesCenter = { x: x / meshes.length, y: y / meshes.length, z: z / meshes.length };
+    this.selectMesh.position.x = meshesCenter.x;
+
+    return meshesCenter;
+  },
   getMeshCenter: function (selectedMesh) {
     let center = selectedMesh.geometry.boundingSphere.center;
 
@@ -121,6 +146,9 @@ let MeshSelector = Backbone.Model.extend({
       y: selectedMesh.position.y + center.y,
       z: selectedMesh.position.z + center.z + 0.5 // TODO: magic number should be move along angle to camera
     };
+  },
+  moveSceneDetailsIconSimple: function (pos) {
+      this.selectMesh.position.set(pos.x, pos.y, pos.z);
   },
   moveSceneDetailsIcon: function (selectedMesh) {
     this.cancelSelectMeshTimer();
@@ -134,8 +162,10 @@ let MeshSelector = Backbone.Model.extend({
     }
     this.selectMesh.visible = true;
 
+    let endPosition = this.getMeshCenter(selectedMesh);
+    endPosition.y += 0.5;
     let tweenMove = new TWEEN.Tween(this.selectMesh.position)
-    .to(this.getMeshCenter(selectedMesh), 500)
+    .to(endPosition, 500)
     .easing(TWEEN.Easing.Exponential.Out)
     .start();
 
@@ -155,6 +185,8 @@ let MeshSelector = Backbone.Model.extend({
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+    eventController.on(eventController.ANIMATE_CAMERA, this.moveSceneDetailsIconSimple, this);
+    commandController.reply(commandController.GET_COUNTRY_MESH, this.getCountryMesh, this);
   },
   render: function () {
     return this;

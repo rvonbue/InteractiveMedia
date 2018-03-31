@@ -9,10 +9,19 @@ let BritishAirRaid = BaseTimelineModel.extend({
   defaults:{
     name: "britishAirRaid",
     modelUrls:[],
-    animatedModels: [spitfireModel, messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
+    animatedModels: [messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
-    initialPostion: null,
-    endPosition: null
+    historyDetails: {
+      countries: ["unitedkingdom", "germany"],
+      event: {
+          targetPosition: {x: -1.8986, y: 0, z: 1.2249},
+          messerschmitt: {
+            startPosition: {x: -1.2, y: 0, z: 1.5},
+            endPosition: {x: -2.9476, y: 0, z: 0.75}
+          },
+          text: "Battle Of Britain"
+        }
+    }
   },
   initAnimation: function () {
     let spitfireModel = this.getSpitfireModel();
@@ -25,9 +34,14 @@ let BritishAirRaid = BaseTimelineModel.extend({
   },
   startAnimation: function () {
     TWEEN.removeAll();
+    this.setCamera();
     this.animatedModelsCollection.each( (model)=> model.startAnimation() );
     this.flyPlaneAcrossScreen();
     this.showModels();
+  },
+  setCamera: function () {
+    let getCountryPosition = commandController.request(commandController.GET_COUNTRY_MESH, this.get("historyDetails").countries);
+    eventController.trigger(eventController.ANIMATE_CAMERA, this.get("historyDetails").event.targetPosition);
   },
   stopAnimation: function () {
     this.animatedModelsCollection.each( ( model )=> {
@@ -63,8 +77,6 @@ let BritishAirRaid = BaseTimelineModel.extend({
         this.get("animationDuration")
       );
 
-      console.log("startPosition::", model.get("startPosition"));
-      console.log("endPosition::", model.get("endPosition"));
       tween.start();
     }, this);
 

@@ -1,10 +1,6 @@
 let baseUrl = "models3d/countries/";
 
 module.exports = [
-  // { name: "mapground", interactive: false },
-  // { name: "weapons/tank", power: 3 },
-  // { name: "weapons/hedgehog", power: 3 },
-  // { name: "spitfire", baseUrl: "models3d/animatedModels/", power: 1 },
   { name: "albania", baseUrl: baseUrl, power: 1 },
   { name: "belgium", baseUrl: baseUrl, power: 1 },
   { name: "bulgaria", baseUrl: baseUrl, power: 0 },

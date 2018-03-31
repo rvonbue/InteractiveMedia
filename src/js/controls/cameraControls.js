@@ -3,8 +3,8 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 const OrbitControls = require('three-orbit-controls')(THREE);
 
-let CAMERA_INTIAL_POSITION =  { x: -0.5, y: 4.5, z: 3.25 };
-let TARGET_INITIAL_POSITION = { x: -0.5, y: 0, z: 1 };
+const CAMERA_INTIAL_POSITION =  { x: -0.5, y: 4.5, z: 3.25 };
+const TARGET_INITIAL_POSITION = { x: -0.5, y: 0, z: 1 };
 
 let CameraControls = Backbone.Model.extend({
   defaults: {
@@ -14,6 +14,7 @@ let CameraControls = Backbone.Model.extend({
     this.addListeners();
     this.camera = new THREE.PerspectiveCamera( 75, options.size.w / options.size.h, 0.1, 1000 );
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
+    window.orbitControls =   this.orbitControls;
     this.applySettings();
     this.resetCameraPositionTarget();
   },
@@ -32,14 +33,17 @@ let CameraControls = Backbone.Model.extend({
   setCameraPosition: function (pos) {
     this.orbitControls.object.position.set( pos.x, pos.y, pos.z );  // this.orbitControls.object  is the camera
   },
-  setCameraTarget: function (pos) {
-    this.getTween(this.orbitControls.target, new THREE.Vector3( pos.x, pos.y, pos.z )).start();
+  setCameraAnimatePosition: function (pos) {
+    this.getTween(this.orbitControls.object.position, new THREE.Vector3( pos.x, pos.y, pos.z ), 2000).start();
   },
-  getTween: function (to, from) {
+  setCameraTarget: function (pos) {
+    this.getTween(this.orbitControls.target, new THREE.Vector3( pos.x, pos.y, pos.z ), 1000).start();
+  },
+  getTween: function (to, from, duration) {
     return new TWEEN.Tween(to)
       .easing(TWEEN.Easing.Circular.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
-      .to(from, 500);
+      .to(from, duration);
   },
   testOffscreen: function (object , power) {
       if (power === "ally") {
@@ -64,7 +68,6 @@ let CameraControls = Backbone.Model.extend({
     bbox.min[key] = bbox.min[key] += moveVal;
   },
   getMaxFrustum: function (object) {
-    console.log("object", object);
     var bbox = new THREE.Box3().setFromObject(object);
     let isVisible = false;
     let translateDist = -1;
@@ -80,7 +83,6 @@ let CameraControls = Backbone.Model.extend({
     return { x: n * translateDist, y: 0, z: 0 };
   },
   getMinFrustum: function (object) {
-    console.log("object", object);
     var bbox = new THREE.Box3().setFromObject(object);
     let isVisible = false;
     let translateDist = 1;
@@ -95,8 +97,14 @@ let CameraControls = Backbone.Model.extend({
 
     return { x: n * translateDist, y: 0, z: 0 };
   },
+  animateCamera: function (pos) {
+    // this.orbitControls.enabled = false;
+    this.setCameraTarget(pos);
+    this.setCameraAnimatePosition({x: pos.x, y: pos.y + 2, z:pos.z});
+  },
   addListeners: function () {
     eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);
+    eventController.on(eventController.ANIMATE_CAMERA, this.animateCamera, this);
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     commandController.reply(commandController.TEST_OFFSCREEN, this.testOffscreen, this);
   },

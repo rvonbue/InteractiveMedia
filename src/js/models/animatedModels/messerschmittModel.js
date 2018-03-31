@@ -45,7 +45,6 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
   },
   setInitPosition: function (pos) {
-    this.set("initialPosition",{ x: 0, y: 1, z: 0 });  // MAGIC NUMBER
     this.set("startPosition",{ x: pos.x, y: 1, z: pos.z});
     this.set("endPosition", { x: pos.x * -1, y: 1, z: pos.z });
     this.getPivot().position.set(pos.x ,1, pos.z);
