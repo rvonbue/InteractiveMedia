@@ -11,9 +11,9 @@ let TimelineManager = Backbone.Model.extend({
   },
   initialize: function () {
     this.addListeners();
-    // setTimeout(()=> {
-    //   this.updateTimeline(0);
-    // },2000);
+    setTimeout(()=> {
+      this.updateTimeline(0);
+    },2000);
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MANAGER_UPDATE, this.updateTimeline, this);
@@ -26,11 +26,11 @@ let TimelineManager = Backbone.Model.extend({
     let newTimeEventExist = this.doesTimeEventExist(timePosition);
 
     if (currentTimeEventExist) this.stopTimeline();
-
+    console.log("timePosition", timePosition);
     this.set("currentPosition", timePosition);
-    if (!newTimeEventExist && timePosition === "0" ) {
+    if (!newTimeEventExist && timePosition === 0 ) {
       this.createTimeEvent(timePosition);
-    } else if (newTimeEventExist && timePosition === "0" ) {
+    } else if (newTimeEventExist && timePosition === 0 ) {
       this.startTimeline();
     } else {
 

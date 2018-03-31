@@ -2,21 +2,25 @@ import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import BaseTimelineModel from "./BaseTimelineModel";
 import spitfireModel from "../animatedModels/spitfireModel";
+import messerschmittModel from "../animatedModels/messerschmittModel";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
 
 let BritishAirRaid = BaseTimelineModel.extend({
   defaults:{
     name: "britishAirRaid",
     modelUrls:[],
-    animatedModels: [spitfireModel], //this.animatedModelsCollection = new AnimatedModelCollection();
+    animatedModels: [spitfireModel, messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
     initialPostion: null,
-    offsetCenter: null
+    endPosition: null
   },
   initAnimation: function () {
     let spitfireModel = this.getSpitfireModel();
-    let pos = this.getStartPosition(spitfireModel.get("meshGroup"));
-    spitfireModel.setInitPosition(pos);
+
+    this.animatedModelsCollection.forEach( function (model) {
+      let pos = this.getStartPosition(model.get("meshGroup"), model.get("power"));
+      model.setInitPosition(pos);
+    }, this);
 
   },
   startAnimation: function () {
@@ -40,17 +44,30 @@ let BritishAirRaid = BaseTimelineModel.extend({
   showModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.show(); });
   },
-  getStartPosition: function (meshGroup) {
-    return commandController.request(commandController.TEST_OFFSCREEN, meshGroup);
+  getStartPosition: function (meshGroup, power) {
+    return commandController.request(commandController.TEST_OFFSCREEN, meshGroup, power);
   },
   getSpitfireModel: function () {
      return this.animatedModelsCollection.findWhere({ name: "spitfire" });
   },
   flyPlaneAcrossScreen: function () {
-    let spitfireModel = this.getSpitfireModel();
-    let finalPos = spitfireModel.get("offsetCenter");
-    let tween = this.getTween(spitfireModel.get("meshGroup").position, finalPos, this.get("animationDuration"));
-    tween.start();
+    // let spitfireModel = this.getSpitfireModel();
+    // let finalPos = spitfireModel.get("endPosition");
+    // let tween = this.getTween(spitfireModel.get("meshGroup").position, finalPos, this.get("animationDuration"));
+    // tween.start();
+
+    this.animatedModelsCollection.each( (model)=> {
+      let tween = this.getTween(
+        model.getPivot().position,
+        model.get("endPosition"),
+        this.get("animationDuration")
+      );
+
+      console.log("startPosition::", model.get("startPosition"));
+      console.log("endPosition::", model.get("endPosition"));
+      tween.start();
+    }, this);
+
   },
   getTween: function (from, to, duration) {
     let tween = new TWEEN.Tween(from, {override:true} )

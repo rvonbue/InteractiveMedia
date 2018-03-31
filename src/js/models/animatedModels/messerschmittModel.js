@@ -1,12 +1,12 @@
 import BaseAnimatedModel from "./BaseAnimatedModel";
 import TWEEN from "tween.js";
 
-let SpitfireModel = BaseAnimatedModel.extend({
+let MesserschmittModel = BaseAnimatedModel.extend({
   defaults: {
-    "name":"spitfire",
+    "name":"messerschmitt",
     "baseUrl": "models3d/animatedModels/",
-    "modelNames":["spitfire", "spitfirePropeller"],
-    "power": "ally"
+    "modelNames":["messerschmitt", "spitfirePropeller"],
+    "power": "axis"
   },
   addListeners: function () {
     BaseAnimatedModel.prototype.addListeners.apply(this, arguments);
@@ -45,17 +45,17 @@ let SpitfireModel = BaseAnimatedModel.extend({
     this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
   },
   setInitPosition: function (pos) {
-    this.set("initialPosition",{ x: 0 , y: 1, z: 0 });  // MAGIC NUMBER
-    this.set("startPosition",{ x: pos.x, y: 1, z: pos.z});  // MAGIC NUMBER
+    this.set("initialPosition",{ x: 0, y: 1, z: 0 });  // MAGIC NUMBER
+    this.set("startPosition",{ x: pos.x, y: 1, z: pos.z});
     this.set("endPosition", { x: pos.x * -1, y: 1, z: pos.z });
-    this.getPivot().position.set(pos.x , 1, pos.z);
+    this.getPivot().position.set(pos.x ,1, pos.z);
   },
   setInitPivot: function () {
-    this.getPivot().rotation.set(0, (Math.PI / 180 * 90), 0 );
+    this.getPivot().rotation.set(0, Math.PI / -2, 0 );
   },
   resetPosition: function () {
     let pos = this.get("startPosition");
-    this.getPivot().position.set(pos.x , pos.y, pos.z);
+    this.getPivot().position.set(pos.x, pos.y, pos.z);
   },
   translateCenterPoint: function (mesh3d) {
     let distX = 0.00097;  // Magic Number propeller THREEjs cannot computer center correctly
@@ -66,6 +66,6 @@ let SpitfireModel = BaseAnimatedModel.extend({
   }
 });
 
-_.defaults(SpitfireModel.prototype.defaults, BaseAnimatedModel.prototype.defaults);
+_.defaults(MesserschmittModel.prototype.defaults, BaseAnimatedModel.prototype.defaults);
 
-module.exports = SpitfireModel;
+module.exports = MesserschmittModel;

@@ -41,8 +41,13 @@ let CameraControls = Backbone.Model.extend({
       .interpolation(TWEEN.Interpolation.Bezier)
       .to(from, 500);
   },
-  testOffscreen: function (object) {
-      return this.getMaxFrustum(object);
+  testOffscreen: function (object , power) {
+      if (power === "ally") {
+        return this.getMaxFrustum(object);
+      } else {
+        return this.getMinFrustum(object);
+      }
+
   },
   frustumCheck: function (object) {
     let frustum = new THREE.Frustum();
@@ -59,11 +64,11 @@ let CameraControls = Backbone.Model.extend({
     bbox.min[key] = bbox.min[key] += moveVal;
   },
   getMaxFrustum: function (object) {
+    console.log("object", object);
     var bbox = new THREE.Box3().setFromObject(object);
     let isVisible = false;
     let translateDist = -1;
     let n = 0;
-
 
     do {
       n++;
@@ -71,6 +76,22 @@ let CameraControls = Backbone.Model.extend({
       isVisible = this.frustumCheck(bbox);
     }
     while(isVisible || n > 35); // Magic number to avoid Infinite loop
+
+    return { x: n * translateDist, y: 0, z: 0 };
+  },
+  getMinFrustum: function (object) {
+    console.log("object", object);
+    var bbox = new THREE.Box3().setFromObject(object);
+    let isVisible = false;
+    let translateDist = 1;
+    let n = 0;
+
+    do {
+      n++;
+      this.translateBox(bbox, "x", translateDist);
+      isVisible = this.frustumCheck(bbox);
+    }
+    while(isVisible || n < 15); // Magic number to avoid Infinite loop
 
     return { x: n * translateDist, y: 0, z: 0 };
   },

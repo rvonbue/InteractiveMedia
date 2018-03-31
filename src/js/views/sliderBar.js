@@ -11,7 +11,7 @@ let SliderBar = Backbone.View.extend({
   },
   addListeners: function () {
     this.$el.find("input").on('input', function() {
-      eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, $(this).val());
+      eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, Number($(this).val()));
     });
   },
   removeListeners: function () {

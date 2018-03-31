@@ -9,5 +9,7 @@ module.exports = {
             },
   },
   tank1 :{props: {color: "#00FF00"}},
-  ground: { props: {color: "#143EBE"}  }
+  ground: { props: {color: "#143EBE"}  },
+  black: { props: {color: "#000000"}  },
+  yellow: { props: {color: "#ffff00"}  }
 };
