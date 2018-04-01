@@ -7,22 +7,31 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     "name":"messerschmitt",
     "baseUrl": "models3d/animatedModels/",
     "modelNames":["messerschmitt", "spitfirePropeller"],
-    "power": "axis"
-  },
-  addListeners: function () {
-    BaseAnimatedModel.prototype.addListeners.apply(this, arguments);
-    this.setInitPivot();
+    "power": "axis",
+    "startPosition": {x: -8.061819575074082, y: 0.21276100294012273, z: 4.806367071421903},
+    "endPosition": {x: -13.797846777886399, y: 0.24247231609352599, z: 4.191705423764497}
   },
   modelReady: function () {
 
-    this.getPivot().children.forEach( (mesh)=> {
-      let clone = mesh.clone();
-      eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [clone]);
-      clone.position.x += 1.5;
-      clone.position.z += 1.5;
-      this.getPivot().add(clone);
-    });
+    // this.makeSquadron();
 
+
+  },
+  makeSquadron: function () {
+    // this.getPivot().children.forEach( (mesh)=> {
+    //   let clone = mesh.clone();
+    //   eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [clone]);
+    //   clone.position.x += 1.5;
+    //   clone.position.z -= 1.5;
+    //   this.getPivot().add(clone);
+    //
+    //   clone = mesh.clone();
+    //   eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [clone]);
+    //   clone.position.x -= 1.35;
+    //   clone.position.z -= 1.5;
+    //
+    //   this.getPivot().add(clone);
+    // });
   },
   setMesh3d: function (mesh3d) {
     BaseAnimatedModel.prototype.setMesh3d.apply(this, arguments);
@@ -37,36 +46,9 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     this.get("tweens").push(tween);
     return tween;
   },
-  translateInitPropeller: function (mesh3d) {
-    this.translateCenterPoint(mesh3d);
-  },
-  startAnimation: function () {
-    this.initAnimationTweens();
-    this.get("tweens").forEach( (tween)=> { tween.start(); });
-  },
-  stopAnimation: function () {
-    this.get("tweens").forEach( (tween)=> { tween.stop(); });
-    this.set("tweens", []);
-  },
-  getPropellerMesh: function () {
-    return _.filter(this.getPivot().children, (mesh3d)=> { return mesh3d.name === "spitfirePropeller"; });
-  },
-  initAnimationTweens: function () {
-    let propellerMesh3d = this.getPropellerMesh();
-
-    propellerMesh3d.forEach( (mesh3d)=> {
-      this.createTween(mesh3d.rotation,  { z: "+150" }, 5000);
-    }, this);
-
-    this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
-  },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, Math.PI / -2, 0 );
-    this.getPivot().scale.set(0.1,0.1,0.1 );
-  },
-  resetPosition: function () {
-    let pos = this.get("startPosition");
-    this.getPivot().position.set(pos.x, pos.y, pos.z);
+    this.getPivot().scale.set(0.5,0.5,0.5 );
   },
   translateCenterPoint: function (mesh3d) {
     let distX = 0.00097;  // Magic Number propeller THREEjs cannot computer center correctly

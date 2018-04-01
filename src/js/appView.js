@@ -8,11 +8,12 @@ import Renderer from "./controls/renderer";
 import TimelineManager from "./models/timelineManager";
 // import StatsView from "./components/statsView";
 
-import axisAllyView from "./views/axisAlly";
+import sidebarGameControls from "./views/sidebarGameControls";
 import countryInfoView from "./views/CountryInfo";
 import sliderBar from "./views/sliderBar";
 import loadingBarView from "./views/loadingBarView";
 import template from "./appView.html";
+import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
 
 import TWEEN from "tween.js";
 window.TWEEN = TWEEN;
@@ -24,6 +25,9 @@ let AppView3d = Backbone.View.extend({
   },
   addListeners: function () {
     $(window).on("resize", this.resize);
+    eventController.once(eventController.ALL_ITEMS_LOADED,()=> {
+      this.resize();
+    }, this);
   },
   initScene: function () {
     this.addListeners();
@@ -54,12 +58,23 @@ let AppView3d = Backbone.View.extend({
     new SceneAnimator();
     new LightControls();
     new TimelineManager();
+    this.addHelpers(this.scene);
+    // this.composer = new EffectCompose  r( this.renderer );
+		// this.composer.addPass( new RenderPass( this.scene, this.controls.camera ) );
+    //
+		// let	glitchPass = new GlitchPass();
+		// 		glitchPass.renderToScreen = true;
+		// this.composer.addPass( glitchPass );
+    //
+    // this.renderer.composer = this.composer;
     this.renderer.animate();
 
-
-    setTimeout(()=> {
-      this.resize(); },
-    10);
+  },
+  addHelpers: function (scene) {
+    let helper = new THREE.GridHelper( 75 , 75 );
+				helper.material.opacity = 0.25;
+				helper.material.transparent = true;
+				scene.add( helper );
   },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() };
@@ -72,7 +87,7 @@ let AppView3d = Backbone.View.extend({
   },
   render: function () {
     this.$el.append(template);
-    this.$el.append(new axisAllyView().render().el);
+    this.$el.append(new sidebarGameControls().render().el);
     this.$el.append(new countryInfoView().render().el);
     this.$el.append(new sliderBar().render().el);
     this.$el.append(new loadingBarView().render().el);

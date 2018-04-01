@@ -126,7 +126,7 @@ let MeshSelector = Backbone.Model.extend({
 
     meshes.forEach((mesh)=> {
       let meshcenter = this.getMeshCenter(mesh);
-      console.log(", meshesCenter.y, meshesCenter.z)", meshcenter);
+
       x += meshcenter.x,
       y += meshcenter.y;
       z += meshcenter.z;
@@ -139,16 +139,25 @@ let MeshSelector = Backbone.Model.extend({
     return meshesCenter;
   },
   getMeshCenter: function (selectedMesh) {
+    selectedMesh.geometry.computeBoundingSphere();
     let center = selectedMesh.geometry.boundingSphere.center;
 
+    console.log("  selectedMesh.geometry",   selectedMesh);
     return {
       x: selectedMesh.position.x + center.x,
       y: selectedMesh.position.y + center.y,
-      z: selectedMesh.position.z + center.z + 0.5 // TODO: magic number should be move along angle to camera
+      z: selectedMesh.position.z + center.z // TODO: magic number should be move along angle to camera
     };
   },
-  moveSceneDetailsIconSimple: function (pos) {
-      this.selectMesh.position.set(pos.x, pos.y, pos.z);
+  moveSceneDetailsIconSimple: function (raycast) {
+
+    if (raycast.point) {
+      console.log("getCountryMeshCenter", this.getCountryMesh([ raycast.object.name ]) );
+      console.log("getCountryMeshPoint", raycast.point  );
+      this.selectMesh.position.set(raycast.point.x, 0.5, raycast.point.z);
+    } else {
+      this.selectMesh.position.set(raycast.x, 0.5, raycast.z);
+    }
   },
   moveSceneDetailsIcon: function (selectedMesh) {
     this.cancelSelectMeshTimer();
@@ -185,6 +194,7 @@ let MeshSelector = Backbone.Model.extend({
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+    eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.moveSceneDetailsIconSimple, this);
     eventController.on(eventController.ANIMATE_CAMERA, this.moveSceneDetailsIconSimple, this);
     commandController.reply(commandController.GET_COUNTRY_MESH, this.getCountryMesh, this);
   },

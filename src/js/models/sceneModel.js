@@ -1,4 +1,5 @@
 // import eventController from "../controllers/eventController";
+import commandController from "../controllers/commandController"
 import utils from "../components/utils";
 import TWEEN from "tween.js";
 let color = utils.getColorPallete();
@@ -55,9 +56,6 @@ let SceneModel = Backbone.Model.extend({
     }
   },
   resetImageTexture: function (context) {
-    context.beginPath();
-    context.clearRect(0, 0, 512,512);
-    context.closePath();
     context.fillStyle = color.countryMap;
     context.fillRect(0,0,512,512);
     this.updateTextureMap();
@@ -84,6 +82,24 @@ let SceneModel = Backbone.Model.extend({
         self.set("animating", false);
       })
       .start();
+  },
+  drawFlagBackground: function () {
+    let canvas = this.getTextureCanvas();
+    let context = canvas.getContext( '2d' );
+
+    context.fillStyle = color.countryMap;
+    context.fillRect(0,0,512,512);
+
+    let sprite = commandController.request(commandController.GET_IMAGE_SPRITE, this.get("name"), this);
+    let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
+    let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
+    let centerPoint = {x: canvasCenter.x - spritePos.x, y: canvasCenter.y - spritePos.y};
+
+    context.drawImage(sprite.imageObj, sprite.pos.x, sprite.pos.y, sprite.size.w, sprite.size.h, centerPoint.x, centerPoint.y, sprite.size.w, sprite.size.h);
+    context.drawImage(this.getBorderImage(), 0,0);
+
+    this.updateTextureMap();
+
   },
   getMesh3d: function () {
     return this.get("mesh3d");

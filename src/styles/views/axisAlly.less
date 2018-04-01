@@ -1,11 +1,7 @@
-.info-pane-hover {
-  // display: block;
-  position: relative;
-  border: 2px solid black;
-  margin-left: @windowMarginLeft;
-  z-index: 10;
-  max-width: 155px;
+.country-pane-hover {
+  max-width: 100%;
   background-color: @colorBlack;
+  height: 44px;
 }
 .power-hover {
   display: inline-block;
@@ -17,6 +13,7 @@
   background-color: @colorBlack;
   width: 75px;
   box-sizing: border-box;
+  vertical-align: top;
   .button;
 }
 .allies {
@@ -31,4 +28,40 @@
   height: 3px;
   width: 100%;
   background-color: @colorWhite;
+}
+.sidebar-game-controls {
+  width: 285px;
+  background-color: white;
+  border: 2px solid black;
+  z-index: 10;
+  position: relative;
+  margin-left: @windowMarginLeft;
+}
+.axis-flag, .ally-flag {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+.history-details {
+  width: 100%;
+  padding: 0px;
+  margin:0px;
+  display: block;
+  font-family: 'Allerta Stencil';
+  > .title {
+    font-size: 200%;
+    padding-left: 8px;
+  }
+  > .text {
+    padding: 0px 8px 8px 8px;
+  }
+  > button {
+    display: block;
+    font-size: 200%;
+    background-color: @armyGreen;
+    text-align: center;
+    margin: 8px auto;
+    cursor: pointer;
+    font-family: 'Allerta Stencil';
+  }
 }

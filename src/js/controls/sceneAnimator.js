@@ -15,9 +15,6 @@ let SceneAnimator = Backbone.Model.extend({
   mouseClickSelect: function (raycast) {
     let sceneModel = this.requestSceneModel({ name: raycast.object.name });
     sceneModel.set("selected", !sceneModel.get("selected"));
-    // if (sceneModel.get("selected")) {
-    //   eventController.trigger(eventController.SET_CAMERA_TARGET, sceneModel.getZoomPoint());
-    // }
   },
   requestSceneModel: function (opts) {
     return commandController.request(commandController.GET_SCENE_MODEL, opts );

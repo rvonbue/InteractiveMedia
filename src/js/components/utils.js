@@ -46,9 +46,9 @@ module.exports = {
   },
   getColorPallete: function () {
     return {
-      axis: "#0000FF",
-      ally: "#FF0000",
-      countryMap: "#708090"
+      axis: "#2C709D",
+      ally: "#8b0000",
+      countryMap: "#555555"
     };
   }
 };

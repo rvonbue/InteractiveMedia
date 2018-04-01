@@ -2,6 +2,8 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
 import materialMapList from "../materials/combinedMaterials";
 import utils from "../components/utils";
+import countryFlags256 from "../data/countryFlags.js";
+// import countryList from "../data/models3dList.js";
 let color = utils.getColorPallete();
 // import countryBordersBase64 from "../data/countryBordersBase64.json";
 // console.log("asdfasjljdfs", countryBordersBase64);
@@ -9,6 +11,12 @@ let color = utils.getColorPallete();
 var MaterialLibrary = Backbone.Model.extend({
   initialize: function () {
     this.materialCollection = [];
+    this.spriteSheetImages = {};
+    this.addListeners();
+  },
+  addListeners: function () {
+    eventController.on(eventController.LOAD_SPRITE_SHEET, this.loadSpriteSheet, this);
+    commandController.reply(commandController.GET_IMAGE_SPRITE, this.getImageSprite, this);
   },
   getMaterial: function (oldMat) {
     var matFromLib = this.doesMaterialExist(oldMat);
@@ -67,11 +75,10 @@ var MaterialLibrary = Backbone.Model.extend({
     }, this);
   },
   getImageTexture: function (mapURL, options) {
-    let loader = new THREE.ImageLoader();
+    let loader = new THREE.ImageLoader(this.get("manager"));
     let canvas = document.createElement( 'canvas' );
   	let context = canvas.getContext( '2d' );
     let texture = new THREE.Texture(canvas);
-
 
     loader.load(
     	mapURL,
@@ -90,6 +97,30 @@ var MaterialLibrary = Backbone.Model.extend({
         texture.shading = options.shading === "smooth" ? THREE.FlatShading : THREE.FlatShading ;
       }
     return texture;
+  },
+  getImageSprite: function (name) {
+    let sprite = _.findWhere(countryFlags256, {filename: name});
+    let pos = sprite.frame;
+    let size = sprite.sourceSize;
+    let canvasCtx = this.getNewCanvas(size);
+    let imageObj = this.spriteSheetImages.countryFlags256;
+
+    // canvasCtx.context.drawImage(imageObj, pos.x, pos.y, size.w, size.h, 0, 0, size.w, size.h);
+    console.log("this.spriteSheetImages", this.spriteSheetImages);
+    return {pos: pos, size: size, imageObj: imageObj};
+  },
+  getNewCanvas: function (size) {
+    let canvas = document.createElement( 'canvas' );
+  	let context = canvas.getContext( '2d' );
+    canvas.width  = size.w;
+    canvas.height = size.h;
+    return {canvas: canvas, context: context };
+  },
+  loadSpriteSheet: function (spriteSheet) {
+    let loader = new THREE.ImageLoader(this.get("manager"));
+    let spriteSheetImages = this.spriteSheetImages;
+
+    loader.load( spriteSheet.url,function ( image ) { spriteSheetImages[spriteSheet.name] = image; });
   },
   setMaterialAttributes: function (mat, props) {
     // console.log("mat:", mat);

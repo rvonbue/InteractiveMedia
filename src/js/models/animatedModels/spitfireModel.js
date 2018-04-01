@@ -6,11 +6,9 @@ let SpitfireModel = BaseAnimatedModel.extend({
     "name":"spitfire",
     "baseUrl": "models3d/animatedModels/",
     "modelNames":["spitfire", "spitfirePropeller"],
-    "power": "ally"
-  },
-  addListeners: function () {
-    BaseAnimatedModel.prototype.addListeners.apply(this, arguments);
-    this.setInitPivot();
+    "power": "ally",
+    "startPosition": {x: -13.170102650922006, y: 0.23923397143583375, z: 3.67371880032149},
+    "endPosition":  {x: -6.050718357879541, y: 0.20238620399077972, z: 4.5898200449053155}
   },
   setMesh3d: function (mesh3d) {
     BaseAnimatedModel.prototype.setMesh3d.apply(this, arguments);
@@ -25,32 +23,9 @@ let SpitfireModel = BaseAnimatedModel.extend({
     this.get("tweens").push(tween);
     return tween;
   },
-  translateInitPropeller: function (mesh3d) {
-    this.translateCenterPoint(mesh3d);
-  },
-  startAnimation: function () {
-    this.initAnimationTweens();
-    this.get("tweens").forEach( (tween)=> { tween.start(); });
-  },
-  stopAnimation: function () {
-    this.get("tweens").forEach( (tween)=> { tween.stop(); });
-    this.set("tweens", []);
-  },
-  getPropellerMesh: function () {
-    return _.find(this.getPivot().children, (mesh3d)=> { return mesh3d.name === "spitfirePropeller"; });
-  },
-  initAnimationTweens: function () {
-    let propellerMesh3d = this.getPropellerMesh();
-    this.createTween(propellerMesh3d.rotation,  { z: "+150" }, 5000);   // startPropellerRotation
-    this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
-  },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, (Math.PI / 180 * 90), 0 );
     this.getPivot().scale.set(0.1,0.1,0.1 );
-  },
-  resetPosition: function () {
-    let pos = this.get("startPosition");
-    this.getPivot().position.set(pos.x , pos.y, pos.z);
   },
   translateCenterPoint: function (mesh3d) {
     let distX = 0.00097;  // Magic Number propeller THREEjs cannot computer center correctly

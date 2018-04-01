@@ -9,41 +9,29 @@ let BritishAirRaid = BaseTimelineModel.extend({
   defaults:{
     name: "britishAirRaid",
     modelUrls:[],
-    animatedModels: [messerschmittModel, spitfireModel], //this.animatedModelsCollection = new AnimatedModelCollection();
+    animatedModels: [messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
     historyDetails: {
-      countries: ["unitedkingdom", "germany"],
+      countries: ["germany", "unitedkingdom" ],
       eventPositions: {
-          targetPosition: {x: -1.898, y: 0, z: 1.2249},
-          cameraPosition: {x: -2.016, y: 1.086, z: 2.018},
-          messerschmitt: {
-            startPosition: {x: -1, y: 0.15, z: 1.5},
-            endPosition: {x: -2.9476, y: 0.075, z: 0.75}
-          },
-          spitfire: {
-            startPosition: {x: -2.9476, y: 0.075, z: 0.75},
-            endPosition: {x: -1, y: 0.15, z: 1.5}
-          },
-          text: "Battle Of Britain"
-        }
+          targetPosition: {x: -10.422032314109362, y: -2.767908515571208, z: 3.98483323035648},
+          cameraPosition: {x: -11.256251587384604, y: 5.367395621760747, z: 8.780098601818695}
+      },
+      title: "Battle Of Britain",
+      text: "The Battle of Britain was a military campaign of the Second World War, in which the Royal Air Force (RAF) defended the United Kingdom (UK) against large-scale attacks by the German Air Force (Luftwaffe). It has been described as the first major military campaign fought entirely by air forces"
     }
-  },
-  initAnimation: function () {
-
-    this.animatedModelsCollection.forEach( function (model) {
-      let pos = this.getStartPosition(model.get("meshGroup"), model.get("power"));
-      model.setInitPosition(this.get("historyDetails").eventPositions[model.get("name")]);
-    }, this);
-
   },
   startAnimation: function () {
     TWEEN.removeAll();
-    this.setCamera();
-    this.animatedModelsCollection.each( (model)=> model.startAnimation() );
-    this.flyPlaneAcrossScreen();
-    this.showModels();
+    let self = this;
+    setTimeout(function () {
+      self.animatedModelsCollection.each( (model)=> model.startAnimation() );
+      self.flyPlaneAcrossScreen();
+      self.showModels();
+    }, 50);
+
   },
-  setCamera: function () {
+  animateCamera: function () {
     eventController.trigger(eventController.ANIMATE_CAMERA, this.get("historyDetails").eventPositions);
   },
   stopAnimation: function () {
@@ -87,7 +75,11 @@ let BritishAirRaid = BaseTimelineModel.extend({
     tween.timelineName = this.get("name");
     this.get("tweens").push(tween);
     return tween;
+  },
+  isReady: function () {
+
   }
+
 });
 
 _.defaults(BritishAirRaid.prototype.defaults, BaseTimelineModel.prototype.defaults);

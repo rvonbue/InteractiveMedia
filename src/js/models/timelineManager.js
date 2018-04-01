@@ -18,6 +18,7 @@ let TimelineManager = Backbone.Model.extend({
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MANAGER_UPDATE, this.updateTimeline, this);
+    eventController.on(eventController.START_TIMELINE_MODEL, this.startTimelineModel, this);
   },
   doesTimeEventExist: function (timePosition) {
     return this.get("timeEvents")[timePosition] ? true : false;
@@ -30,16 +31,23 @@ let TimelineManager = Backbone.Model.extend({
     this.set("currentPosition", timePosition);
 
     if (!newTimeEventExist && timePosition === 1 ) {
-      this.createTimeEvent(timePosition);
-    } else if (newTimeEventExist && timePosition === 1 ) {
-      this.startTimeline();
-    } else {
-
+      let timelineModel = this.createTimeEvent(timePosition);
+      timelineModel.once("change:ready", ()=> { console.log("This should make start button active"); });
+      eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel.get("historyDetails"));
+      timelineModel.animateCamera();
+      eventController.trigger(eventController.SELECT_SCENE_MODELS, timelineModel.get("historyDetails").countries );
     }
 
   },
-  startTimeline: function () {
-    this.get("timeEvents")[this.get("currentPosition")].startAnimation();
+  // loadTimeline: function () {
+  //   let timelineModel = this.get("timeEvents")[this.get("currentPosition")];
+  //   eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel);
+  //   timelineModel.startAnimation();
+  // },
+  startTimelineModel: function () {
+    let timelineModel = this.get("timeEvents")[this.get("currentPosition")];
+    timelineModel.startAnimation();
+    console.log("jsdhafjkashdjfhsajf haskdjhfkdajdjdjdshhsdk jh ")
   },
   stopTimeline: function () {
     this.get("timeEvents")[this.get("currentPosition")].stopAnimation();
@@ -49,6 +57,7 @@ let TimelineManager = Backbone.Model.extend({
     let BaseTimelineModel = this.get("timeEventModels")[timePosition];
     timeEvents[timePosition] =  new BaseTimelineModel();
     this.set("timeEvents", timeEvents);
+    return timeEvents[timePosition];
   }
 });
 
