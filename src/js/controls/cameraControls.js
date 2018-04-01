@@ -3,7 +3,7 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 const OrbitControls = require('three-orbit-controls')(THREE);
 
-const CAMERA_INTIAL_POSITION =  {x: -0.84, y: 26.1, z: 13.2};
+const CAMERA_INITIAL_POSITION =  {x: -0.84, y: 26.1, z: 13.2};
 const TARGET_INITIAL_POSITION = {x: -0.79, y: -2.8, z: 4.3};
 
 let CameraControls = Backbone.Model.extend({
@@ -27,7 +27,7 @@ let CameraControls = Backbone.Model.extend({
     return this.orbitControls;
   },
   resetCameraPositionTarget: function () {
-    this.setCameraPosition(CAMERA_INTIAL_POSITION);  // set Initial Camera Position
+    this.setCameraPosition(CAMERA_INITIAL_POSITION);  // set Initial Camera Position
     this.setCameraTarget(TARGET_INITIAL_POSITION);
   },
   setCameraPosition: function (pos) {
@@ -98,6 +98,7 @@ let CameraControls = Backbone.Model.extend({
     return { x: n * translateDist, y: 0, z: 0 };
   },
   animateCamera: function (eventPositions) {
+    eventPositions = eventPositions ? eventPositions : {targetPosition: TARGET_INITIAL_POSITION, cameraPosition: CAMERA_INITIAL_POSITION };
     this.setCameraTarget(eventPositions.targetPosition);
     this.setCameraAnimatePosition(eventPositions.cameraPosition);
   },

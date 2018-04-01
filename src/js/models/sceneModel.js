@@ -161,6 +161,9 @@ let SceneModel = Backbone.Model.extend({
   showHide: function () { // show = true
 
   },
+  hide: function () {
+      // console.log("asdfasdf", this.get("mesh3d").material.opacity = 0.25);
+  },
   createNoise: function (ctx) {
     let idata = ctx.createImageData(512, 512); // create image data
     let buffer32 = new Uint32Array(idata.data.buffer);

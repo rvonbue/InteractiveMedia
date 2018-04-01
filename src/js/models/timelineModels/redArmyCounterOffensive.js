@@ -1,24 +1,22 @@
 import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import BaseTimelineModel from "./BaseTimelineModel";
-import spitfireModel from "../animatedModels/spitfireModel";
-import messerschmittModel from "../animatedModels/messerschmittModel";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
 
-let BritishAirRaid = BaseTimelineModel.extend({
+let RedArmyCounterOffensive = BaseTimelineModel.extend({
   defaults:{
-    name: "britishAirRaid",
-    animatedModels: [messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
+    name: "redArmyCounterOffensive",
+    animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
     historyDetails: {
-      countries: ["germany", "unitedkingdom" ],
+      countries: ["germany", "russia" ],
       eventPositions: {
-        targetPosition: {x: -10.422032314109362, y: -2.767908515571208, z: 3.98483323035648},
-        cameraPosition: {x: -11.256251587384604, y: 5.367395621760747, z: 8.780098601818695}
+        targetPosition: {x: -0, y: -2.767908515571208, z: 3.98483323035648},
+        cameraPosition: {x: -0, y: 5.367395621760747, z: 8.780098601818695}
       },
       date:"Aug. 28, 1940",
-      title: "Battle Of Britain",
-      text: "The Battle of Britain was a military campaign of the Second World War, in which the Royal Air Force (RAF) defended the United Kingdom (UK) against large-scale attacks by the German Air Force (Luftwaffe). It has been described as the first major military campaign fought entirely by air forces"
+      title: "Red Army Counter Offensive",
+      text: "The successful Red Army surprise counter-offensive in front of Moscow, which began on 5 December, was the second most significant battle of the entire war"
     }
   },
   startAnimation: function () {
@@ -48,10 +46,9 @@ let BritishAirRaid = BaseTimelineModel.extend({
     let tween = new TWEEN.Tween(from, {override:true} )
     .to( {x:[to.x], y:[from.y, 0.45, to.y], z: [to.z]}, duration );
      // fly up dive bomb
-    this.get("tweens").push(tween);
     return tween;
   }
 });
 
-_.defaults(BritishAirRaid.prototype.defaults, BaseTimelineModel.prototype.defaults);
-module.exports = BritishAirRaid;
+_.defaults(RedArmyCounterOffensive.prototype.defaults, BaseTimelineModel.prototype.defaults);
+module.exports = RedArmyCounterOffensive;

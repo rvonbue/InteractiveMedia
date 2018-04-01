@@ -12,8 +12,9 @@ let MeshSelector = Backbone.Model.extend({
     this.lastRaycastObjectId = 1325435;
     this.canvasEl = $(options.canvasEl);
     this.camera = options.camera;
-    this.raycasterOffset = { x: 1, y: 47 };  //ozzffset of canvas;
+    this.raycasterOffset = { x: 1, y: 47 };  //offset of canvas;
     this.mouse = new THREE.Vector2();
+    this.disabled = false;
     this.addListeners();
     this.setRaycasterOptions();
     this.addSelectMesh();
@@ -58,6 +59,7 @@ let MeshSelector = Backbone.Model.extend({
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
+    if (this.disabled == true) return;
     let raycastIntersect = this.shootRaycaster(evt);
 
     if ((raycastIntersect && this.lastRaycastObjectId === raycastIntersect.object.id)  // if nothing intersected
@@ -142,7 +144,6 @@ let MeshSelector = Backbone.Model.extend({
     selectedMesh.geometry.computeBoundingSphere();
     let center = selectedMesh.geometry.boundingSphere.center;
 
-    console.log("  selectedMesh.geometry",   selectedMesh);
     return {
       x: selectedMesh.position.x + center.x,
       y: selectedMesh.position.y + center.y,
@@ -151,11 +152,11 @@ let MeshSelector = Backbone.Model.extend({
   },
   moveSceneDetailsIconSimple: function (raycast) {
 
-    if (raycast.point) {
+    if (raycast && raycast.point) {
       console.log("getCountryMeshCenter", this.getCountryMesh([ raycast.object.name ]) );
       console.log("getCountryMeshPoint", raycast.point  );
       this.selectMesh.position.set(raycast.point.x, 0.5, raycast.point.z);
-    } else {
+    } else if (raycast) {
       this.selectMesh.position.set(raycast.x, 0.5, raycast.z);
     }
   },
@@ -186,17 +187,21 @@ let MeshSelector = Backbone.Model.extend({
 
   },
   addListeners: function () {
-    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
-    this.canvasEl.on("mousemove", this.throttledMouseMove);
-    this.canvasEl.on("mouseleave", this.triggerHoverNav);
-    this.canvasEl.on("mouseup", this.onMouseClick);
-    this.canvasEl.on("mousedown", this.onMouseDown);
+
+    this.addMouseListeners();
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.moveSceneDetailsIconSimple, this);
     eventController.on(eventController.ANIMATE_CAMERA, this.moveSceneDetailsIconSimple, this);
     commandController.reply(commandController.GET_COUNTRY_MESH, this.getCountryMesh, this);
+  },
+  addMouseListeners: function () {
+    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
+    this.canvasEl.on("mousemove", this.throttledMouseMove);
+    this.canvasEl.on("mouseleave", this.triggerHoverNav);
+    this.canvasEl.on("mouseup", this.onMouseClick);
+    this.canvasEl.on("mousedown", this.onMouseDown);
   },
   render: function () {
     return this;

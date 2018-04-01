@@ -1,4 +1,7 @@
 import eventController from "./controllers/eventController";
+import TWEEN from "tween.js";
+window.TWEEN = TWEEN;
+
 import LightControls from "./controls/LightControls";
 import CameraControls from "./controls/cameraControls";
 import SceneLoader from "./models/SceneLoader";
@@ -9,14 +12,10 @@ import TimelineManager from "./models/timelineManager";
 // import StatsView from "./components/statsView";
 
 import sidebarGameControls from "./views/sidebarGameControls";
-import countryInfoView from "./views/CountryInfo";
-import sliderBar from "./views/sliderBar";
+import bottomBarView from "./views/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
-import template from "./appView.html";
-import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
 
-import TWEEN from "tween.js";
-window.TWEEN = TWEEN;
+import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -58,7 +57,7 @@ let AppView3d = Backbone.View.extend({
     new SceneAnimator();
     new LightControls();
     new TimelineManager();
-    this.addHelpers(this.scene);
+    // this.addHelpers(this.scene);
     // this.composer = new EffectCompose  r( this.renderer );
 		// this.composer.addPass( new RenderPass( this.scene, this.controls.camera ) );
     //
@@ -71,9 +70,11 @@ let AppView3d = Backbone.View.extend({
 
   },
   addHelpers: function (scene) {
-    let helper = new THREE.GridHelper( 75 , 75 );
-				helper.material.opacity = 0.25;
-				helper.material.transparent = true;
+    let helper = new THREE.GridHelper( 100   , 100 );
+				helper.material.opacity = 0.5;
+				helper.material.transparent = false;
+      	helper.material.color.b = 0;
+        helper.material.color.g = 0;
 				scene.add( helper );
   },
   getWidthHeight: function () {
@@ -86,10 +87,8 @@ let AppView3d = Backbone.View.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
-    this.$el.append(template);
+    this.$el.append(new bottomBarView().render().el);
     this.$el.append(new sidebarGameControls().render().el);
-    this.$el.append(new countryInfoView().render().el);
-    this.$el.append(new sliderBar().render().el);
     this.$el.append(new loadingBarView().render().el);
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);

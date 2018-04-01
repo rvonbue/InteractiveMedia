@@ -64,7 +64,9 @@ var SceneLoader = Backbone.Model.extend({
       let countryModel = this.sceneModelCollection.findWhere({ name: countryName});
       countryModel.set("selected", true);
     });
-
+    this.sceneModelCollection.where({ selected: false}).forEach((model)=>{
+      model.hide();
+    });
   },
   addModelsToScene: function (sceneModelArray) {
     _.each(sceneModelArray, function (object3d) { this.scene.add(object3d); }, this);

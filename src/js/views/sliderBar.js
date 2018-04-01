@@ -1,24 +1,17 @@
 import eventController from "../controllers/eventController";
 import template from "./sliderBar.html";
+import { length } from "../models/timelineModels/timelineModelsCombined";
 
 let SliderBar = Backbone.View.extend({
   className: "slider-bar",
   events: {
-    "mouseenter .power-hover": "powerMouseEnter",
+    "input": "updateTimelineManager"
   },
-  initialize: function (options) {
-
-  },
-  addListeners: function () {
-    this.$el.find("input").on('input', function() {
-      eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, Number($(this).val()));
-    });
-  },
-  removeListeners: function () {
+  updateTimelineManager: function () {
+    eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, Number(this.$el.find("input").val()));
   },
   render: function () {
-    this.$el.append(template);
-    this.addListeners();
+    this.$el.append(template({numOfTimelineEvents: length - 1}));
     return this;
   }
 });

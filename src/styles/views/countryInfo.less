@@ -1,9 +1,13 @@
 .country-info {
   position: absolute;
   bottom: 25px;
-  left: 12px;
+  right: 12px;
   z-index: 10;
+  @boxShadowHelper(5);
+  background-color: @colorWhite;
+  border: 2px solid @colorBlack;
   > span {
     font-size: 200%;
+    padding:4px 8px;
   }
 }

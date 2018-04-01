@@ -1,13 +1,10 @@
 import eventController from "../controllers/eventController";
-import BritishAirRaid from "./timelineModels/britishAirRaid";
+import {allTimelineModels} from "./timelineModels/timelineModelsCombined";
 
 let TimelineManager = Backbone.Model.extend({
   defaults:{
     currentPosition: 0,
-    timeEventModels: [
-      null,
-      BritishAirRaid,
-    ],
+    timeEventModels: allTimelineModels,
     timeEvents: {}
   },
   initialize: function () {
@@ -27,15 +24,24 @@ let TimelineManager = Backbone.Model.extend({
     let currentTimeEventExist = this.doesTimeEventExist(this.get("currentPosition"));
     let newTimeEventExist = this.doesTimeEventExist(timePosition);
 
-    if (currentTimeEventExist) this.stopTimeline();
+
+    if (currentTimeEventExist) this.stopPreviousTimelineModel(); //stop and remove existing timeline from view
+
     this.set("currentPosition", timePosition);
 
-    if (!newTimeEventExist && timePosition === 1 ) {
+    if (newTimeEventExist) {
+      this.restartExsitingTimeline();
+      return;
+    };
+    if ( timePosition === 0 ) {
+        eventController.trigger(eventController.ANIMATE_CAMERA);
+        return;
+    }
+
+    if (!newTimeEventExist) {
       let timelineModel = this.createTimeEvent(timePosition);
       timelineModel.once("change:ready", ()=> { console.log("This should make start button active"); });
-      eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel.get("historyDetails"));
-      timelineModel.animateCamera();
-      eventController.trigger(eventController.SELECT_SCENE_MODELS, timelineModel.get("historyDetails").countries );
+      this.selectTimelineModel(timelineModel);
     }
 
   },
@@ -44,13 +50,28 @@ let TimelineManager = Backbone.Model.extend({
   //   eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel);
   //   timelineModel.startAnimation();
   // },
-  startTimelineModel: function () {
+  restartExsitingTimeline: function () {
+    console.log("restart");
     let timelineModel = this.get("timeEvents")[this.get("currentPosition")];
-    timelineModel.startAnimation();
-    console.log("jsdhafjkashdjfhsajf haskdjhfkdajdjdjdshhsdk jh ")
+    // this.startTimelineModel(timelineModel);
+    this.selectTimelineModel(timelineModel);
   },
-  stopTimeline: function () {
-    this.get("timeEvents")[this.get("currentPosition")].stopAnimation();
+  stopPreviousTimelineModel: function () {
+    this.stopTimeline();
+    eventController.trigger(eventController.LOAD_TIMELINE_MODEL, null);
+  },
+  selectTimelineModel: function (timelineModel) {
+    eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel.get("historyDetails"));
+    eventController.trigger(eventController.SELECT_SCENE_MODELS, timelineModel.get("historyDetails").countries );
+    timelineModel.animateCamera();
+  },
+  startTimelineModel: function (timelineModel) {
+    timelineModel = timelineModel ? timelineModel : this.get("timeEvents")[this.get("currentPosition")];
+    timelineModel.startAnimation();
+  },
+  stopTimeline: function (timelineModel) {
+    timelineModel = timelineModel ? timelineModel : this.get("timeEvents")[this.get("currentPosition")];
+    timelineModel.stopAnimation();
   },
   createTimeEvent: function (timePosition) {
     let timeEvents = this.get("timeEvents");

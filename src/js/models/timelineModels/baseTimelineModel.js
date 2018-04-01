@@ -5,9 +5,8 @@ import TWEEN from "tween.js";
 let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
     name: "DEFAULT",
-    modelUrls:[],
     animatedModels: [], //this.animatedModelsCollection
-    tweens:[],
+    tweens: [],
     ready: false
   },
   initialize: function () {
@@ -15,10 +14,23 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.addListeners();
     this.createModels();
     this.loadAnimatedModels();
+    this.allModelsReady();
   },
   addListeners: function () {
     eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
     eventController.once(eventController.ALL_ITEMS_LOADED, this.isModelReady, this );
+  },
+  animateCamera: function () {
+    eventController.trigger(eventController.ANIMATE_CAMERA, this.get("historyDetails").eventPositions);
+  },
+  hideModels: function () {
+    this.animatedModelsCollection.forEach( function (model) { model.hide(); });
+  },
+  showModels: function () {
+    this.animatedModelsCollection.forEach( function (model) { model.show(); });
+  },
+  getStartPosition: function (meshGroup, power) {
+    return commandController.request(commandController.TEST_OFFSCREEN, meshGroup, power);
   },
   loadAnimatedModels: function () {
     let modelUrls = [];
@@ -56,11 +68,23 @@ let BaseTimelineModel = Backbone.Model.extend({
     })
     return allModelsReady;
   },
+  stopAnimation: function () {
+    this.animatedModelsCollection.each( ( model )=> {
+      model.stopAnimation();
+      model.resetPosition();
+    });
+    this.get("tweens").forEach( (tween)=> { tween.stop(); });
+    this.set("tweens", []);
+    // this.hideModels();
+  },
   isModelReady: function () {
     if ( this.allModelsReady) {
       this.set("ready", true);
       eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     }
+  },
+  isReady: function () {
+
   }
 });
 

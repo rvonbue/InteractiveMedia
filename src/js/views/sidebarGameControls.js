@@ -8,7 +8,7 @@ let SidebarGameControls = Backbone.View.extend({
     "click button": "startTimelineModel"
   },
   initialize: function () {
-    eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.selectAxisAlly, this);
+    // eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.selectAxisAlly, this);
     eventController.on(eventController.LOAD_TIMELINE_MODEL, this.loadTimelineModel, this);
   },
   selectAxisAlly: function () {
@@ -19,11 +19,10 @@ let SidebarGameControls = Backbone.View.extend({
     this.$el.find("button").fadeOut();
   },
   loadTimelineModel: function (historyDetails) {
-    console.log("timelinsfsdf historyDetails", historyDetails);
-    this.updateHistoryDetails(historyDetails);
+    this.historyDetailsEl.empty();
+    if (historyDetails) this.updateHistoryDetails(historyDetails);
   },
   updateHistoryDetails: function (historyDetails) {
-    this.historyDetailsEl.empty();
     this.historyDetailsEl.append($(template(historyDetails)));
   },
   render: function () {
