@@ -2,13 +2,17 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const extractLess = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    disable: process.env.NODE_ENV === "dev"
+});
 
 module.exports = {
   entry: [
     './src/index.js',
   ],
   output: {
-    filename: 'alljs.js',
+    filename: 'app.bundle.[hash].js',
     path: path.resolve(__dirname, 'dist')
   },
   resolve : {
@@ -28,19 +32,22 @@ module.exports = {
       },
       { test: /\.html$/,
         use: [{
-          loader: "underscore-template-loader"
+          loader: "underscore-template-loader",
+          query: {
+                    attributes: []
+                }
        }]
       },
-      { test: /\.less$/, use: [
-        { loader: "style-loader"},
-        { loader: "css-loader", options: { sourceMap: true }},
-        { loader: "less-loader",
-          options: {
-            strictMath: true,
-            noIeCompat: true,
-            sourceMap: true
-          }
-        }]
+      { test: /\.less$/,
+        use: extractLess.extract({
+            use: [{
+                loader: "css-loader"
+            }, {
+                loader: "less-loader"
+            }],
+            // use style-loader in development
+            fallback: "style-loader"
+        })
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -55,25 +62,21 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({template: './src/index.html'}),
-    new ExtractTextPlugin("allStyles.css"),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false
-    }),
+    extractLess,
     new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
     new webpack.ProvidePlugin({	"THREE": "THREE" }),
     new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery","window.jQuery": "jquery" }),
     new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      mangle: {
-        screw_ie8: true,
-        keep_fnames: true
-      },
-      compress: {
-        screw_ie8: true
-      },
-      comments: false
-    })
+    // new webpack.optimize.UglifyJsPlugin({
+    //   beautify: false,
+    //   mangle: {
+    //     screw_ie8: true,
+    //     keep_fnames: true
+    //   },
+    //   compress: {
+    //     screw_ie8: true
+    //   },
+    //   comments: false
+    // })
   ]
 };

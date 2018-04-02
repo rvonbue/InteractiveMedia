@@ -1,0 +1,655 @@
+@import url(https://fonts.googleapis.com/css?family=Sarpanch);@import url(https://fonts.googleapis.com/css?family=Allerta+Stencil);/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*!
+ * Hover.css (http://ianlunn.github.io/Hover/)
+ * Version: 2.1.0
+ * Author: Ian Lunn @IanLunn
+ * Author URL: http://ianlunn.co.uk/
+ * Github: https://github.com/IanLunn/Hover
+
+ * Made available under a MIT License:
+ * http://www.opensource.org/licenses/mit-license.php
+
+ * Hover.css Copyright Ian Lunn 2014. Generated with Sass.
+ */
+/* 2D TRANSITIONS */
+/* Grow */
+/* Sweep To Top */
+.hvr-sweep-to-top {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  position: relative;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.hvr-sweep-to-top:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #8b0000;
+  -webkit-transform: scaleY(0);
+  transform: scaleY(0);
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-sweep-to-top:hover,
+.hvr-sweep-to-top:focus,
+.hvr-sweep-to-top:active {
+  color: white;
+}
+.hvr-sweep-to-top:hover > a,
+.hvr-sweep-to-top:focus > a,
+.hvr-sweep-to-top:active > a {
+  color: white;
+}
+.hvr-sweep-to-top:hover:before,
+.hvr-sweep-to-top:focus:before,
+.hvr-sweep-to-top:active:before {
+  -webkit-transform: scaleY(1);
+  transform: scaleY(1);
+}
+/* Underline From Center */
+/* Sweep To Bottom */
+/* Sweep To Bottom */
+.hvr-sweep-to-bottom {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  position: relative;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.hvr-sweep-to-bottom:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #2C709D;
+  -webkit-transform: scaleY(0);
+  transform: scaleY(0);
+  -webkit-transform-origin: 50% 0;
+  transform-origin: 50% 0;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-sweep-to-bottom:hover,
+.hvr-sweep-to-bottom:focus,
+.hvr-sweep-to-bottom:active {
+  color: white;
+}
+.hvr-sweep-to-bottom:hover:before,
+.hvr-sweep-to-bottom:focus:before,
+.hvr-sweep-to-bottom:active:before {
+  -webkit-transform: scaleY(1);
+  transform: scaleY(1);
+}
+/**
+ * A mixin which helps you to add depth to elements according to the Google Material Design spec:
+ * http://www.google.com/design/spec/layout/layout-principles.html#layout-principles-dimensionality
+ *
+ * Please note that the values given in the specification cannot be used as is. To create the same visual experience
+ * the blur parameter has to be doubled.
+ *
+ * Author: Florian Kutschera (@gefangenimnetz), Conceptboard GmbH (@conceptboardapp)
+ *
+ * Example usage:
+ *
+ * .card {
+ *     width: 95px;
+ *     height: 95px;
+ *     background: #f4f4f4;
+ *     -webkit-transition: all 250ms;
+ *     -moz-transition: all 250ms;
+ *     transition: all 250ms;
+ *     .BoxShadowHelper(1);
+ *     &:hover {
+ *         .BoxShadowHelper(3);
+ *         -webkit-transform: translateY(-5px);
+ *         -moz-transform: translateY(-5px);
+ *         transform: translateY(-5px);
+ *     }
+ * }
+ *
+ */
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+.animate-height {
+  -webkit-transform: scaleY(1);
+  -o-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  transform: scaleY(1);
+  transition: transform 0.4s ease-in;
+}
+.animate-height.animating {
+  -webkit-transform: scaleY(0);
+  -o-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  transform: scaleY(0);
+  -webkit-transform-origin: top;
+  -o-transform-origin: top;
+  -ms-transform-origin: top;
+  transform-origin: top;
+  overflow: hidden;
+  -webkit-transition: -webkit-transform 0.4s ease-out;
+}
+.button {
+  cursor: pointer;
+}
+.boldme {
+  font-weight: bold;
+}
+.country-pane-hover {
+  max-width: 100%;
+  background-color: #111111;
+  height: 44px;
+}
+.power-hover {
+  display: inline-block;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 125%;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #111111;
+  width: 75px;
+  box-sizing: border-box;
+  vertical-align: top;
+  cursor: pointer;
+}
+.allies {
+  background-color: #2C709D;
+}
+.axis {
+  background-color: #8b0000;
+}
+.hr-span {
+  height: 3px;
+  width: 100%;
+  background-color: #FFFFFF;
+}
+.axis-flag,
+.ally-flag {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+.country-info {
+  position: absolute;
+  bottom: 25px;
+  right: 12px;
+  z-index: 10;
+  @box ShadowHelper(5);
+  background-color: #FFFFFF;
+  border: 2px solid #111111;
+}
+.country-info > span {
+  font-size: 200%;
+  padding: 4px 8px;
+}
+.slider-bar {
+  display: inline-block;
+  margin-top: 50px;
+  vertical-align: top;
+  z-index: 10;
+  width: calc(100% - 175px);
+  margin-left: 175px;
+}
+input[type=range] {
+  /*removes default webkit styles*/
+  -webkit-appearance: none;
+  /*fix for FF unable to apply focus style bug */
+  border: 1px solid white;
+  /*required for proper track sizing in FF*/
+  width: 70%;
+  cursor: pointer;
+  margin: auto;
+  display: block;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 300px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: goldenrod;
+  margin-top: -12px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+input[type=range]::-moz-range-track {
+  width: 300px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: goldenrod;
+}
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring {
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+input[type=range]::-ms-track {
+  width: 300px;
+  height: 5px;
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-color: transparent;
+  border-width: 6px 0;
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #777;
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #ddd;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: goldenrod;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #888;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ccc;
+}
+.map-date-info {
+  margin-left: 18px;
+  position: absolute;
+  bottom: 5px;
+  border: 2px solid #111111;
+  padding: 4px 6px;
+  background-color: #FFFFFF;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+.map-date-info .europe-label,
+.map-date-info .date-label {
+  display: block;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+}
+.map-date-info .europe-label {
+  font-size: 250%;
+  line-height: 75%;
+}
+.map-date-info .date-label {
+  font-size: 150%;
+  line-height: 80%;
+}
+.loading-bar {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  not supported by any browser */
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  z-index: 1001;
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+.loading-bar span {
+  color: #FFFFFF;
+  text-transform: uppercase;
+  font-weight: 900;
+  text-align: center;
+}
+.loading-bar.minimize {
+  width: auto;
+  height: auto;
+}
+.loading-bar.minimize .loading-container {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  min-width: 200px;
+  height: 40px;
+}
+.loading-bar.minimize .loading-icon {
+  display: none;
+}
+.loading-bar.minimize .loading-icon-alt {
+  display: inline-block;
+  float: left;
+}
+.loading-bar.minimize .loading-label {
+  display: inline-block;
+  margin-top: 13px;
+}
+.loading-bar.show {
+  display: block;
+  opacity: 1;
+  pointer-events: all;
+}
+.loading-container {
+  position: relative;
+  width: 150px;
+  margin: 6px auto 0px auto;
+  border: 2px solid #FFFFFF;
+  background-color: #813772;
+  border-radius: 8px;
+}
+.loading-icon {
+  background-image: url(feee632c8fe8a317024698d0877dd6a0.gif);
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 12px auto 24px auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.loading-icon-alt {
+  background-image: url(16bfbf66b46f93afffafc256c78cd25b.gif);
+  display: none;
+  width: 50px;
+  height: 50px;
+  margin: -5px auto 0px auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#items-loading {
+  margin-left: 0px;
+}
+.loading-label {
+  margin: 12px auto;
+  display: block;
+}
+.sidebar-game-controls {
+  width: 285px;
+  background-color: white;
+  z-index: 10;
+  position: relative;
+  margin: 18px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  max-height: 0;
+  transition: max-height 0.5s ease-out;
+}
+.sidebar-game-controls.open {
+  max-height: 500px;
+  transition: max-height 0.75s ease-in;
+  border: 2px solid black;
+}
+.history-details {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+  display: block;
+  font-family: 'Allerta Stencil';
+}
+.history-details > .title {
+  font-size: 200%;
+  margin-top: 8px;
+  padding-left: 8px;
+  line-height: 89%;
+}
+.history-details > .text {
+  padding: 0px 8px 8px 8px;
+  max-height: 300px;
+  overflow: auto;
+}
+.history-details > button {
+  display: block;
+  font-size: 200%;
+  background-color: #4b5320;
+  text-align: center;
+  margin: 8px auto;
+  cursor: pointer;
+  font-family: 'Allerta Stencil';
+  color: #FFFFFF;
+}
+.toggle-hide-window {
+  position: absolute;
+  right: -50px;
+  top: 0px;
+  padding: 8px 12px;
+  border: 2px solid #111111;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+.bottom-bar-view {
+  position: absolute;
+  height: 100px;
+  width: 100%;
+  bottom: 0px;
+  z-index: 10;
+}
+html,
+body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Sarpanch', sans-serif;
+}
+.appView {
+  width: 100%;
+  height: 100%;
+}
+.appView canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin: 0 auto;
+}
+.appView canvas.hovered-3d {
+  cursor: pointer;
+}

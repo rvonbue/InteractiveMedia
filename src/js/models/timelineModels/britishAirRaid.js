@@ -16,7 +16,7 @@ let BritishAirRaid = BaseTimelineModel.extend({
         targetPosition: {x: -10.422032314109362, y: -2.767908515571208, z: 3.98483323035648},
         cameraPosition: {x: -11.256251587384604, y: 5.367395621760747, z: 8.780098601818695}
       },
-      date:"Aug. 28, 1940",
+      date:"Aug. 15, 1940",
       title: "Battle Of Britain",
       text: "The Battle of Britain was a military campaign of the Second World War, in which the Royal Air Force (RAF) defended the United Kingdom (UK) against large-scale attacks by the German Air Force (Luftwaffe). It has been described as the first major military campaign fought entirely by air forces"
     }

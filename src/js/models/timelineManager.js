@@ -45,13 +45,7 @@ let TimelineManager = Backbone.Model.extend({
     }
 
   },
-  // loadTimeline: function () {
-  //   let timelineModel = this.get("timeEvents")[this.get("currentPosition")];
-  //   eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel);
-  //   timelineModel.startAnimation();
-  // },
   restartExsitingTimeline: function () {
-    console.log("restart");
     let timelineModel = this.get("timeEvents")[this.get("currentPosition")];
     // this.startTimelineModel(timelineModel);
     this.selectTimelineModel(timelineModel);

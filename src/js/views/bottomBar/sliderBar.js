@@ -1,6 +1,6 @@
-import eventController from "../controllers/eventController";
+import eventController from "../../controllers/eventController";
 import template from "./sliderBar.html";
-import { length } from "../models/timelineModels/timelineModelsCombined";
+import { length } from "../../models/timelineModels/timelineModelsCombined";
 
 let SliderBar = Backbone.View.extend({
   className: "slider-bar",

@@ -26,9 +26,3 @@ function isCanvasSupported () { //test if webgl is supported
 function startApp () {
   return new AppView({});
 }
-
-
-// import eventController from "./js/controllers/eventController";
-// import commandController from "./js/controllers/commandController";
-// window.eventController = eventController;
-// window.commandController = commandController;

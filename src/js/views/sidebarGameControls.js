@@ -3,9 +3,10 @@ import axisAllyView from "../views/axisAllyView";
 import template from "./sidebarGameControls.html";
 
 let SidebarGameControls = Backbone.View.extend({
-  className: "sidebar-game-controls",
+  className: "sidebar-game-controls open",
   events: {
-    "click button": "startTimelineModel"
+    "click button": "startTimelineModel",
+    "click .toggle-hide-window": "toggleClose"
   },
   initialize: function () {
     // eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.selectAxisAlly, this);
@@ -14,20 +15,31 @@ let SidebarGameControls = Backbone.View.extend({
   selectAxisAlly: function () {
 
   },
+  toggleClose: function () {
+
+  },
   startTimelineModel: function () {
     eventController.trigger(eventController.START_TIMELINE_MODEL);
     this.$el.find("button").fadeOut();
   },
   loadTimelineModel: function (historyDetails) {
-    this.historyDetailsEl.empty();
-    if (historyDetails) this.updateHistoryDetails(historyDetails);
+    this.$el.removeClass("open");
+
+    let self = this;
+
+    setTimeout(function () {
+      if (historyDetails) self.updateHistoryDetails(historyDetails);
+    },1000);
+
   },
   updateHistoryDetails: function (historyDetails) {
-    this.historyDetailsEl.append($(template(historyDetails)));
+    this.$el.addClass("open");
+    this.historyDetailsEl.empty().append($(template(historyDetails)));
   },
   render: function () {
-    this.$el.append(new axisAllyView().render().el);
+    // this.$el.append(new axisAllyView().render().el);
     this.historyDetailsEl = $(`<div class='history-details'></div>`);
+    this.historyDetailsEl.append(`<div class="title" style="font-size:300%; padding-bottom: 8px;">EUROPE 1939 </div>`);
     this.$el.append(this.historyDetailsEl);
     return this;
   }

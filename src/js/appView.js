@@ -12,10 +12,8 @@ import TimelineManager from "./models/timelineManager";
 // import StatsView from "./components/statsView";
 
 import sidebarGameControls from "./views/sidebarGameControls";
-import bottomBarView from "./views/bottomBarView";
+import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
-
-import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -58,14 +56,6 @@ let AppView3d = Backbone.View.extend({
     new LightControls();
     new TimelineManager();
     // this.addHelpers(this.scene);
-    // this.composer = new EffectCompose  r( this.renderer );
-		// this.composer.addPass( new RenderPass( this.scene, this.controls.camera ) );
-    //
-		// let	glitchPass = new GlitchPass();
-		// 		glitchPass.renderToScreen = true;
-		// this.composer.addPass( glitchPass );
-    //
-    // this.renderer.composer = this.composer;
     this.renderer.animate();
 
   },
@@ -75,7 +65,7 @@ let AppView3d = Backbone.View.extend({
 				helper.material.transparent = false;
       	helper.material.color.b = 0;
         helper.material.color.g = 0;
-				scene.add( helper );
+		scene.add( helper );
   },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() };

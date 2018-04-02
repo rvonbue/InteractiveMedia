@@ -28,7 +28,10 @@ module.exports = {
       },
       { test: /\.html$/,
         use: [{
-          loader: "underscore-template-loader"
+          loader: "underscore-template-loader",
+          query: {
+                    attributes: []
+                }
        }]
       },
       { test: /\.less$/, use: [

@@ -11,35 +11,21 @@ let RedArmyCounterOffensive = BaseTimelineModel.extend({
     historyDetails: {
       countries: ["germany", "russia" ],
       eventPositions: {
-        targetPosition: {x: -0, y: -2.767908515571208, z: 3.98483323035648},
-        cameraPosition: {x: -0, y: 5.367395621760747, z: 8.780098601818695}
+        targetPosition: {x: 0.837, y: -1.508, z: 1.817},
+        cameraPosition: {x: 1.441, y: 11.0223, z: 10.010}
       },
-      date:"Aug. 28, 1940",
+      date:"Dec. 5, 1941",
       title: "Red Army Counter Offensive",
       text: "The successful Red Army surprise counter-offensive in front of Moscow, which began on 5 December, was the second most significant battle of the entire war"
     }
   },
   startAnimation: function () {
     TWEEN.removeAll();
-    let self = this;
-    setTimeout(function () {
-      self.animatedModelsCollection.each( (model)=> model.startAnimation() );
-      self.flyPlaneAcrossScreen();
-      self.showModels();
-    }, 50);
 
   },
   flyPlaneAcrossScreen: function () {
 
-    this.animatedModelsCollection.each( (model)=> {
-      let tween = this.getTween(
-        model.getPivot().position,
-        model.get("endPosition"),
-        this.get("animationDuration")
-      );
-      tween.onComplete(()=> { model.hide(); })
-      tween.start();
-    }, this);
+    this.animatedModelsCollection.each( (model)=> { }, this);
 
   },
   getTween: function (from, to, duration) {

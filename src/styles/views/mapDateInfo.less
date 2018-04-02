@@ -1,7 +1,12 @@
 .map-date-info {
-  margin: @windowMarginLeft;
+  margin-left: @windowMarginLeft;
   position: absolute;
-  bottom: 0px;
+  bottom: 5px;
+  border: 2px solid @colorBlack;
+  padding: 4px 6px;
+  background-color: @colorWhite;
+  .BoxShadowHelper(3);
+  .no-select;
   .europe-label, .date-label {
     display: block;
     margin: 0px;
@@ -9,11 +14,11 @@
     position: relative;
   }
   .europe-label {
-    font-size: 400%;
+    font-size: 250%;
     line-height: 75%;
   }
   .date-label {
-    font-size: 230%;
+    font-size: 150%;
     line-height: 80%;
   }
 }
