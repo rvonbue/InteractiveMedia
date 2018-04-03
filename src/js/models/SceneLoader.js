@@ -23,7 +23,7 @@ var SceneLoader = Backbone.Model.extend({
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj); //load scene Models
     }, this);
 
-    // this.loadSpriteSheets();
+    this.loadSpriteSheets();
   },
   getSceneModels: function (options) {
     return this.sceneModelCollection.where(options);

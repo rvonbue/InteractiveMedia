@@ -15,7 +15,8 @@ let SceneModel = Backbone.Model.extend({
     "ready": false,
     "interactive": true,
     "animating": false,
-    "power": null
+    "power": null,
+    "centerPosition": null
   },
   initialize: function( options ) {
     this.addModelListeners();
@@ -49,7 +50,7 @@ let SceneModel = Backbone.Model.extend({
   onChangeSelected: function () {
     // if (this.get("hover")) return;
     if ( this.get("selected") ) {
-      this.animateBleed();
+      this.drawFlagBackground();
     } else {
       TWEEN.removeAll();
       this.unhighlightMaterial();
@@ -94,8 +95,10 @@ let SceneModel = Backbone.Model.extend({
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
     let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
     let centerPoint = {x: canvasCenter.x - spritePos.x, y: canvasCenter.y - spritePos.y};
+    console.log("centerPosition", this.get("centerPosition"));
+    let newPos = this.get("centerPosition");
 
-    context.drawImage(sprite.imageObj, sprite.pos.x, sprite.pos.y, sprite.size.w, sprite.size.h, centerPoint.x, centerPoint.y, sprite.size.w, sprite.size.h);
+    context.drawImage(sprite.imageObj, sprite.pos.x, sprite.pos.y, sprite.size.w, sprite.size.h, newPos.x * 2 - spritePos.x, newPos.y * 2 - spritePos.y, sprite.size.w, sprite.size.h);
     context.drawImage(this.getBorderImage(), 0,0);
 
     this.updateTextureMap();
