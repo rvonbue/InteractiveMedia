@@ -2,7 +2,8 @@
 import commandController from "../controllers/commandController"
 import utils from "../components/utils";
 import TWEEN from "tween.js";
-let color = utils.getColorPallete();
+import Color from "color";
+let colorPallete = utils.getColorPallete();
 
 let SceneModel = Backbone.Model.extend({
   defaults: {
@@ -50,14 +51,14 @@ let SceneModel = Backbone.Model.extend({
   onChangeSelected: function () {
     // if (this.get("hover")) return;
     if ( this.get("selected") ) {
-      this.drawFlagBackground();
+      this.animateBleed();
     } else {
       TWEEN.removeAll();
       this.unhighlightMaterial();
     }
   },
   resetImageTexture: function (context) {
-    context.fillStyle = color.countryMap;
+    context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,512,512);
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0, 0);
@@ -88,15 +89,15 @@ let SceneModel = Backbone.Model.extend({
     let canvas = this.getTextureCanvas();
     let context = canvas.getContext( '2d' );
 
-    context.fillStyle = color.countryMap;
+    context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,512,512);
 
     let sprite = commandController.request(commandController.GET_IMAGE_SPRITE, this.get("name"), this);
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
     let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
     let centerPoint = {x: canvasCenter.x - spritePos.x, y: canvasCenter.y - spritePos.y};
-    console.log("centerPosition", this.get("centerPosition"));
     let newPos = this.get("centerPosition");
+
 
     context.drawImage(sprite.imageObj, sprite.pos.x, sprite.pos.y, sprite.size.w, sprite.size.h, newPos.x * 2 - spritePos.x, newPos.y * 2 - spritePos.y, sprite.size.w, sprite.size.h);
     context.drawImage(this.getBorderImage(), 0,0);
@@ -108,7 +109,7 @@ let SceneModel = Backbone.Model.extend({
     return this.get("mesh3d");
   },
   getHighlightColor: function () {
-    return this.get("power") === 0 ? utils.getColorPallete().ally : utils.getColorPallete().axis;
+    return this.get("power") === 0 ? colorPallete.ally : colorPallete.axis;
   },
   getTween: function (to, from) {
     let self = this;
@@ -133,26 +134,25 @@ let SceneModel = Backbone.Model.extend({
   updateTextureMap: function () {
     this.get("mesh3d").material.map.needsUpdate = true;
   },
-  highlightHover: function () {
-
-  },
-  unhighlightHover: function () {
-
-  },
   unhighlightMaterial: function () {
     let context = this.getCanvasContext();
-    context.fillStyle = color.countryMap;
+    context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,512,512);
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0,0);
   },
   highlightMaterial: function () {
     let context = this.getCanvasContext();
-    context.fillStyle = this.getHighlightColor();
+    let highlightcolor = this.getHighlightColor();
+    context.fillStyle = highlightcolor;
     context.fillRect(0,0,512,512);
-    // this.createNoise(context);
+
+    // this.createNoise(context, highlightcolor);
     this.updateTextureMap();
+
+    // context.globalCompositeOperation = "destination-in";
     context.drawImage(this.getBorderImage(), 0,0);
+    // context.globalCompositeOperation = "source-over";
   },
   reset: function (showHideBool) {
     this.set("selected", false);
@@ -167,12 +167,32 @@ let SceneModel = Backbone.Model.extend({
   hide: function () {
       // console.log("asdfasdf", this.get("mesh3d").material.opacity = 0.25);
   },
-  createNoise: function (ctx) {
+  createNoise: function (ctx, color) {
     let idata = ctx.createImageData(512, 512); // create image data
-    let buffer32 = new Uint32Array(idata.data.buffer);
+    let buffer32 = new Uint8Array(idata.data.buffer);
     let len = buffer32.length - 1;
-    while(len--) buffer32[len] = Math.random() < 0.5 ? 0 : -1>>0;
+    let countryColor = this.getHexadecimalColor(colorPallete.countryMap);
+    let powerColor = this.getHexadecimalColor(color);
+
+    for (var y = 0; y < 512; ++y) {
+      for (var x = 0; x < 512; ++x) {
+        var offset = 4 * (y * 512 + x);
+        let random = Math.random();
+        // light blue (#80d7ff)
+        buffer32[offset+0] = random < 0.5 ? powerColor[0] : countryColor[0];  // red
+        buffer32[offset+1] = random < 0.5 ? powerColor[1] : countryColor[1];  // green
+        buffer32[offset+2] = random < 0.5 ? powerColor[2] : countryColor[2]; // blue
+        buffer32[offset+3] = random < 0.5 ? 0xff : 0xff; // alpha
+      }
+    }
     ctx.putImageData(idata, 0, 0);
+  },
+  getHexadecimalColor: function (color) {
+    return [
+      parseInt(`0x${color[1]}${color[2]}`),
+      parseInt(`0x${color[3]}${color[4]}`),
+      parseInt(`0x${color[5]}${color[6]}`)
+    ];
   },
   getZoomPoint: function () {
     let mesh3d = this.get("mesh3d");

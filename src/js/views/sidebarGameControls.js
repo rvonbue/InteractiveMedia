@@ -39,7 +39,6 @@ let SidebarGameControls = Backbone.View.extend({
   render: function () {
     // this.$el.append(new axisAllyView().render().el);
     this.historyDetailsEl = $(`<div class='history-details'></div>`);
-    this.historyDetailsEl.append(`<div class="title" style="font-size:300%; padding-bottom: 8px;">EUROPE 1939 </div>`);
     this.$el.append(this.historyDetailsEl);
     return this;
   }

@@ -8,14 +8,11 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     "baseUrl": "models3d/animatedModels/",
     "modelNames":["messerschmitt", "spitfirePropeller"],
     "power": "axis",
-    "startPosition": {x: -8.061819575074082, y: 0.21276100294012273, z: 4.806367071421903},
-    "endPosition": {x: -13.797846777886399, y: 0.24247231609352599, z: 4.191705423764497}
+    "startPosition": {x: -8.061819575074082, y: 0.55, z: 4.806367071421903},
+    "endPosition": {x: -15, y: 0.55, z: 2}
   },
   modelReady: function () {
-
     // this.makeSquadron();
-
-
   },
   makeSquadron: function () {
     // this.getPivot().children.forEach( (mesh)=> {
@@ -48,7 +45,7 @@ let MesserschmittModel = BaseAnimatedModel.extend({
   },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, Math.PI / -2, 0 );
-    this.getPivot().scale.set(0.5,0.5,0.5 );
+    this.getPivot().scale.set(3,3,3 );
   },
   translateCenterPoint: function (mesh3d) {
     let distX = 0.00097;  // Magic Number propeller THREEjs cannot computer center correctly
