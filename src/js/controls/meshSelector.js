@@ -28,9 +28,23 @@ let MeshSelector = Backbone.Model.extend({
     eventController.trigger(eventController.HOVER_NAVIGATION, null);
   },
   addSelectMesh: function () {
+    let pivot = new THREE.Object3D();
     let geo = new THREE.OctahedronGeometry(0.25, 0);
     let material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
-    this.selectMesh = new THREE.Mesh( geo, material );
+
+    var geometry = new THREE.CylinderBufferGeometry( 0.03, 0.03, 0.50, 32 );
+    var material2 = new THREE.MeshBasicMaterial( {color: 0xd3d3d3} );
+    var cylinder = new THREE.Mesh( geometry, material2 );
+    cylinder.position.y = 0.4;
+    pivot.add(cylinder);
+
+    var geometry3 = new THREE.SphereBufferGeometry( 0.2, 16, 16 );
+    var material3 = new THREE.MeshPhongMaterial( {color: 0xff0000, shininess: 90, specular: 0x111111} );
+    var sphere = new THREE.Mesh( geometry3, material3 );
+    sphere.position.y = 0.75;
+    pivot.add(sphere);
+
+    this.selectMesh = pivot;
     this.selectMesh.position.set(-5, 0 , 0);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },
@@ -107,7 +121,6 @@ let MeshSelector = Backbone.Model.extend({
   },
   resetRaycaster: function (arr) {
     this.set("raycasterObjects", arr);
-    console.log("arr", arr);
   },
   cancelSelectMeshTimer: function () {
 
@@ -155,9 +168,9 @@ let MeshSelector = Backbone.Model.extend({
     if (raycast && raycast.point) {
       console.log("getCountryMeshCenter", this.getCountryMesh([ raycast.object.name ]) );
       console.log("getCountryMeshPoint", raycast.point  );
-      this.selectMesh.position.set(raycast.point.x, 0.5, raycast.point.z);
+      this.selectMesh.position.set(raycast.point.x, 0, raycast.point.z);
     } else if (raycast) {
-      this.selectMesh.position.set(raycast.x, 0.5, raycast.z);
+      this.selectMesh.position.set(raycast.x, 0, raycast.z);
     }
   },
   moveSceneDetailsIcon: function (selectedMesh) {

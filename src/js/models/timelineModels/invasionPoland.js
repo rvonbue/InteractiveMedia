@@ -3,28 +3,26 @@ import commandController from "../../controllers/commandController";
 import BaseTimelineModel from "./BaseTimelineModel";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
 
-let RedArmyCounterOffensive = BaseTimelineModel.extend({
+let InvasionPoland = BaseTimelineModel.extend({
   defaults:{
-    name: "redArmyCounterOffensive",
+    name: "invasionPoland",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
     historyDetails: {
       countries: [
         { name:"germany", power: 0, invaded: false},
-        { name:"russia", power: 1, invaded: false}
+        { name:"eastprussia", power: 0, invaded: false},
+        { name:"russia", power: 0, invaded: false},
+        {name: "poland", power: 0, invaded: true, silent: false}
       ],
       eventPositions: {
-        targetPosition: {x: 0.837, y: -1.508, z: 1.817},
-        cameraPosition: {x: 1.441, y: 11.0223, z: 10.010}
+        targetPosition: {x: -2.336991143750445, y: -2.153566862780448, z: 3.0383154047995986},
+        cameraPosition: {x: -1.732991143750445, y: 10.376733137219553, z: 11.2313154047996}
       },
-      date:"Dec. 5, 1941",
-      title: "Red Army Counter Offensive",
-      text: "The successful Red Army surprise counter-offensive in front of Moscow, which began on 5 December, was the second most significant battle of the entire war"
+      date:"Sept. 1, 1939",
+      title: "Invasion of Poland",
+      text: "Germany invaded Poland and officially started World War II."
     }
-  },
-  startAnimation: function () {
-    TWEEN.removeAll();
-
   },
   flyPlaneAcrossScreen: function () {
 
@@ -39,5 +37,5 @@ let RedArmyCounterOffensive = BaseTimelineModel.extend({
   }
 });
 
-_.defaults(RedArmyCounterOffensive.prototype.defaults, BaseTimelineModel.prototype.defaults);
-module.exports = RedArmyCounterOffensive;
+_.defaults(InvasionPoland.prototype.defaults, BaseTimelineModel.prototype.defaults);
+module.exports = InvasionPoland;

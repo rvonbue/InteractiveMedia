@@ -9,7 +9,7 @@ let SidebarGameControls = Backbone.View.extend({
     "click .toggle-hide-window": "toggleClose"
   },
   initialize: function () {
-    // eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.selectAxisAlly, this);
+    eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.selectAxisAlly, this);
     eventController.on(eventController.LOAD_TIMELINE_MODEL, this.loadTimelineModel, this);
   },
   selectAxisAlly: function () {
@@ -24,12 +24,12 @@ let SidebarGameControls = Backbone.View.extend({
   },
   loadTimelineModel: function (historyDetails) {
     this.$el.removeClass("open");
+    if (historyDetails) this.updateHistoryDetails(historyDetails);
+    // let self = this;
 
-    let self = this;
-
-    setTimeout(function () {
-      if (historyDetails) self.updateHistoryDetails(historyDetails);
-    },1000);
+    // setTimeout(function () {
+    //   if (historyDetails) self.updateHistoryDetails(historyDetails);
+    // },1000);
 
   },
   updateHistoryDetails: function (historyDetails) {
@@ -37,7 +37,7 @@ let SidebarGameControls = Backbone.View.extend({
     this.historyDetailsEl.empty().append($(template(historyDetails)));
   },
   render: function () {
-    // this.$el.append(new axisAllyView().render().el);
+    this.$el.append(new axisAllyView().render().el);
     this.historyDetailsEl = $(`<div class='history-details'></div>`);
     this.$el.append(this.historyDetailsEl);
     return this;

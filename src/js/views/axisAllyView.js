@@ -3,10 +3,10 @@ import template from "./axisAlly.html";
 
 let axisAlly = Backbone.View.extend({
   className: "country-pane-hover",
-  // events: {
-  //   "mouseenter .power-hover": "powerMouseEnter",
-  //   "mouseleave .power-hover": "powerMouseLeave"
-  // },
+  events: {
+    "mouseenter .power-hover": "powerMouseEnter",
+    "mouseleave .power-hover": "powerMouseLeave"
+  },
   powerMouseEnter: function (evt) {
     eventController.trigger(eventController.HOVER_ALL_AXIS_OR_ALLY, $(evt.currentTarget).index(".power-hover") );
   },

@@ -13,7 +13,6 @@ var SceneLoader = Backbone.Model.extend({
     }]
   },
   initialize: function (options) {
-    _.bindAll(this, "addModelsToScene");
     this.sceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
     this.scene = options.scene;
@@ -58,14 +57,40 @@ var SceneLoader = Backbone.Model.extend({
 
     return objects3d;
   },
-  selectSceneModels: function (countryNames) {
+  getCountries: function (countryArr) {
+    let countries = [];
 
-    countryNames.forEach( (countryName)=> {
-      let countryModel = this.sceneModelCollection.findWhere({ name: countryName});
-      countryModel.set("selected", true);
+    countryArr.forEach( (countryObj)=> {
+      countries.push(this.sceneModelCollection.findWhere({ name: countryObj.name}))
     });
+    return countries;
+  },
+  selectSceneModels: function (countryNames) {
+    if (countryNames.length === 0 ) {
+      this.sceneModelCollection.each( (model)=> {
+        model.unhighlightMaterial();
+      });
+    }
+
+    countryNames.forEach( (countryObj)=> {
+
+      let countryModel = this.sceneModelCollection.findWhere({ name: countryObj.name});
+      countryModel.set("invaded", countryObj.invaded);
+      if (!countryObj.invaded || (countryObj.invaded && countryObj.silent) ) {
+        countryModel.set("selected", true);
+        console.log("countryModel", countryModel);
+      }
+
+    });
+
     this.sceneModelCollection.where({ selected: false}).forEach((model)=>{
       model.hide();
+    });
+  },
+  getInvadedCountries: function (countryNames) {
+    console.log("countryNames", countryNames);
+    this.getCountries(countryNames).forEach( (sceneModel)=> {
+      sceneModel.animateInvasion();
     });
   },
   addModelsToScene: function (sceneModelArray) {
@@ -73,7 +98,7 @@ var SceneLoader = Backbone.Model.extend({
   },
   removeModelsFromScene: function (modelArray) {
     _.each(modelArray, function (object3d) {
-      this.scene.add(object3d);
+      this.scene.remove(object3d);
     }, this);
   },
   loadSpriteSheets: function () {
@@ -84,8 +109,10 @@ var SceneLoader = Backbone.Model.extend({
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
      eventController.on(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
-     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
-     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
+     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene, this);
+     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene, this);
+     eventController.on(eventController.INVADE_COUNTRY, this.getInvadedCountries, this);
+
      eventController.on(eventController.SELECT_SCENE_MODELS, this.selectSceneModels, this);
      eventController.once(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
 

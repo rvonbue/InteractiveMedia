@@ -38,16 +38,16 @@ module.exports = {
 
       },
       directional: {
-        color: "#FD7D01",
-        intensity: 0, //0.3
-        position: {x: 0, y: 10, z: 5}
+        color: "#ffffff",
+        intensity: 1, //0.3
+        position: {x: 0, y: 10, z: 10}
       }
     };
   },
   getColorPallete: function () {
     return {
-      axis: "#2C709D",
-      ally: "#8b0000",
+      axis: "#8b0000",
+      ally: "#2C709D",
       countryMap: "#555555"
     };
   }

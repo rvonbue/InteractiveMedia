@@ -19,7 +19,7 @@
         "depthWrite": true,
         "DbgName": "ground",
         "colorAmbient": [0.64,0.64,0.64],
-        "shading": "lambert",
+        "shading": "phong",
         "DbgIndex": 0,
         "visible": true,
         "wireframe": false,

@@ -15,7 +15,7 @@
         "opacity": 1,
         "wireframe": false,
         "doubleSided": true,
-        "shading": "lambert",
+        "shading": "phong",
         "transparent": false,
         "depthTest": true,
         "blending": "NormalBlending"

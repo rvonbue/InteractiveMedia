@@ -24,15 +24,18 @@ let TimelineManager = Backbone.Model.extend({
     let currentTimeEventExist = this.doesTimeEventExist(this.get("currentPosition"));
     let newTimeEventExist = this.doesTimeEventExist(timePosition);
 
-
-    if (currentTimeEventExist) this.stopPreviousTimelineModel(); //stop and remove existing timeline from view
+    if (currentTimeEventExist) {
+      this.stopPreviousTimelineModel(this.get("currentPosition"), timePosition); //stop and remove existing timeline from view
+    }
 
     this.set("currentPosition", timePosition);
+
 
     if (newTimeEventExist) {
       this.restartExsitingTimeline();
       return;
     };
+
     if ( timePosition === 0 ) {
         eventController.trigger(eventController.ANIMATE_CAMERA);
         return;
@@ -50,7 +53,7 @@ let TimelineManager = Backbone.Model.extend({
     // this.startTimelineModel(timelineModel);
     this.selectTimelineModel(timelineModel);
   },
-  stopPreviousTimelineModel: function () {
+  stopPreviousTimelineModel: function (oldtimelinePosition ) {
     this.stopTimeline();
     eventController.trigger(eventController.LOAD_TIMELINE_MODEL, null);
   },

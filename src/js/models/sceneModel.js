@@ -2,7 +2,6 @@
 import commandController from "../controllers/commandController"
 import utils from "../components/utils";
 import TWEEN from "tween.js";
-import Color from "color";
 let colorPallete = utils.getColorPallete();
 
 let SceneModel = Backbone.Model.extend({
@@ -17,6 +16,7 @@ let SceneModel = Backbone.Model.extend({
     "interactive": true,
     "animating": false,
     "power": null,
+    "invaded": false,
     "centerPosition": null
   },
   initialize: function( options ) {
@@ -51,7 +51,7 @@ let SceneModel = Backbone.Model.extend({
   onChangeSelected: function () {
     // if (this.get("hover")) return;
     if ( this.get("selected") ) {
-      this.animateBleed();
+      this.highlightMaterial();
     } else {
       TWEEN.removeAll();
       this.unhighlightMaterial();
@@ -63,18 +63,42 @@ let SceneModel = Backbone.Model.extend({
     this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0, 0);
   },
+  animateInvasion: function () {
+    let self = this;
+    let canvas = this.getTextureCanvas();
+    let context = canvas.getContext( '2d' );
+
+    this.resetImageTexture(context);
+    context.fillStyle = self.getHighlightColor();
+    console.log("self.getHighlightColor();", self.getHighlightColor());
+    new TWEEN.Tween(0)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .interpolation(TWEEN.Interpolation.Bezier)
+      .to(1, 2000)
+      .onUpdate(function (val) {
+
+        context.arc(256, 256, 350 * val, 0, 2 * Math.PI, false);
+        context.fill();
+        context.drawImage(self.getBorderImage(), 0,0);
+        self.updateTextureMap();
+      })
+      .onComplete(function () {
+        self.set("animating", false);
+      })
+      .start();
+  },
   animateBleed: function () {
     let canvas = this.getTextureCanvas();
     let context = canvas.getContext( '2d' );
     let self = this;
     this.resetImageTexture(context);
+    context.fillStyle = self.getHighlightColor();
 
     new TWEEN.Tween(0)
       .easing(TWEEN.Easing.Quadratic.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
       .to(1, 2000)
       .onUpdate(function (val) {
-        context.fillStyle = self.getHighlightColor();
         context.arc(256, 256, 350 * val, 0, 2 * Math.PI, false);
         context.fill();
         context.drawImage(self.getBorderImage(), 0,0);
@@ -109,7 +133,12 @@ let SceneModel = Backbone.Model.extend({
     return this.get("mesh3d");
   },
   getHighlightColor: function () {
-    return this.get("power") === 0 ? colorPallete.ally : colorPallete.axis;
+
+    if (this.get("invaded")) {
+      return colorPallete.axis;
+    } else {
+      return this.get("power") === 0 ? colorPallete.axis : colorPallete.ally;
+    }
   },
   getTween: function (to, from) {
     let self = this;

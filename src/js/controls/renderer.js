@@ -14,7 +14,7 @@ let Renderer = Backbone.Model.extend({
     this.controls = options.controls;
   },
   initRenderer: function (size, canvas) {
-    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:true, canvas: canvas });
+    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas: canvas });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( "#778899", 0 );
@@ -23,8 +23,12 @@ let Renderer = Backbone.Model.extend({
     this.renderLoop = raf( this.animate );
     // this.statsView.stats.begin();
     TWEEN.update(time);
+
     this.controls.orbitControls.update(this.clock.getDelta());
     this.renderer.render(this.scene, this.controls.orbitControls.object);
+    // let delta = this.clock.getDelta()
+    // this.composer.render(delta);
+    // this.controls.orbitControls.update(delta);
     // this.statsView.stats.end();
   },
   cancelAnimate: function () {

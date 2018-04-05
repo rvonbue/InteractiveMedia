@@ -14,7 +14,7 @@
         "DbgColor": 15658734,
         "specularCoef": 50,
         "DbgIndex": 0
-        "shading": "lambert",
+        "shading": "phong",
         "depthTest": true,
         "depthWrite": true,
         "colorEmissive": [0,0,0]

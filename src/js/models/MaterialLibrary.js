@@ -39,7 +39,6 @@ var MaterialLibrary = Backbone.Model.extend({
     var hasShadingType = hasProps && matmaplist.props.shadingType ? true : false;
     var shadingType = hasShadingType ? matmaplist.props.shadingType : false;
 
-
     if ( hasShadingType ) {
       return new THREE[shadingType]({ name: mat.name, side: THREE.FrontSide });
     } else {
@@ -87,7 +86,25 @@ var MaterialLibrary = Backbone.Model.extend({
         canvas.height = image.height;
         context.fillStyle = color.countryMap;
         context.fillRect(0,0,512,512);
-    		context.drawImage( image, 0, 0 );
+        // context.shadowColor = "black";
+        // context.shadowBlur = 25;
+        //
+        // context.shadowOffsetX = 3;
+        // context.shadowOffsetY = 3;
+    		// context.drawImage( image, 0, 0 );
+        //
+        // context.shadowOffsetX = -3;
+        // context.shadowOffsetY = -3;
+        // context.drawImage( image, 0, 0 );
+        //
+        // context.shadowOffsetX = 3;
+        // context.shadowOffsetY = 3;
+        // context.drawImage( image, 0, 0 );
+        //
+        // context.shadowOffsetX = -3;
+        // context.shadowOffsetY = -3;
+        context.drawImage( image, 0, 0 );
+
         texture.needsUpdate = true;
         texture.borderImage = image;
     	}

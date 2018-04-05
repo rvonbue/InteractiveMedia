@@ -14,6 +14,8 @@ import TimelineManager from "./models/timelineManager";
 import sidebarGameControls from "./views/sidebarGameControls";
 import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
+import { EffectComposer, GlitchPass, FilmPass, RenderPass } from "postprocessing";
+
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -55,9 +57,15 @@ let AppView3d = Backbone.View.extend({
     new SceneAnimator();
     new LightControls();
     new TimelineManager();
+
+		// let composer = new EffectComposer( this.renderer.renderer );
+		// composer.addPass( new RenderPass( this.scene, this.controls.orbitControls.object ) );
+		// let glitchPass = new FilmPass();
+		// glitchPass.renderToScreen = true;
+		// composer.addPass( glitchPass );
+    // this.renderer.composer = composer;
     // this.addGround(this.scene);
-    // this.addHelpers(this.scene);
-    this.addCurve(this.scene);
+
     this.renderer.animate();
 
   },
@@ -70,65 +78,13 @@ let AppView3d = Backbone.View.extend({
 		scene.add( helper );
   },
   addGround: function (scene) {
-    var geometry = new THREE.PlaneGeometry( 75, 75, 32 );
-    var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    var geometry = new THREE.PlaneGeometry( 100, 100, 32 );
+    var material = new THREE.MeshBasicMaterial( {color: "#151515", side: THREE.DoubleSide} );
     var plane = new THREE.Mesh( geometry, material );
         plane.rotation.set(Math.PI /2, 0, 0);
-    console.log("plane", plane);
+        plane.position.set(0, 0.1, 0);
     scene.add( plane );
 
-  },
-  addCurve: function (scene) {
-    var curve = new THREE.CatmullRomCurve3(
-      [
-        new THREE.Vector3(-2, 2, 0),
-        new THREE.Vector3(-1, 0.5, 0),
-        new THREE.Vector3(0, 1, 0),
-        new THREE.Vector3(1, 3, 0),
-        new THREE.Vector3(2, 1, 0)
-      ]
-    );
-
-    var pointsCount = 50;
-    var pointsCount1 = pointsCount + 1;
-    var points = curve.getPoints(pointsCount);
-    
-    var pts = curve.getPoints(pointsCount);
-    var width = 2;
-    var widthSteps = 1;
-    let pts2 = curve.getPoints(pointsCount);
-    pts2.forEach(p => {
-      p.z += width;
-    });
-    pts = pts.concat(pts2);
-    console.log("BufferGeometry", new THREE.BufferGeometry())
-    var ribbonGeom = new THREE.BufferGeometry().setFromPoints(pts);
-
-    var indices = [];
-    for (iy = 0; iy < widthSteps; iy++) { // the idea taken from PlaneBufferGeometry
-      for (ix = 0; ix < pointsCount; ix++) {
-        var a = ix + pointsCount1 * iy;
-        var b = ix + pointsCount1 * (iy + 1);
-        var c = (ix + 1) + pointsCount1 * (iy + 1);
-        var d = (ix + 1) + pointsCount1 * iy;
-        // faces
-        indices.push(a, b, d);
-        indices.push(b, c, d);
-      }
-    }
-    ribbonGeom.setIndex(indices);
-    ribbonGeom.computeVertexNormals();
-
-    var ribbon = new THREE.Mesh(ribbonGeom, new THREE.MeshNormalMaterial({
-      side: THREE.DoubleSide
-    }));
-    scene.add(ribbon);
-
-    var line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({
-      color: "red",
-      depthTest: false
-    }));
-    scene.add(line);
   },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() };

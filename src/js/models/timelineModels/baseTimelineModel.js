@@ -1,4 +1,5 @@
 import eventController from "../../controllers/eventController";
+import commandController from "../../controllers/commandController";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
 import TWEEN from "tween.js";
 
@@ -6,6 +7,8 @@ let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
     name: "DEFAULT",
     animatedModels: [], //this.animatedModelsCollection
+    models: [],
+    modelDetails: [],
     tweens: [],
     ready: false
   },
@@ -14,6 +17,8 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.addListeners();
     this.createModels();
     this.loadAnimatedModels();
+    this.loadModels();
+    this.hideModels();
     this.allModelsReady();
   },
   addListeners: function () {
@@ -23,14 +28,40 @@ let BaseTimelineModel = Backbone.Model.extend({
   animateCamera: function () {
     eventController.trigger(eventController.ANIMATE_CAMERA, this.get("historyDetails").eventPositions);
   },
+  startAnimation: function () {
+    TWEEN.removeAll();
+    this.animateIvasion();
+  },
   hideModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.hide(); });
+    this.get("models").forEach((mesh)=> {
+      mesh.visible = false;
+    });
+  },
+  animateIvasion: function () {
+    let invadedCountries = _.where(this.get("historyDetails").countries, {invaded: true, silent: false});
+    eventController.trigger(eventController.INVADE_COUNTRY, invadedCountries);
   },
   showModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.show(); });
+    this.get("models").forEach((mesh)=> {
+      mesh.visible = true;
+    });
   },
   getStartPosition: function (meshGroup, power) {
     return commandController.request(commandController.TEST_OFFSCREEN, meshGroup, power);
+  },
+  loadModels: function () {
+    let modelsArr = [];
+
+    _.each(this.get("modelDetails"), (models)=> {
+      let arrowModels = commandController.request(commandController.GET_CURVE, models);
+      modelsArr = [ ...arrowModels]
+    });
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, modelsArr);
+
+    this.set("models", modelsArr);
+
   },
   loadAnimatedModels: function () {
     let modelUrls = [];
@@ -82,6 +113,12 @@ let BaseTimelineModel = Backbone.Model.extend({
       this.set("ready", true);
       eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     }
+  },
+  getTween: function (from, to, duration) {
+    let tween = new TWEEN.Tween(from, {override:true} )
+    .to( {x:[to.x], y:[from.y, 0.45, to.y], z: [to.z]}, duration );
+     // fly up dive bomb
+    return tween;
   },
   isReady: function () {
 
