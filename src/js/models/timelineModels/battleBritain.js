@@ -57,12 +57,13 @@ let BattleBritain = BaseTimelineModel.extend({
   startAnimation: function () {
     TWEEN.removeAll();
     let self = this;
-
-    setTimeout(function () {
-      self.animatedModelsCollection.each( (model)=> model.startAnimation() );
-      self.flyPlaneAcrossScreen();
-      self.showModels();
-    }, 1000);
+    this.animateArrowModels();
+    self.showModels();
+    // setTimeout(function () {
+    //   self.animatedModelsCollection.each( (model)=> model.startAnimation() );
+    //   self.flyPlaneAcrossScreen();
+    //   self.showModels();
+    // }, 1000);
 
   },
   flyPlaneAcrossScreen: function () {

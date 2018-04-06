@@ -24,7 +24,7 @@ var MaterialLibrary = Backbone.Model.extend({
 
     if ( !matFromLib ) { // if material doesn't exist
       matFromLib = this.makeNewMaterial(oldMat);
-      this.materialCollection.push(matFromLib);
+      // this.materialCollection.push(matFromLib);
       newMaterial =  matFromLib;
     } else {
       newMaterial = matFromLib;

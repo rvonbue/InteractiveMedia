@@ -24,7 +24,7 @@ let SceneModel = Backbone.Model.extend({
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
-    this.on("change:hover", this.onChangeHover);
+    // this.on("change:hover", this.onChangeHover);
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
@@ -53,68 +53,69 @@ let SceneModel = Backbone.Model.extend({
     if ( this.get("selected") ) {
       this.highlightMaterial();
     } else {
-      TWEEN.removeAll();
       this.unhighlightMaterial();
     }
   },
   resetImageTexture: function (context) {
     context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,512,512);
-    this.updateTextureMap();
     context.drawImage(this.getBorderImage(), 0, 0);
+    this.updateTextureMap();
   },
   animateInvasion: function () {
     let self = this;
-    let canvas = this.getTextureCanvas();
+    let borderImage = this.getBorderImage();
+    let canvas = document.createElement( 'canvas' );
+        canvas.width = borderImage.width;
+        canvas.height = borderImage.height;
     let context = canvas.getContext( '2d' );
 
+    this.get("mesh3d").material.map = new THREE.Texture(canvas);
+    this.get("mesh3d").material.map.borderImage = borderImage;
+
     this.resetImageTexture(context);
-    context.fillStyle = self.getHighlightColor();
-    console.log("self.getHighlightColor();", self.getHighlightColor());
+    context.fillStyle = colorPallete.axis;
+
     new TWEEN.Tween(0)
       .easing(TWEEN.Easing.Quadratic.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
-      .to(1, 2000)
+      .to(1, 1500)
       .onUpdate(function (val) {
+        _.each( self.get('invasionDirection'), (direction)=> {
+          self.drawInvasionDirection(direction, context, canvas.width, val);
+        });
 
-        context.arc(256, 256, 350 * val, 0, 2 * Math.PI, false);
-        context.fill();
         context.drawImage(self.getBorderImage(), 0,0);
         self.updateTextureMap();
-      })
-      .onComplete(function () {
-        self.set("animating", false);
       })
       .start();
   },
-  animateBleed: function () {
-    let canvas = this.getTextureCanvas();
-    let context = canvas.getContext( '2d' );
-    let self = this;
-    this.resetImageTexture(context);
-    context.fillStyle = self.getHighlightColor();
-
-    new TWEEN.Tween(0)
-      .easing(TWEEN.Easing.Quadratic.Out)
-      .interpolation(TWEEN.Interpolation.Bezier)
-      .to(1, 2000)
-      .onUpdate(function (val) {
-        context.arc(256, 256, 350 * val, 0, 2 * Math.PI, false);
+  drawInvasionDirection: function (direction, context, canvasWidth, val) {
+    switch(direction) {
+      case "ltr":
+        context.arc(0, canvasWidth / 2, 512 * val, 0, 2 * Math.PI, false);
         context.fill();
-        context.drawImage(self.getBorderImage(), 0,0);
-        self.updateTextureMap();
-      })
-      .onComplete(function () {
-        self.set("animating", false);
-      })
-      .start();
+        break;
+      case "rtl":
+        context.arc(canvasWidth, canvasWidth / 2, 512 * val, 0, 2 * Math.PI, false);
+        context.fill();
+        break;
+      case "btt": //bottom to Top
+        context.arc(canvasWidth / 2, canvasWidth , 512 * val, 0, 2 * Math.PI, false);
+        context.fill();
+        break;
+      case "ttb": //bottom to Top
+        context.arc(canvasWidth / 2, 0 , 512 * val, 0, 2 * Math.PI, false);
+        context.fill();
+        break;
+      }
   },
   drawFlagBackground: function () {
     let canvas = this.getTextureCanvas();
     let context = canvas.getContext( '2d' );
 
     context.fillStyle = colorPallete.countryMap;
-    context.fillRect(0,0,512,512);
+    context.fillRect(0,0,canvas.width, canvas.height);
 
     let sprite = commandController.request(commandController.GET_IMAGE_SPRITE, this.get("name"), this);
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };

@@ -20,7 +20,7 @@ let SidebarGameControls = Backbone.View.extend({
   },
   startTimelineModel: function () {
     eventController.trigger(eventController.START_TIMELINE_MODEL);
-    this.$el.find("button").fadeOut();
+    // this.$el.find("button").fadeOut();
   },
   loadTimelineModel: function (historyDetails) {
     this.$el.removeClass("open");

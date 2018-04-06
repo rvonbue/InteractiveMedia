@@ -166,7 +166,6 @@ let MeshSelector = Backbone.Model.extend({
   moveSceneDetailsIconSimple: function (raycast) {
 
     if (raycast && raycast.point) {
-      console.log("getCountryMeshCenter", this.getCountryMesh([ raycast.object.name ]) );
       console.log("getCountryMeshPoint", raycast.point  );
       this.selectMesh.position.set(raycast.point.x, 0, raycast.point.z);
     } else if (raycast) {

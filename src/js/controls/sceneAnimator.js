@@ -7,14 +7,10 @@ let SceneAnimator = Backbone.Model.extend({
   animating: false,
   initialize: function (options) {
     this.addListeners();
-
-    let self = this;
   },
   hoverAxisOrAlly: function (axisOrAlly) {
     let allHoverModels = this.requestSceneModels({power: axisOrAlly });
-    _.each(allHoverModels, (sceneModel) => {
-      sceneModel.set("hover", true);
-    });
+    _.each(allHoverModels, (sceneModel) => { sceneModel.set("hover", true); });
   },
   mouseClickSelect: function (raycast) {
     let sceneModel = this.requestSceneModel({ name: raycast.object.name });
@@ -66,13 +62,21 @@ let SceneAnimator = Backbone.Model.extend({
 
     // eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [ pivot] );
   },
-  addCurve: function (arrow) {
-    let index = 24;
+  getCurveAnimate: function (arrow) {
+    let curves = [];
+    for (let x = 2; x <= 24; x++) {
+      curves.push(this.getNewCurve(arrow, x));
+    }
+    return curves;
+  },
+  getNewCurve: function (arrow, index) {
+    console.log("getNewCurve");
+    index = index ? index : 24;
     var curve = this.getCatmullRomCurve(arrow);
     var numPoints = 24;
-    var points = curve.getPoints(numPoints);
-    // points.length = index;
+    var points = curve.getPoints(24);
 
+    points.length = index;
     curve = new THREE.CatmullRomCurve3( points ); //smooth intital path
 
     var shape = new THREE.Shape();
@@ -89,28 +93,17 @@ let SceneAnimator = Backbone.Model.extend({
     };
 
     var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-    var material = new THREE.MeshPhongMaterial( { color: colorPallete.ally , wireframe: false } );
+    var material = new THREE.MeshPhongMaterial( { color: colorPallete.axis , wireframe: false } );
     var mesh = new THREE.Mesh( geometry, material );
-
+    mesh.visible = false;
     return mesh;
-    // eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [mesh] );
-
-
-    // let self = this;
-    // if (index < numPoints) {
-    //   setTimeout(function () {
-    //     self.addCurve(++index)
-    //     // eventController.trigger(eventController.REMOVE_MODEL_FROM_SCENE, [mesh] );
-    //   }, 25);
-    // }
-
   },
   addListeners: function () {
     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.mouseClickSelect, this);
     eventController.on(eventController.HOVER_NAVIGATION, this.mouseHover, this);
     eventController.on(eventController.HOVER_ALL_AXIS_OR_ALLY, this.hoverAxisOrAlly, this);
     commandController.reply(commandController.GET_CURVE, (arrows)=> {
-      return arrows.map((arrow)=> {   return this.addCurve(arrow); });
+      return arrows.map((arrow)=> {   return this.getCurveAnimate(arrow); });
     });
   }
 });

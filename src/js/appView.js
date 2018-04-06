@@ -15,7 +15,7 @@ import sidebarGameControls from "./views/sidebarGameControls";
 import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
 import { EffectComposer, GlitchPass, FilmPass, RenderPass } from "postprocessing";
-
+import dateLabelView from "./views/bottomBar/dateLabelView";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -65,7 +65,7 @@ let AppView3d = Backbone.View.extend({
 		// composer.addPass( glitchPass );
     // this.renderer.composer = composer;
     // this.addGround(this.scene);
-
+    this.addArrowHelper(this.scene);
     this.renderer.animate();
 
   },
@@ -86,6 +86,19 @@ let AppView3d = Backbone.View.extend({
     scene.add( plane );
 
   },
+  addArrowHelper: function (scene) {
+    var dir = new THREE.Vector3( 1, 2, 0 );
+
+    //normalize the direction vector (convert to vector of length 1)
+    dir.normalize();
+
+    var origin = new THREE.Vector3( 0, 0, 0 );
+    var length = 1;
+    var hex = 0xffff00;
+
+    var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+    scene.add( arrowHelper );
+  },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() };
   },
@@ -96,6 +109,7 @@ let AppView3d = Backbone.View.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
+    this.$el.append(new dateLabelView().render().el);
     this.$el.append(new bottomBarView().render().el);
     this.$el.append(new sidebarGameControls().render().el);
     this.$el.append(new loadingBarView().render().el);

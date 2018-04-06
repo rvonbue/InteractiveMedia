@@ -3,8 +3,9 @@
   margin-top: 50px;
   vertical-align: top;
   z-index: 10;
-  width: calc(~"100% - 175px");
-  margin-left: 175px;
+  width: 100%;
+  // width: calc(~"100% - 175px");
+  // margin-left: 175px;
 }
 
 input[type=range] {
@@ -16,93 +17,120 @@ input[type=range] {
   width: 70%;
   cursor: pointer;
   margin: auto;
-  display:block;
+  display: block;
+  -webkit-appearance: none;  /* Override default CSS styles */
+   appearance: none;
+   height: 25px; /* Specified height */
+   background: #d3d3d3; /* Grey background */
+   outline: none; /* Remove outline */
+   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+   transition: opacity .2s;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
-  width: 300px;
-  height: 5px;
-  background: #ddd;
-  border: none;
-  border-radius: 3px;
+
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
 }
 
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #4CAF50; /* Green background */
+    border-radius: 50%;
+    cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #4CAF50; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  border: none;
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-  background: goldenrod;
-  margin-top: -12px;
+  border: 3px solid #000000;
+  height: 50px;
+  width: 50px;
+  // border-radius: 3px;
+  background: #2C709D;
+  cursor: pointer;
+  margin-top: -20px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
 }
 
-input[type=range]:focus {
-  outline: none;
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 3px solid #000000;
+  height: 50px;
+  width: 50px;
+  // border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 3px solid #000000;
+  height: 50px;
+  width: 50px;
+  // border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #3071a9;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #ccc;
+  background: #367ebd;
 }
 
 input[type=range]::-moz-range-track {
-  width: 300px;
-  height: 5px;
-  background: #ddd;
-  border: none;
-  border-radius: 3px;
-}
-
-input[type=range]::-moz-range-thumb {
-  border: none;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: goldenrod;
-}
-
-
-/*hide the outline behind the border*/
-
-input[type=range]:-moz-focusring {
-  outline: 1px solid white;
-  outline-offset: -1px;
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #3071a9;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
 }
 
 input[type=range]::-ms-track {
-  width: 300px;
-  height: 5px;
-  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
   background: transparent;
-  /*leave room for the larger thumb to overflow with a transparent border */
   border-color: transparent;
-  border-width: 6px 0;
-  /*remove default tick marks*/
+  border-width: 16px 0;
   color: transparent;
 }
-
 input[type=range]::-ms-fill-lower {
-  background: #777;
-  border-radius: 10px;
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
-
-input[type=range]::-ms-fill-upper {
-  background: #ddd;
-  border-radius: 10px;
-}
-
-input[type=range]::-ms-thumb {
-  border: none;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: goldenrod;
-}
-
 input[type=range]:focus::-ms-fill-lower {
-  background: #888;
+  background: #3071a9;
 }
-
+input[type=range]::-ms-fill-upper {
+  background: #3071a9;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
 input[type=range]:focus::-ms-fill-upper {
-  background: #ccc;
+  background: #367ebd;
 }

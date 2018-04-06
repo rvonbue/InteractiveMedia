@@ -78,7 +78,6 @@ var SceneLoader = Backbone.Model.extend({
       countryModel.set("invaded", countryObj.invaded);
       if (!countryObj.invaded || (countryObj.invaded && countryObj.silent) ) {
         countryModel.set("selected", true);
-        console.log("countryModel", countryModel);
       }
 
     });
@@ -88,7 +87,6 @@ var SceneLoader = Backbone.Model.extend({
     });
   },
   getInvadedCountries: function (countryNames) {
-    console.log("countryNames", countryNames);
     this.getCountries(countryNames).forEach( (sceneModel)=> {
       sceneModel.animateInvasion();
     });

@@ -64,7 +64,7 @@ module.exports = {
     new HtmlWebpackPlugin({template: './src/index.html'}),
     extractLess,
     new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
-    new webpack.ProvidePlugin({	"THREE": "THREE" }),
+    new webpack.ProvidePlugin({	"THREE": "three" }),
     new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery","window.jQuery": "jquery" }),
     new webpack.optimize.UglifyJsPlugin(),
     // new webpack.optimize.UglifyJsPlugin({

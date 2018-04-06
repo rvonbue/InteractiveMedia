@@ -8,6 +8,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     name: "DEFAULT",
     animatedModels: [], //this.animatedModelsCollection
     models: [],
+    modelArrows: [],
     modelDetails: [],
     tweens: [],
     ready: false
@@ -17,7 +18,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.addListeners();
     this.createModels();
     this.loadAnimatedModels();
-    this.loadModels();
+    this.getArrowModels();
     this.hideModels();
     this.allModelsReady();
   },
@@ -30,17 +31,47 @@ let BaseTimelineModel = Backbone.Model.extend({
   },
   startAnimation: function () {
     TWEEN.removeAll();
-    this.animateIvasion();
+    this.resetModel();
+    this.showModels();
+    this.animateInvasion();
+    this.animateArrowModels();
+  
   },
   hideModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.hide(); });
     this.get("models").forEach((mesh)=> {
       mesh.visible = false;
     });
+    this.hideModelArrows();
   },
-  animateIvasion: function () {
+  hideModelArrows: function () {
+    this.get("modelArrows").forEach((modelArrowsArr)=> {
+      modelArrowsArr.forEach( (meshArr)=> {
+        meshArr.forEach( (mesh)=> mesh.visible = false);
+      });
+    });
+  },
+  animateInvasion: function () {
     let invadedCountries = _.where(this.get("historyDetails").countries, {invaded: true, silent: false});
     eventController.trigger(eventController.INVADE_COUNTRY, invadedCountries);
+  },
+  animateArrowModels: function () {
+
+    _.each(this.get("modelArrows"), (modelArrows)=> {  // this.get("modelArrows") == [[],[],[]];
+      modelArrows.forEach( (arrowMesh, index)=> {
+        arrowMesh.forEach( (mesh, index)=> {
+            let duration = 50;
+              setTimeout(function () {
+
+                mesh.visible = true;
+
+                setTimeout(function () {
+                  if (index !== arrowMesh.length - 1 ) mesh.visible = false; // dont hide last arrowMesh
+                }, 50);
+              }, (duration * index) );
+          })
+      })
+    });
   },
   showModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.show(); });
@@ -51,16 +82,18 @@ let BaseTimelineModel = Backbone.Model.extend({
   getStartPosition: function (meshGroup, power) {
     return commandController.request(commandController.TEST_OFFSCREEN, meshGroup, power);
   },
-  loadModels: function () {
+  getArrowModels: function () {
     let modelsArr = [];
 
     _.each(this.get("modelDetails"), (models)=> {
-      let arrowModels = commandController.request(commandController.GET_CURVE, models);
-      modelsArr = [ ...arrowModels]
+      modelsArr.push(commandController.request(commandController.GET_CURVE, models, []));
     });
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, modelsArr);
-
-    this.set("models", modelsArr);
+    this.set('modelArrows', modelsArr);
+    _.each(modelsArr, (arrowMeshesArr)=> {
+      _.each(arrowMeshesArr, (arrowMeshArr, index)=> {
+        eventController.trigger(eventController.ADD_MODEL_TO_SCENE, arrowMeshArr);
+      });
+    });
 
   },
   loadAnimatedModels: function () {
@@ -98,6 +131,10 @@ let BaseTimelineModel = Backbone.Model.extend({
       if(!model.get("ready")) allModelsReady = false;
     })
     return allModelsReady;
+  },
+  resetModel: function () {
+    this.stopAnimation();
+    this.hideModels();
   },
   stopAnimation: function () {
     this.animatedModelsCollection.each( ( model )=> {
