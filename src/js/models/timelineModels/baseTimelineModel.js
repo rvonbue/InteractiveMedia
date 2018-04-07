@@ -6,6 +6,7 @@ import TWEEN from "tween.js";
 let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
     name: "DEFAULT",
+    animationDuration: 5000,
     animatedModels: [], //this.animatedModelsCollection
     models: [],
     modelArrows: [],
@@ -32,10 +33,23 @@ let BaseTimelineModel = Backbone.Model.extend({
   startAnimation: function () {
     TWEEN.removeAll();
     this.resetModel();
-    this.showModels();
-    this.animateInvasion();
+    this.showAllModels();
     this.animateArrowModels();
-  
+    _.delay(_.bind(this.animateInvasion, this), 1000);
+
+    this.animationTimer = setTimeout(function () {
+        eventController.trigger(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE);
+    }, this.get("animationDuration"));
+
+  },
+  stopAnimation: function () {
+    this.animatedModelsCollection.each( ( model )=> {
+      model.stopAnimation();
+      model.resetPosition();
+    });
+    this.get("tweens").forEach( (tween)=> { tween.stop(); });
+    this.set("tweens", []);
+    // this.hideModels();
   },
   hideModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.hide(); });
@@ -59,21 +73,30 @@ let BaseTimelineModel = Backbone.Model.extend({
 
     _.each(this.get("modelArrows"), (modelArrows)=> {  // this.get("modelArrows") == [[],[],[]];
       modelArrows.forEach( (arrowMesh, index)=> {
-        arrowMesh.forEach( (mesh, index)=> {
-            let duration = 50;
-              setTimeout(function () {
+        console.log("animationDelay:", this.get("modelDetails").arrows[index]);
+        let arrowConstructor = this.get("modelDetails").arrows[index];
 
-                mesh.visible = true;
+        let delayTime = arrowConstructor.animationDelay ? arrowConstructor.animationDelay : 0;
+        _.delay(this.addRemoveArrowSegment, delayTime, arrowMesh );
 
-                setTimeout(function () {
-                  if (index !== arrowMesh.length - 1 ) mesh.visible = false; // dont hide last arrowMesh
-                }, 50);
-              }, (duration * index) );
-          })
       })
     });
   },
-  showModels: function () {
+  addRemoveArrowSegment: function (arrowMesh) {
+    arrowMesh.forEach( (mesh, index2)=> {
+        let duration = 50;
+
+          setTimeout(function () {
+            mesh.visible = true;
+
+            setTimeout(function () {
+              if (index2 !== arrowMesh.length - 1 ) mesh.visible = false; // dont hide last arrowMesh
+            }, 100);
+
+          }, (duration * index2) );
+      })
+  },
+  showAllModels: function () {
     this.animatedModelsCollection.forEach( function (model) { model.show(); });
     this.get("models").forEach((mesh)=> {
       mesh.visible = true;
@@ -135,15 +158,6 @@ let BaseTimelineModel = Backbone.Model.extend({
   resetModel: function () {
     this.stopAnimation();
     this.hideModels();
-  },
-  stopAnimation: function () {
-    this.animatedModelsCollection.each( ( model )=> {
-      model.stopAnimation();
-      model.resetPosition();
-    });
-    this.get("tweens").forEach( (tween)=> { tween.stop(); });
-    this.set("tweens", []);
-    // this.hideModels();
   },
   isModelReady: function () {
     if ( this.allModelsReady) {

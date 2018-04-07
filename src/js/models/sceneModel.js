@@ -93,19 +93,23 @@ let SceneModel = Backbone.Model.extend({
   drawInvasionDirection: function (direction, context, canvasWidth, val) {
     switch(direction) {
       case "ltr":
-        context.arc(0, canvasWidth / 2, 512 * val, 0, 2 * Math.PI, false);
+        context.arc(0, canvasWidth / 2, canvasWidth * val, 0, 2 * Math.PI, false);
         context.fill();
         break;
       case "rtl":
-        context.arc(canvasWidth, canvasWidth / 2, 512 * val, 0, 2 * Math.PI, false);
+        context.arc(canvasWidth, canvasWidth / 2, canvasWidth * val, 0, 2 * Math.PI, false);
         context.fill();
         break;
       case "btt": //bottom to Top
-        context.arc(canvasWidth / 2, canvasWidth , 512 * val, 0, 2 * Math.PI, false);
+        context.arc(canvasWidth / 2, canvasWidth , canvasWidth * val, 0, 2 * Math.PI, false);
         context.fill();
         break;
       case "ttb": //bottom to Top
-        context.arc(canvasWidth / 2, 0 , 512 * val, 0, 2 * Math.PI, false);
+        context.arc(canvasWidth / 2, 0 , canvasWidth * val, 0, 2 * Math.PI, false);
+        context.fill();
+        break;
+      case "mid":
+        context.arc(canvasWidth / 2, canvasWidth / 2 , canvasWidth * val, 0, 2 * Math.PI, false);
         context.fill();
         break;
       }

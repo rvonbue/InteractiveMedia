@@ -5,7 +5,8 @@ import template from "./sidebarGameControls.html";
 let SidebarGameControls = Backbone.View.extend({
   className: "sidebar-game-controls open",
   events: {
-    "click button": "startTimelineModel",
+    "click button.start": "startTimelineModel",
+    "click button.next": "nextTimelineModel",
     "click .toggle-hide-window": "toggleClose"
   },
   initialize: function () {
@@ -21,6 +22,9 @@ let SidebarGameControls = Backbone.View.extend({
   startTimelineModel: function () {
     eventController.trigger(eventController.START_TIMELINE_MODEL);
     // this.$el.find("button").fadeOut();
+  },
+  nextTimelineModel: function () {
+    eventController.trigger(eventController.NEXT_TIMELINE_MODEL);
   },
   loadTimelineModel: function (historyDetails) {
     this.$el.removeClass("open");

@@ -2,6 +2,8 @@ import TWEEN from "tween.js";
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 const OrbitControls = require('three-orbit-controls')(THREE);
+import utils from "../components/utils";
+let cameraAnimationDuration = utils.getCameraAnimationSpeed().duration;
 
 const CAMERA_INITIAL_POSITION =  {x: -0.84, y: 26.1, z: 13.2};
 const TARGET_INITIAL_POSITION = {x: -0.79, y: -2.8, z: 4.3};
@@ -34,15 +36,15 @@ let CameraControls = Backbone.Model.extend({
     this.orbitControls.object.position.set( pos.x, pos.y, pos.z );  // this.orbitControls.object  is the camera
   },
   setCameraAnimatePosition: function (pos) {
-    this.getTween(this.orbitControls.object.position, new THREE.Vector3( pos.x, pos.y, pos.z ), 2000).start();
+    this.getTween(this.orbitControls.object.position, new THREE.Vector3( pos.x, pos.y, pos.z ), cameraAnimationDuration).start();
   },
   setCameraTarget: function (pos) {
-    this.getTween(this.orbitControls.target, new THREE.Vector3( pos.x, pos.y, pos.z ), 1000).start();
+    this.getTween(this.orbitControls.target, new THREE.Vector3( pos.x, pos.y, pos.z ), cameraAnimationDuration).start();
   },
   getTween: function (to, from, duration) {
     return new TWEEN.Tween(to)
-      .easing(TWEEN.Easing.Circular.Out)
-      .interpolation(TWEEN.Interpolation.Bezier)
+      // .easing(TWEEN.Easing.Circular.Out)
+      // .interpolation(TWEEN.Interpolation.Bezier)
       .to(from, duration);
   },
   testOffscreen: function (object , power) {

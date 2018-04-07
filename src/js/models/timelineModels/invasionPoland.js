@@ -13,20 +13,20 @@ let InvasionPoland = BaseTimelineModel.extend({
     modelDetails: {
       arrows: [
              {
-                start: {x: -5.559, y: 0.199, z: 4.029},
-                end: {x: -3.155, y: 0.191, z: 3.477},
+                start: {x: -5.559, y: 0.2, z: 4.029},
+                end: {x: -3.155, y: 0.2, z: 3.477},
                 width: ARROW_WIDTH,
                 height:  ARROW_HEIGHT
              },
              {
-                start: {x: -3.77, y: 0.14, z: 6.24},
-                end: {x: -2.21, y: 0.18, z: 4.82},
+                start: {x: -3.77, y:0.2, z: 6.24},
+                end: {x: -2.21, y: 0.2, z: 4.82},
                 width: ARROW_WIDTH,
                 height:  ARROW_HEIGHT
              },
              {
-                start: {x: 2.56, y: 0.11, z: 2.48},
-                end: {x: 0.12, y: 0.17, z: 2.99},
+                start: {x: 2.56, y: 0.2, z: 2.48},
+                end: {x: 0.12, y: 0.2, z: 2.99},
                 width: ARROW_WIDTH,
                 height:  ARROW_HEIGHT
              },
@@ -42,6 +42,7 @@ let InvasionPoland = BaseTimelineModel.extend({
       countries: [
         { name:"germany", power: 0, invaded: false},
         { name:"eastprussia", power: 0, invaded: false},
+        { name:"hungary", power: 0, invaded: false},
         { name:"russia", power: 0, invaded: false},
         { name: "poland", power: 0, invaded: true, silent: false}
       ],

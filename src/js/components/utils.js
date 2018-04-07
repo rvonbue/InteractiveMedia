@@ -3,6 +3,9 @@ module.exports = {
   getAnimationSpeed: function () {
     return { materialsFade: 500, cameraMove: 1500, speed: 1000, lightOut: 3000 };
   },
+  getCameraAnimationSpeed: function () {
+    return { duration: 2000 };
+  },
   translateWidthHeight: function(w, h) {
     return { width: w  / this.worldScale, height: h / this.worldScale };
   },
@@ -39,7 +42,7 @@ module.exports = {
       },
       directional: {
         color: "#ffffff",
-        intensity: 1, //0.3
+        intensity: 0.65, //0.3
         position: {x: 0, y: 10, z: 10}
       }
     };

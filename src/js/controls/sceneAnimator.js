@@ -70,7 +70,6 @@ let SceneAnimator = Backbone.Model.extend({
     return curves;
   },
   getNewCurve: function (arrow, index) {
-    console.log("getNewCurve");
     index = index ? index : 24;
     var curve = this.getCatmullRomCurve(arrow);
     var numPoints = 24;
@@ -95,6 +94,7 @@ let SceneAnimator = Backbone.Model.extend({
     var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
     var material = new THREE.MeshPhongMaterial( { color: colorPallete.axis , wireframe: false } );
     var mesh = new THREE.Mesh( geometry, material );
+    mesh.animationDelay = arrow.animationDelay ? arrow.animationDelay : 0;
     mesh.visible = false;
     return mesh;
   },

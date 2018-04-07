@@ -1,0 +1,36 @@
+.timeline-control-panel {
+  position: absolute;
+  left: 28px;
+  bottom: 12px;
+  border: 2px solid @armyGreen;
+  padding: 8px 12px;
+  &.playing {
+    .play {
+      display: none;
+    }
+    .pause {
+      display: inline-block;
+    }
+  }
+}
+
+.play {
+  cursor: pointer;
+  display: inline-block;
+  width: 44px;
+  height: 56px;
+  background-image: url(../sprites/ic_play_arrow_48px.svg);
+  &:hover {
+    background-image: url(../sprites/ic_play_arrow_active_44x56px.svg);
+  }
+}
+.pause {
+  display: none;
+  cursor: pointer;
+  width: 44px;
+  height: 56px;
+  background-image: url(../sprites/ic_pause_44x56px.svg);
+  &:hover {
+    background-image: url(../sprites/ic_pause_active_44x56px.svg);
+  }
+}

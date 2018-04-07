@@ -76,15 +76,17 @@ var SceneLoader = Backbone.Model.extend({
 
       let countryModel = this.sceneModelCollection.findWhere({ name: countryObj.name});
       countryModel.set("invaded", countryObj.invaded);
+      // console.log("scountryObja", countryObj);
       if (!countryObj.invaded || (countryObj.invaded && countryObj.silent) ) {
+        // console.log("countryModel", countryModel);
         countryModel.set("selected", true);
       }
 
     });
 
-    this.sceneModelCollection.where({ selected: false}).forEach((model)=>{
-      model.hide();
-    });
+    // this.sceneModelCollection.where({ selected: false}).forEach((model)=>{
+    //   model.hide();
+    // });
   },
   getInvadedCountries: function (countryNames) {
     this.getCountries(countryNames).forEach( (sceneModel)=> {

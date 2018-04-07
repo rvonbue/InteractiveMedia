@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="44px"
+	 height="57px" viewBox="-4.5 -4.5 44 57" enable-background="new -4.5 -4.5 44 57" xml:space="preserve">
+<g id="Layer_1" display="none">
+	<path display="inline" fill="#2C709D" stroke="#4B5320" stroke-width="3" stroke-miterlimit="10" d="M-3.161-0.75v50.69
+		l39.828-25.345L-3.161-0.75z"/>
+	<path display="inline" fill="none" d="M0,0h48v48H0V0z"/>
+</g>
+<g id="Layer_2">
+	
+		<rect x="2.958" y="-2.916" fill="#2C709D" stroke="#FFFFFF" stroke-width="3" stroke-miterlimit="10" width="7.25" height="53.958"/>
+	<text transform="matrix(1 0 0 1 123.5 123.5)" font-family="'Myriad-Roman'" font-size="12">eventController.on(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);</text>
+	
+		<rect x="24.709" y="-2.916" fill="#2C709D" stroke="#FFFFFF" stroke-width="3" stroke-miterlimit="10" width="7.25" height="53.958"/>
+</g>
+</svg>
