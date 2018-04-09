@@ -8,7 +8,7 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     "baseUrl": "models3d/animatedModels/",
     "modelNames":["messerschmitt", "spitfirePropeller"],
     "power": "axis",
-    "startPosition": {x: -8.061819575074082, y: 0.55, z: 4.806367071421903},
+    "startPosition": {x:5, y: 0.55, z: 8},
     "endPosition": {x: -15, y: 0.55, z: 2}
   },
   modelReady: function () {

@@ -12,7 +12,7 @@ let BattleBritain = BaseTimelineModel.extend({
   defaults:{
     name: "britishAirRaid",
     animatedModels: [messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 5000,
+    animationDuration: 10000,
     modelDetails: {
       arrows: [
              {
@@ -50,18 +50,15 @@ let BattleBritain = BaseTimelineModel.extend({
       text: "The Battle of Britain was a military campaign of the Second World War, in which the Royal Air Force (RAF) defended the United Kingdom (UK) against large-scale attacks by the German Air Force (Luftwaffe). It has been described as the first major military campaign fought entirely by air forces"
     }
   },
-  // startAnimation: function () {
-  //   TWEEN.removeAll();
-  //   let self = this;
-  //   this.animateArrowModels();
-  //   self.showModels();
-  //   // setTimeout(function () {
-  //   //   self.animatedModelsCollection.each( (model)=> model.startAnimation() );
-  //   //   self.flyPlaneAcrossScreen();
-  //   //   self.showModels();
-  //   // }, 1000);
-  //
-  // },
+  startAnimation: function () {
+    BaseTimelineModel.prototype.startAnimation.apply(this, arguments);
+    let self = this;
+    setTimeout(function () {
+      self.animatedModelsCollection.each( (model)=> model.startAnimation() );
+      self.flyPlaneAcrossScreen();
+    }, 1000);
+    console.log("flyPlaneAcrossScreen", this.get("animationDuration"));
+  },
   flyPlaneAcrossScreen: function () {
 
     this.animatedModelsCollection.each( (model)=> {

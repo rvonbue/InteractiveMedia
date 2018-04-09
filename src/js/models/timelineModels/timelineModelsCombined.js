@@ -1,4 +1,4 @@
-import startTimelineModel from "./StartTimelineModel";
+import startTimelineModel from "./startTimelineModel";
 // import RedArmyCounterOffensive from "./redArmyCounterOffensive";
 import InvasionPoland from "./invasionPoland";
 import InvasionDenmarkNorway from "./invasionDenmarkNorway";
@@ -9,7 +9,8 @@ import BattleBritain from "./battleBritain";
 import RomaniaJoinsAxis from "./romaniaJoinsAxis";
 import BulgariaJoinsAxis from "./bulgariaJoinsAxis";
 import InvasionYugoslavia from "./invasionYugoslavia";
-import InvasionRussia from "./invasionRussia";
+// import InvasionRussia from "./invasionRussia";
+import endTimelineModel from "./endTimelineModel";
 
 let allTimelineModels = [
   startTimelineModel,
@@ -22,7 +23,7 @@ let allTimelineModels = [
   RomaniaJoinsAxis,
   BulgariaJoinsAxis,
   InvasionYugoslavia,
-  InvasionRussia
+  endTimelineModel
 ];
 
 module.exports = {allTimelineModels: allTimelineModels, length: allTimelineModels.length} ;

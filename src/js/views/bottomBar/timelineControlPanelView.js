@@ -8,10 +8,14 @@ let timelineControlPanel = Backbone.View.extend({
   className: "timeline-control-panel",
   events: {
     "click .play": "clickPlayTimeline",
-    "click .pause": "pauseTimeline"
+    "click .pause": "clickPauseTimeline"
   },
   initialize: function () {
     _.bindAll(this, "clickPlayTimeline");
+    eventController.on(eventController.TIMELINE_MANAGER_END, ()=> {
+      this.clickPauseTimeline();
+      eventController.off(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);
+    }, this);
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);
@@ -29,7 +33,8 @@ let timelineControlPanel = Backbone.View.extend({
     eventController.trigger(eventController.NEXT_TIMELINE_MODEL);
     _.delay(()=>{ eventController.trigger(eventController.START_TIMELINE_MODEL); }, cameraAnimationDuration);
   },
-  pauseTimeline: function () {
+  clickPauseTimeline: function () {
+    console.log("clickPauseTimeline");
     this.$el.removeClass("playing");
     this.removeListeners();
   },

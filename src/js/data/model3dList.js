@@ -10,7 +10,7 @@ module.exports = [
   { name: "finland", baseUrl: baseUrl, power: 1 },
   { name: "france", baseUrl: baseUrl, power: 1, invasionDirection: ["ttb"]},
   { name: "germany", baseUrl: baseUrl, power: 0, },
-  { name: "greece", baseUrl: baseUrl, power: 1,invasionDirection: ["ttb"]},
+  { name: "greece", baseUrl: baseUrl, power: 0, invasionDirection: ["ttb"]},
   { name: "hungary", baseUrl: baseUrl, power: 0 },
   { name: "ireland",baseUrl: baseUrl,  power: 1 },
   { name: "italy", baseUrl: baseUrl, power: 0, invasionDirection: ["mid"] },
@@ -26,5 +26,5 @@ module.exports = [
   { name: "switzerland", baseUrl: baseUrl, power: 1 },
   { name: "sweden", baseUrl: baseUrl, power: 1 },
   { name: "unitedkingdom", baseUrl: baseUrl, power: 1 },
-  { name: "yugoslovia", baseUrl: baseUrl, power: 1, invasionDirection: ["ttb"] }
+  { name: "yugoslovia", baseUrl: baseUrl, power: 0, invasionDirection: ["ttb"] }
 ];

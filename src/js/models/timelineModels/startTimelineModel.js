@@ -11,10 +11,10 @@ let StartTimelineModel = BaseTimelineModel.extend({
     historyDetails: {
       countries: [],
       eventPositions: {
-        targetPosition: {x: -2.336991143750445, y: -2.153566862780448, z: 3.0383154047995986},
-        cameraPosition: {x: -1.732991143750445, y: 10.376733137219553, z: 11.2313154047996}
+        targetPosition: {x: -0.79, y: -2.8, z: 4.3},
+        cameraPosition: {x: -0.84, y: 26.1, z: 13.2}
       },
-      date:"Sept. 1, 1939",
+      date:"Apr. 26, 1941",
       title: "World War II",
       text: "The war officially started aggression initiated by Germans"
     }

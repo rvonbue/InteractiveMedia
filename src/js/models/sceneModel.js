@@ -206,6 +206,7 @@ let SceneModel = Backbone.Model.extend({
     let buffer32 = new Uint8Array(idata.data.buffer);
     let len = buffer32.length - 1;
     let countryColor = this.getHexadecimalColor(colorPallete.countryMap);
+    console.log("color:", color);
     let powerColor = this.getHexadecimalColor(color);
 
     for (var y = 0; y < 512; ++y) {
@@ -216,7 +217,7 @@ let SceneModel = Backbone.Model.extend({
         buffer32[offset+0] = random < 0.5 ? powerColor[0] : countryColor[0];  // red
         buffer32[offset+1] = random < 0.5 ? powerColor[1] : countryColor[1];  // green
         buffer32[offset+2] = random < 0.5 ? powerColor[2] : countryColor[2]; // blue
-        buffer32[offset+3] = random < 0.5 ? 0xff : 0xff; // alpha
+        buffer32[offset+3] = 0xff; // alpha
       }
     }
     ctx.putImageData(idata, 0, 0);

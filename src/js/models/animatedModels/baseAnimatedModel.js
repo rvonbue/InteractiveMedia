@@ -47,12 +47,13 @@ let BaseAnimatedModel = Backbone.Model.extend({
     let propellerMesh3d = this.getPropellerMesh();
 
     propellerMesh3d.forEach( (mesh3d)=> {
-      this.createTween(mesh3d.rotation,  { z: "+150" }, 5000);
+      this.createTween(mesh3d.rotation,  { z: "+300" }, 10000);
     }, this);
 
     this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
   },
   startAnimation: function () {
+    this.resetPosition();
     this.initAnimationTweens();
     this.get("tweens").forEach( (tween)=> { tween.start(); });
   },

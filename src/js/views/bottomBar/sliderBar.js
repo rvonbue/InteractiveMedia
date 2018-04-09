@@ -15,10 +15,12 @@ let SliderBar = Backbone.View.extend({
   },
   nextTimelineModel: function () {
     let value = Number(this.$el.find("input").val()) + 1;
-    value = value <= length - 1 ? value : value - 1;
-    this.$el.find("input").val(value);
-    console.log("value", value);
-    eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, value);
+    if (value <= length - 1) {
+      this.$el.find("input").val(value);
+      eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, value);
+      // if(value === length - 1) eventController.trigger(eventController.TIMELINE_MANAGER_END);
+    }
+
   },
   getInputValue: function () {
     return Number(this.$el.find("input").val());

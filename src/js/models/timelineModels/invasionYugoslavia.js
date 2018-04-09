@@ -13,11 +13,24 @@ let InvasionYugoslaviaGreece = BaseTimelineModel.extend({
     modelDetails: {
       arrows: [
              {
-                start: {x: -5.559, y: 0.2, z: 4.029},
-                end: {x: -3.155, y: 0.2, z: 3.477},
+                start: {x: -1.1944444515583743, y: 0.2065161175275631, z: 9.846371319463914},
+                end: {x: -0.33815123497636684, y: 0.20197999775409697, z: 12.11854446606598},
                 width: ARROW_WIDTH,
                 height:  ARROW_HEIGHT
              },
+             {
+                start: {x: 3.827232890280381, y: 0.19356348341452162, z: 13.0951693492249},
+                end: {x: 1.0720453024351015, y: 0.20197999775409697, z: 13.0124319997473},
+                width: ARROW_WIDTH,
+                height:  ARROW_HEIGHT
+             },
+             {
+                start: {x: 1.7970735704031504, y: 0.20197999775409697, z: 14.507764841451191},
+                end: {x: 2.534111146888387, y: 0.19717240847954337, z: 16.256450388793088},
+                width: ARROW_WIDTH,
+                height:  ARROW_HEIGHT,
+                animationDelay: 1250
+             }
           ]
     },
     historyDetails: {
