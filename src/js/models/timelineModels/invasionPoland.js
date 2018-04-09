@@ -28,13 +28,15 @@ let InvasionPoland = BaseTimelineModel.extend({
                 start: {x: 2.56, y: 0.2, z: 2.48},
                 end: {x: 0.12, y: 0.2, z: 2.99},
                 width: ARROW_WIDTH,
-                height:  ARROW_HEIGHT
+                height:  ARROW_HEIGHT,
+                animationDelay: 500
              },
              {
                 start: {x: 3.1716295447066285, y: 0.11723444116216841, z: 5.37444626742571},
                 end: {x: 0.34992144898361194, y: 0.17352284566233384, z: 5.104068181308493},
                 width: ARROW_WIDTH,
-                height:  ARROW_HEIGHT
+                height:  ARROW_HEIGHT,
+                animationDelay: 500
              }
           ]
     },

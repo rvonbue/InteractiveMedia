@@ -24,7 +24,7 @@ let SceneModel = Backbone.Model.extend({
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
-    // this.on("change:hover", this.onChangeHover);
+    this.on("change:hover", this.onChangeHover);
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
@@ -125,7 +125,7 @@ let SceneModel = Backbone.Model.extend({
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
     let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
     let centerPoint = {x: canvasCenter.x - spritePos.x, y: canvasCenter.y - spritePos.y};
-    let newPos = this.get("centerPosition");
+    let newPos = {x:128, y:128};
 
 
     context.drawImage(sprite.imageObj, sprite.pos.x, sprite.pos.y, sprite.size.w, sprite.size.h, newPos.x * 2 - spritePos.x, newPos.y * 2 - spritePos.y, sprite.size.w, sprite.size.h);
@@ -183,7 +183,7 @@ let SceneModel = Backbone.Model.extend({
 
     // this.createNoise(context, highlightcolor);
     this.updateTextureMap();
-
+    // this.drawFlagBackground();
     // context.globalCompositeOperation = "destination-in";
     context.drawImage(this.getBorderImage(), 0,0);
     // context.globalCompositeOperation = "source-over";

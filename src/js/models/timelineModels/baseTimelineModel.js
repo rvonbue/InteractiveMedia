@@ -2,6 +2,7 @@ import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
 import TWEEN from "tween.js";
+import triangleJSON from "../../data/triangle.json";
 
 let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
@@ -10,6 +11,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     animatedModels: [], //this.animatedModelsCollection
     models: [],
     modelArrows: [],
+    modelArrowHeads: [],
     modelDetails: [],
     tweens: [],
     ready: false
@@ -20,6 +22,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.createModels();
     this.loadAnimatedModels();
     this.getArrowModels();
+    this.getArrowHeadModels();
     this.hideModels();
     this.allModelsReady();
   },
@@ -57,12 +60,18 @@ let BaseTimelineModel = Backbone.Model.extend({
       mesh.visible = false;
     });
     this.hideModelArrows();
+    this.hideModelArrowHeads();
   },
   hideModelArrows: function () {
     this.get("modelArrows").forEach((modelArrowsArr)=> {
       modelArrowsArr.forEach( (meshArr)=> {
         meshArr.forEach( (mesh)=> mesh.visible = false);
       });
+    });
+  },
+  hideModelArrowHeads: function () {
+    _.each(this.get("modelArrowHeads"), (mesh)=> {
+       mesh.visible = false;
     });
   },
   animateInvasion: function () {
@@ -73,27 +82,35 @@ let BaseTimelineModel = Backbone.Model.extend({
 
     _.each(this.get("modelArrows"), (modelArrows)=> {  // this.get("modelArrows") == [[],[],[]];
       modelArrows.forEach( (arrowMesh, index)=> {
-        console.log("animationDelay:", this.get("modelDetails").arrows[index]);
         let arrowConstructor = this.get("modelDetails").arrows[index];
 
         let delayTime = arrowConstructor.animationDelay ? arrowConstructor.animationDelay : 0;
-        _.delay(this.addRemoveArrowSegment, delayTime, arrowMesh );
+        _.delay(_.bind(this.addRemoveArrowSegment, this), delayTime, arrowMesh, index );
 
       })
     });
   },
-  addRemoveArrowSegment: function (arrowMesh) {
-    arrowMesh.forEach( (mesh, index2)=> {
+  moveArrowhead: function (mesh, arrowHead) {
+    let pos = mesh.curvePoints[mesh.curvePoints.length - 1];
+    arrowHead.position.set(pos.x, pos.y, pos.z);
+  },
+  addRemoveArrowSegment: function (arrowMesh, arrowIndex) {
+    let self = this;
+
+    arrowMesh.forEach( (mesh, index)=> {
         let duration = 50;
+        let arrowHead = self.get("modelArrowHeads")[arrowIndex];
+        arrowHead.visible = true;
 
           setTimeout(function () {
             mesh.visible = true;
+            self.moveArrowhead(mesh, arrowHead);
 
             setTimeout(function () {
-              if (index2 !== arrowMesh.length - 1 ) mesh.visible = false; // dont hide last arrowMesh
+              if (index !== arrowMesh.length - 1 ) mesh.visible = false; // dont hide last arrowMesh
             }, 100);
 
-          }, (duration * index2) );
+          }, (duration * index) );
       })
   },
   showAllModels: function () {
@@ -101,6 +118,9 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.get("models").forEach((mesh)=> {
       mesh.visible = true;
     });
+    // _.each(this.get("modelArrowHeads"), (mesh)=> {
+    //    mesh.visible = true;
+    // });
   },
   getStartPosition: function (meshGroup, power) {
     return commandController.request(commandController.TEST_OFFSCREEN, meshGroup, power);
@@ -109,14 +129,40 @@ let BaseTimelineModel = Backbone.Model.extend({
     let modelsArr = [];
 
     _.each(this.get("modelDetails"), (models)=> {
-      modelsArr.push(commandController.request(commandController.GET_CURVE, models, []));
+      modelsArr.push(commandController.request(commandController.GET_CURVE, this.get("modelDetails").arrows, []));
     });
+
     this.set('modelArrows', modelsArr);
+
     _.each(modelsArr, (arrowMeshesArr)=> {
       _.each(arrowMeshesArr, (arrowMeshArr, index)=> {
         eventController.trigger(eventController.ADD_MODEL_TO_SCENE, arrowMeshArr);
       });
     });
+
+  },
+  getArrowHeadModels: function () {
+    let arrowHeadModels = [];
+
+    _.each(this.get("modelDetails").arrows, (arrow)=> {
+
+      let arrowHead = commandController.request(commandController.PARSE_JSON_MODEL, triangleJSON);
+      let angleRadians = Math.atan2(arrow.end.x - arrow.start.x, arrow.end.z - arrow.start.z);
+      angleRadians += Math.PI;
+      // console.log("angleRadians:aD", (angleRadians * 57.295779513));
+      arrowHead.visible = false;
+      arrowHead.rotation.set(0, angleRadians ,0);
+      arrowHead.position.set(arrow.start.x, arrow.start.y, arrow.start.z);
+
+      arrowHeadModels.push(arrowHead);
+
+      eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [arrowHead] );
+    }, this);
+
+    this.set("modelArrowHeads", arrowHeadModels);
+
+
+    // var angleRadians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
   },
   loadAnimatedModels: function () {

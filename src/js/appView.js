@@ -60,11 +60,20 @@ let AppView3d = Backbone.View.extend({
 
 		// let composer = new EffectComposer( this.renderer.renderer );
 		// composer.addPass( new RenderPass( this.scene, this.controls.orbitControls.object ) );
-		// let glitchPass = new FilmPass();
+		// let glitchPass = new FilmPass(
+    //   {
+    //     noise: true,
+    //     noiseIntensity:0.50,
+    //     scanlines: false,
+    //     scanlineIntensity:0.5,
+    //     greyscale: false,
+    //     sepia: false
+    //   }
+    // );
 		// glitchPass.renderToScreen = true;
 		// composer.addPass( glitchPass );
     // this.renderer.composer = composer;
-    // this.addGround(this.scene);
+    this.addGround(this.scene);
     this.addArrowHelper(this.scene);
     this.renderer.animate();
 

@@ -1,4 +1,4 @@
-module.exports = {"frames": [
+{"frames": [
 
 {
 	"filename": "albania.png",
@@ -74,7 +74,7 @@ module.exports = {"frames": [
 },
 {
 	"filename": "germany.png",
-	"frame": {"x":261,"y":131,"w":128,"h":128},
+	"frame": {"x":261,"y":1,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -259,6 +259,6 @@ module.exports = {"frames": [
 	"format": "RGBA8888",
 	"size": {"w":910,"h":520},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c9efc1a4eab78c755176db5799a239d7:af54dbaed45c87bf9f869b687d82f08a:fa5c04524d682034f2a418458fbc27d9$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c2d0a2a99827a0c74fa51ab89c1f418e:af54dbaed45c87bf9f869b687d82f08a:fa5c04524d682034f2a418458fbc27d9$"
 }
-};
+}

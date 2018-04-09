@@ -1,6 +1,7 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 import utils from "../components/utils";
+// import triangleJSON from "./data/triangle.json";
 let colorPallete = utils.getColorPallete();
 
 let SceneAnimator = Backbone.Model.extend({
@@ -39,28 +40,7 @@ let SceneAnimator = Backbone.Model.extend({
     );
   },
   getArrowHead: function () {
-    // var triangleShape = new THREE.Shape();
-		// 		triangleShape.moveTo( 0, -0.375);
-		// 		triangleShape.lineTo( -0.375, 0.375 );
-		// 		triangleShape.lineTo( 0.375, 0.375 );
-		// 		triangleShape.lineTo( 0, -0.375 ); // close path
-    //
-    // var geometry2 = new THREE.ExtrudeGeometry( triangleShape,  { amount: 0.05, bevelEnabled: false,  steps: 2} );
-    // var material2 = new THREE.MeshPhongMaterial( { color: colorPallete.ally , wireframe: false } );
-    // var mesh2 = new THREE.Mesh( geometry2, material2 );
-    //
-    // var box = new THREE.Box3().setFromObject( mesh2 );
-    // box.center( mesh.position ); // this re-sets the mesh position
-    // mesh2.position.multiplyScalar( - 1 );
-    //
-    // let pivot = new THREE.Group();
-    // // mesh2.position.set(1, 2,0);
-    //
-    // pivot.add(mesh2);
-    // pivot.rotation.set(Math.PI / 2, 0, Math.PI / 4);
-    // pivot.position.set(-14, 0.3, 4);
-
-    // eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [ pivot] );
+    return commandController.request(commandController.PARSE_JSON_MODEL, triangleJSON);
   },
   getCurveAnimate: function (arrow) {
     let curves = [];
@@ -74,7 +54,6 @@ let SceneAnimator = Backbone.Model.extend({
     var curve = this.getCatmullRomCurve(arrow);
     var numPoints = 24;
     var points = curve.getPoints(24);
-
     points.length = index;
     curve = new THREE.CatmullRomCurve3( points ); //smooth intital path
 
@@ -96,6 +75,7 @@ let SceneAnimator = Backbone.Model.extend({
     var mesh = new THREE.Mesh( geometry, material );
     mesh.animationDelay = arrow.animationDelay ? arrow.animationDelay : 0;
     mesh.visible = false;
+    mesh.curvePoints = points;
     return mesh;
   },
   addListeners: function () {

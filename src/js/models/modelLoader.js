@@ -3,11 +3,13 @@ import commandController from "../controllers/commandController"
 import MaterialLibrary from "./MaterialLibrary";
 import utils from "../components/utils";
 
+
 let ModelLoader = Backbone.Model.extend({
   initialize: function () {
     this.initLoadingManager();
     this.materialLibrary = new MaterialLibrary({ manager: this.manager });
     this.addListeners();
+    window.ModelLoader = this;
   },
   addListeners: function () {
     eventController.on(eventController.LOAD_JSON_MODEL, this.loadModel, this);

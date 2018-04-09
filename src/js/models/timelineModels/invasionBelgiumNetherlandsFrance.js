@@ -59,11 +59,6 @@ let invasionBelgiumNetherlandsFrance = BaseTimelineModel.extend({
             animationDelay: 1000
          }]
       }
-  },
-  flyPlaneAcrossScreen: function () {
-
-    this.animatedModelsCollection.each( (model)=> { }, this);
-
   }
 });
 

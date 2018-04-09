@@ -26,9 +26,11 @@ let Renderer = Backbone.Model.extend({
 
     this.controls.orbitControls.update(this.clock.getDelta());
     this.renderer.render(this.scene, this.controls.orbitControls.object);
+
     // let delta = this.clock.getDelta()
     // this.composer.render(delta);
     // this.controls.orbitControls.update(delta);
+    
     // this.statsView.stats.end();
   },
   cancelAnimate: function () {

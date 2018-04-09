@@ -10,16 +10,6 @@ let OccupationBalticStates = BaseTimelineModel.extend({
     name: "occupationBalticStates",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
-    modelDetails: {
-      arrows: [
-             {
-                start: {x: -5.559, y: 0.2, z: 4.029},
-                end: {x: -3.155, y: 0.2, z: 3.477},
-                width: ARROW_WIDTH,
-                height:  ARROW_HEIGHT
-             }
-          ]
-    },
     historyDetails: {
       countries: [
         { name:"italy", power: 0, invaded: true, silent: true},
@@ -35,6 +25,27 @@ let OccupationBalticStates = BaseTimelineModel.extend({
       date:"Jun. 14 1940",
       title: "Occupation of Baltic States",
       text: "The occupation of the Baltic states was the military occupation of the three Baltic states—Estonia, Latvia and Lithuania—by the Soviet Union under the auspices of the Molotov–Ribbentrop Pact on 14 June 1940["
+    },
+    modelDetails: {
+      arrows: [
+             {
+                start: {x: 3.078118487849087, y: 0.25, z: 1.391505938810893},
+                end: {x: 0.959696863263718, y: 0.25, z: 0.3988494603135717},
+                width: ARROW_WIDTH,
+                height:  ARROW_HEIGHT
+             },
+             {
+                start: {x: 5.174323205353105, y: 0.25, z: -1.017303431687013},
+                end: {x: 1.341212133627353, y: 0.25, z: -1.3498878706457598},
+                width: ARROW_WIDTH,
+                height:  ARROW_HEIGHT
+             },
+             {
+                start: {x: 5.096164111263456, y: 0.25, z: -3.6935985085152954},
+                end: {x: 1.3992013326420005, y: 0.25, z: -3.1889468327219923},
+                width: ARROW_WIDTH,
+                height:  ARROW_HEIGHT
+             }]
     }
   }
 });

@@ -41,10 +41,18 @@ let InvasionDenmarkNorway = BaseTimelineModel.extend({
                 height:  ARROW_HEIGHT
              },
              {
-                start: {x: -5.30, y: 0.25, z: 2.57},
-                end: {x: -7.28, y: 0.25, z: -3.42},
+                start: {x: -7.616977368418977, y: 0.25, z: 0.12693489866170804},
+                end: {x: -8.434940106619548, y: 0.25, z: -3.307052414140552},
                 width: ARROW_WIDTH,
-                height:  ARROW_HEIGHT
+                height:  ARROW_HEIGHT,
+                animationDelay: 1000
+             },
+             {
+                start:  {x: -7.125991461207927, y: 0.25, z: -0.04105199740639276},
+                end: {x: -6.895916123669293, y: 0.25, z: -4.713340500693563},
+                width: ARROW_WIDTH,
+                height:  ARROW_HEIGHT,
+                animationDelay: 1250
              }]
     }
   }
