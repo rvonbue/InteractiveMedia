@@ -57,6 +57,9 @@ var SceneLoader = Backbone.Model.extend({
 
     return objects3d;
   },
+  getCountry: function (name) {
+    return this.sceneModelCollection.findWhere({ name: name});
+  },
   getCountries: function (countryArr) {
     let countries = [];
 
@@ -66,6 +69,7 @@ var SceneLoader = Backbone.Model.extend({
     return countries;
   },
   selectSceneModels: function (countryNames) {
+    console.log("asdfasdfsadfsadf")
     if (countryNames.length === 0 ) {
       this.sceneModelCollection.each( (model)=> {
         model.unhighlightMaterial();
@@ -106,12 +110,21 @@ var SceneLoader = Backbone.Model.extend({
       eventController.trigger(eventController.LOAD_SPRITE_SHEET, spriteSheet);
     });
   },
+  changeCountryPower: function (countryArr) {
+    let countries = this.getCountries(countryArr);
+    countryArr.forEach((countryObj)=> {
+      let country = this.getCountry(countryObj.name);
+      country.set("power", countryObj.power);
+    });
+    console.log("klafjldsjaf");
+  },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
      eventController.on(eventController.UNSET_ALL_HOVER_MODELS, this.sceneModelHoverSet, this );
      eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene, this);
      eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene, this);
      eventController.on(eventController.INVADE_COUNTRY, this.getInvadedCountries, this);
+     eventController.on(eventController.CHANGE_COUNTRY_POWER, this.changeCountryPower, this);
 
      eventController.on(eventController.SELECT_SCENE_MODELS, this.selectSceneModels, this);
      eventController.once(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );

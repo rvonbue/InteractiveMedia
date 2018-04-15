@@ -43,7 +43,6 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.animationTimer = setTimeout(function () {
         eventController.trigger(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE);
     }, this.get("animationDuration"));
-    console.log("flyPlaneAcrossScreen", this.get("animationDuration"));
   },
   stopAnimation: function () {
     this.animatedModelsCollection.each( ( model )=> {

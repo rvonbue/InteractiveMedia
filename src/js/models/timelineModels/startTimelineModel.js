@@ -1,7 +1,5 @@
 import eventController from "../../controllers/eventController";
-import commandController from "../../controllers/commandController";
 import BaseTimelineModel from "./BaseTimelineModel";
-import AnimatedModelCollection from "../../collections/animatedModelCollection";
 
 let StartTimelineModel = BaseTimelineModel.extend({
   defaults:{
@@ -18,6 +16,9 @@ let StartTimelineModel = BaseTimelineModel.extend({
       title: "World War II",
       text: "The war officially started aggression initiated by Germans"
     }
+  },
+  startAnimation: function () {
+    eventController.trigger(eventController.SELECT_SCENE_MODELS, []);
   }
 });
 

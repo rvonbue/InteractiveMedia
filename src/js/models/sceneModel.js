@@ -25,6 +25,7 @@ let SceneModel = Backbone.Model.extend({
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
     this.on("change:hover", this.onChangeHover);
+    this.on("change:power", this.onChangePower);
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
@@ -55,6 +56,10 @@ let SceneModel = Backbone.Model.extend({
     } else {
       this.unhighlightMaterial();
     }
+  },
+  onChangePower: function () {
+    console.log("power", this.get("power"));
+    this.animateInvasion();
   },
   resetImageTexture: function (context) {
     context.fillStyle = colorPallete.countryMap;

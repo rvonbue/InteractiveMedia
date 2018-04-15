@@ -11,7 +11,7 @@ const ARROW_HEIGHT = 0.20;
 let BattleBritain = BaseTimelineModel.extend({
   defaults:{
     name: "britishAirRaid",
-    animatedModels: [messerschmittModel], //this.animatedModelsCollection = new AnimatedModelCollection();
+    animatedModels: [messerschmittModel,spitfireModel], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 10000,
     modelDetails: {
       arrows: [

@@ -1,9 +1,9 @@
 import eventController from "../controllers/eventController";
-import axisAllyView from "../views/axisAllyView";
+// import axisAllyView from "../views/axisAllyView";
 import template from "./sidebarGameControls.html";
 
 let SidebarGameControls = Backbone.View.extend({
-  className: "sidebar-game-controls open",
+  className: "sidebar-game-controls",
   events: {
     "click button.start": "startTimelineModel",
     "click button.next": "nextTimelineModel",
@@ -41,7 +41,7 @@ let SidebarGameControls = Backbone.View.extend({
     this.historyDetailsEl.empty().append($(template(historyDetails)));
   },
   render: function () {
-    this.$el.append(new axisAllyView().render().el);
+    // this.$el.append(new axisAllyView().render().el);
     this.historyDetailsEl = $(`<div class='history-details'></div>`);
     this.$el.append(this.historyDetailsEl);
     return this;

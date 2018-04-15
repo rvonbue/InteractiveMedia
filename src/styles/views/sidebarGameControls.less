@@ -1,18 +1,19 @@
 .sidebar-game-controls {
-  width: 285px;
-  background-color: white;
-
+  display: none;
+  max-width: 500px;
+  background-color: @armyBackground;
+  border: 8px ridge @colorAllies;
   z-index: 10;
   position: relative;
-  margin: @windowMarginLeft;
+  margin: 12px auto;
   .BoxShadowHelper(3);
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.5s ease-out;
     &.open {
+      display: block;
       max-height: 500px;
       transition: max-height 0.75s ease-in;
-      border: 2px solid black;
     }
 }
 .history-details {
@@ -23,9 +24,11 @@
   font-family: 'Allerta Stencil';
   > .title {
     font-size: 200%;
-    margin-top:8px;
+    margin: 8px;
     padding-left: 8px;
     line-height: 89%;
+    text-align: center;
+    color: @colorWhite;
   }
   > .text {
     padding: 0px 8px 8px 8px;

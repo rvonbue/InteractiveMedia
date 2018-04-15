@@ -11,6 +11,7 @@ let StartTimelineModel = BaseTimelineModel.extend({
     historyDetails: {
       countries: [
         { name:"unitedkingdom", power: 1, invaded: false},
+        { name:"norway", power: 0, invaded: false, silent: true},
         { name:"latvia", power: 0, invaded: false, silent: true},
         { name:"france", power: 0, invaded: false, silent: true},
         { name:"lithuania", power: 0, invaded: false, silent: true},

@@ -7,8 +7,8 @@ let SpitfireModel = BaseAnimatedModel.extend({
     "baseUrl": "models3d/animatedModels/",
     "modelNames":["spitfire", "spitfirePropeller"],
     "power": "ally",
-    "startPosition": {x: -13.170102650922006, y: 0.23923397143583375, z: 3.67371880032149},
-    "endPosition":  {x: -6.050718357879541, y: 0.20238620399077972, z: 4.5898200449053155}
+    "startPosition": {x: -30, y: 0.8, z: 1},
+    "endPosition":  {x: -2.05, y: 0.8, z: 2}
   },
   setMesh3d: function (mesh3d) {
     BaseAnimatedModel.prototype.setMesh3d.apply(this, arguments);
@@ -25,7 +25,7 @@ let SpitfireModel = BaseAnimatedModel.extend({
   },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, (Math.PI / 180 * 90), 0 );
-    this.getPivot().scale.set(0.1,0.1,0.1 );
+    this.getPivot().scale.set(3, 3, 3 );
   },
   translateCenterPoint: function (mesh3d) {
     let distX = 0.00097;  // Magic Number propeller THREEjs cannot computer center correctly

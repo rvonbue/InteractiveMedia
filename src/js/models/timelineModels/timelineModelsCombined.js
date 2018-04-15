@@ -9,7 +9,7 @@ import BattleBritain from "./battleBritain";
 import RomaniaJoinsAxis from "./romaniaJoinsAxis";
 import BulgariaJoinsAxis from "./bulgariaJoinsAxis";
 import InvasionYugoslavia from "./invasionYugoslavia";
-// import InvasionRussia from "./invasionRussia";
+import InvasionRussia from "./invasionRussia";
 import endTimelineModel from "./endTimelineModel";
 
 let allTimelineModels = [
@@ -23,6 +23,7 @@ let allTimelineModels = [
   RomaniaJoinsAxis,
   BulgariaJoinsAxis,
   InvasionYugoslavia,
+  InvasionRussia,
   endTimelineModel
 ];
 

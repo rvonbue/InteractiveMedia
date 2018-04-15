@@ -22,7 +22,10 @@ let InvasionRussia = BaseTimelineModel.extend({
     },
     historyDetails: {
       countries: [
-        { name:"russia", power: 1, invaded: false },
+        { name:"russia", power: 1, invaded: false, silent: false },
+        { name:"latvia", power: 0, invaded: true, silent: false},
+        { name:"lithuania", power: 0, invaded: true, silent: false},
+        { name:"estonia", power: 0, invaded: true, silent: false}
       ],
       eventPositions: {
         targetPosition: {x: 3.76, y: -1.52, z: 0.17},
@@ -32,8 +35,18 @@ let InvasionRussia = BaseTimelineModel.extend({
       title: "Germany Attacks Russia",
       text: "Germany invades Russia. Russia joins axis"
     }
-  }
+  },
+    initialize: function () {
+      // BaseTimelineModel.prototype.initialize.apply(this, arguments);
+      BaseTimelineModel.prototype.initialize.apply(this, arguments);
+
+    },
+    startAnimation: function () {
+      BaseTimelineModel.prototype.startAnimation.apply(this, arguments);
+      // eventController.trigger(eventController.CHANGE_COUNTRY_POWER, this.get("historyDetails").countries);
+    }
 });
 
 _.defaults(InvasionRussia.prototype.defaults, BaseTimelineModel.prototype.defaults);
+
 module.exports = InvasionRussia;
