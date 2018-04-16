@@ -39,6 +39,7 @@ let timelineControlPanel = Backbone.View.extend({
     this.removeListeners();
   },
   render: function () {
+    this.$el.append(`<img class="img-title-frame" src="images/squarecontainer.png" />`);
     this.$el.append(template({numOfTimelineEvents: length - 1}));
     return this;
   }

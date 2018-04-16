@@ -42,6 +42,7 @@ let SidebarGameControls = Backbone.View.extend({
   },
   render: function () {
     // this.$el.append(new axisAllyView().render().el);
+    this.$el.append(`<img class="img-title-frame" src="images/titlecontainer.png" />`);
     this.historyDetailsEl = $(`<div class='history-details'></div>`);
     this.$el.append(this.historyDetailsEl);
     return this;

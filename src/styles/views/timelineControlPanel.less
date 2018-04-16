@@ -1,10 +1,10 @@
 .timeline-control-panel {
   position: absolute;
   left: 28px;
-  bottom: 12px;
-  border: 8px ridge @armyGreen;
+  bottom: 24px;
+  width: 64px;
+  height: 64px;
   padding: 8px 12px;
-  background-color: @armyBackground;
   &.playing {
     .play {
       display: none;
@@ -15,11 +15,17 @@
   }
 }
 
-.play {
+.play, .pause {
   cursor: pointer;
-  display: inline-block;
+  position: absolute;
+  top: 24px;
   width: 44px;
   height: 56px;
+}
+
+.play {
+  display: inline-block;
+  left: 37px;
   background-image: url(../sprites/ic_play_arrow_48px.svg);
   &:hover {
     background-image: url(../sprites/ic_play_arrow_active_44x56px.svg);
@@ -27,9 +33,7 @@
 }
 .pause {
   display: none;
-  cursor: pointer;
-  width: 44px;
-  height: 56px;
+  left: 32px;
   background-image: url(../sprites/ic_pause_44x56px.svg);
   &:hover {
     background-image: url(../sprites/ic_pause_active_44x56px.svg);

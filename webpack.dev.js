@@ -1,8 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Popper = require("popper.js");
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -63,7 +61,6 @@ module.exports = {
     new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery","window.jQuery": "jquery" }),
     new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
     new webpack.ProvidePlugin({	"THREE": "three" })
-    // new webpack.ProvidePlugin({	Popper: ['popper.js', 'default'] })
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
