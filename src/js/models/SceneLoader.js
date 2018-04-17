@@ -69,7 +69,6 @@ var SceneLoader = Backbone.Model.extend({
     return countries;
   },
   selectSceneModels: function (countryNames) {
-    console.log("asdfasdfsadfsadf")
     if (countryNames.length === 0 ) {
       this.sceneModelCollection.each( (model)=> {
         model.unhighlightMaterial();

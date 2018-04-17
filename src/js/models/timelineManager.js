@@ -9,6 +9,9 @@ let TimelineManager = Backbone.Model.extend({
   },
   initialize: function () {
     this.addListeners();
+    this.createTimeEvent(0);
+    let timelineModel = this.startTimelineModel();
+    eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel.get("historyDetails"));
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MANAGER_UPDATE, this.updateTimeline, this);
@@ -63,6 +66,7 @@ let TimelineManager = Backbone.Model.extend({
   startTimelineModel: function (timelineModel) {
     timelineModel = timelineModel ? timelineModel : this.get("timeEvents")[this.get("currentPosition")];
     timelineModel.startAnimation();
+    return timelineModel;
   },
   stopTimeline: function (timelineModel) {
     timelineModel = timelineModel ? timelineModel : this.get("timeEvents")[this.get("currentPosition")];

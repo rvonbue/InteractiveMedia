@@ -26,8 +26,6 @@
     "gulp-to-base64": "^1.0.5",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
-    "popper": "^1.0.1",
-    "popper.js": "^1.14.3",
     "postprocessing": "^4.4.0",
     "raf": "^3.3.2",
     "spritesheet-js": "^1.2.6",
@@ -44,11 +42,12 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "@material/layout-grid": "^0.34.0",
     "babel-polyfill": "^6.23.0",
+    "dat-gui": "^0.5.0",
     "expose-loader": "^0.7.3",
     "html-webpack-plugin": "^2.28.0",
     "jquery": "^3.1.1",
-    "dat-gui": "^0.5.0",
     "stats-js": "^1.0.0-alpha1",
     "three": "^0.91.0",
     "three-obj-loader": "^1.0.2",

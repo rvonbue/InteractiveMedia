@@ -18,7 +18,7 @@ let RomaniaJoinsAxis = BaseTimelineModel.extend({
         targetPosition: {x: -0.324677168207853, y: -5.976441993077807, z: 9.253439383848784},
         cameraPosition: {x: 0.14584201852700707, y: 7.7529204035074395, z: 15.235220303286109}
       },
-      date:"23 Nov. 1940",
+      date:"Nov. 23, 1940",
       title: "Romania joins Axis",
       text: "Romania joins Axis side amdist political upheaval"
     }

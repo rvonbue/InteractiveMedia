@@ -13,7 +13,7 @@ let StartTimelineModel = BaseTimelineModel.extend({
         cameraPosition: {x: -0.84, y: 26.1, z: 13.2}
       },
       date:"Apr. 26, 1941",
-      title: "World War II",
+      title: "World War II European Theater",
       text: "The war officially started aggression initiated by Germans"
     }
   },

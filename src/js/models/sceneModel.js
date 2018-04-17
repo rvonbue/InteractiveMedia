@@ -7,6 +7,7 @@ let colorPallete = utils.getColorPallete();
 let SceneModel = Backbone.Model.extend({
   defaults: {
     "name": "Caesar_Salad",
+    "details": {},
     "mesh3d": null,
     "text3d": null,  // mesh
     "selected": false,
@@ -21,6 +22,8 @@ let SceneModel = Backbone.Model.extend({
   },
   initialize: function( options ) {
     this.addModelListeners();
+    console.log(this.get("name"));
+    console.log(this);
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);

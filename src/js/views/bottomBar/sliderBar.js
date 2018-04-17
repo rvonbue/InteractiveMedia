@@ -3,7 +3,7 @@ import template from "./sliderBar.html";
 import { length } from "../../models/timelineModels/timelineModelsCombined";
 
 let SliderBar = Backbone.View.extend({
-  className: "slider-bar",
+  className: "slider-bar demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-8",
   events: {
     "input": "updateTimelineManager"
   },

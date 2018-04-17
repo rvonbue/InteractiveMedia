@@ -29,7 +29,7 @@ let BulgariaJoinsAxis = BaseTimelineModel.extend({
         targetPosition: {x: -1.54, y: -6.77, z: 12.56},
         cameraPosition: {x: -0.34, y: 8.216, z: 17.51}
       },
-      date:"1 March 1941",
+      date:"Mar. 1, 1941",
       title: "Bulgaria joins Axis",
       text: "Under pressure from Germany Bulgaria signed the Tripartite pact to permit German forces to pass through Bulgaria to attack Greece in order to help Italy."
     }

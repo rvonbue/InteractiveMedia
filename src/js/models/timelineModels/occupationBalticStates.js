@@ -24,7 +24,7 @@ let OccupationBalticStates = BaseTimelineModel.extend({
       },
       date:"Jun. 14 1940",
       title: "Occupation of Baltic States",
-      text: "The occupation of the Baltic states was the military occupation of the three Baltic states—Estonia, Latvia and Lithuania—by the Soviet Union under the auspices of the Molotov–Ribbentrop Pact on 14 June 1940["
+      text: "The occupation of the Baltic states was the military occupation of the three Baltic states—Estonia, Latvia and Lithuania—by the Soviet Union under the auspices of the Molotov–Ribbentrop Pact on 14 June 1940"
     },
     modelDetails: {
       arrows: [
