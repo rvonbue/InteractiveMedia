@@ -11,11 +11,9 @@ import Renderer from "./controls/renderer";
 import TimelineManager from "./models/timelineManager";
 // import StatsView from "./components/statsView";
 
-import sidebarGameControls from "./views/sidebarGameControls";
 import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
 import { EffectComposer, GlitchPass, FilmPass, RenderPass } from "postprocessing";
-import dateLabelView from "./views/bottomBar/dateLabelView";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -74,7 +72,7 @@ let AppView3d = Backbone.View.extend({
 		// composer.addPass( glitchPass );
     // this.renderer.composer = composer;
     this.addGround(this.scene);
-    this.addArrowHelper(this.scene);
+    // this.addArrowHelper(this.scene);
     this.renderer.animate();
 
   },
@@ -118,9 +116,7 @@ let AppView3d = Backbone.View.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   render: function () {
-    this.$el.append(new dateLabelView().render().el);
     this.$el.append(new bottomBarView().render().el);
-    this.$el.append(new sidebarGameControls().render().el);
     this.$el.append(new loadingBarView().render().el);
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);

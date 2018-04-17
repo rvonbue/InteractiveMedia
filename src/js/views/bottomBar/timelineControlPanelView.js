@@ -5,7 +5,7 @@ import utils from "../../components/utils";
 let cameraAnimationDuration = utils.getCameraAnimationSpeed().duration;
 
 let timelineControlPanel = Backbone.View.extend({
-  className: "demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2",
+  className: "timeline-control-panel",
   events: {
     "click .play": "clickPlayTimeline",
     "click .pause": "clickPauseTimeline"
