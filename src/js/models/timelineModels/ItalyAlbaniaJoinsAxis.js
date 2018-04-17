@@ -9,7 +9,7 @@ let ItalyAlbaniaJoinsAxis = BaseTimelineModel.extend({
   defaults:{
     name: "italyAlbaniaJoinsAxis",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 5000,
+    animationDuration: 2000,
     modelDetails: {
       arrows: [
              {

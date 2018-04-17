@@ -61,7 +61,6 @@ let SceneModel = Backbone.Model.extend({
     }
   },
   onChangePower: function () {
-    console.log("power", this.get("power"));
     this.animateInvasion();
   },
   resetImageTexture: function (context) {

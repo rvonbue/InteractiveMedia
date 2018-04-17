@@ -5,7 +5,7 @@ const START_DATE = "AUG. 28, 1939";
 let DateLabelView = Backbone.View.extend({
   className: "map-date-info",
   initialize: function () {
-    eventController.on(eventController.LOAD_TIMELINE_MODEL, this.updateLabel, this);
+    eventController.on(eventController.UPDATE_TIMELINE_MODEL_TEXT, this.updateLabel, this);
   },
   updateLabel: function (historyDetails) {
     let date = historyDetails ? historyDetails.date : START_DATE;

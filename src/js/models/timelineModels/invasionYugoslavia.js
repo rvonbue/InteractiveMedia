@@ -9,7 +9,7 @@ let InvasionYugoslaviaGreece = BaseTimelineModel.extend({
   defaults:{
     name: "InvasionYugoslaviaGreece",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 5000,
+    animationDuration: 2500,
     modelDetails: {
       arrows: [
              {

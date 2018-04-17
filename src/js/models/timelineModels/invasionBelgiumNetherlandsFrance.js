@@ -10,7 +10,7 @@ let invasionBelgiumNetherlandsFrance = BaseTimelineModel.extend({
   defaults:{
     name: "invasionBelgiumNetherlandsFrance",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 5000,
+    animationDuration: 4000,
     historyDetails: {
       countries: [
         { name: "poland", power: 0, invaded: true, silent: true},

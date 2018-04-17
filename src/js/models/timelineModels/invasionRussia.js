@@ -43,7 +43,6 @@ let InvasionRussia = BaseTimelineModel.extend({
     },
     startAnimation: function () {
       BaseTimelineModel.prototype.startAnimation.apply(this, arguments);
-      // eventController.trigger(eventController.CHANGE_COUNTRY_POWER, this.get("historyDetails").countries);
     }
 });
 

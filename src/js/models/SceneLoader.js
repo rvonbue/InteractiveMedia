@@ -87,9 +87,6 @@ var SceneLoader = Backbone.Model.extend({
 
     });
 
-    // this.sceneModelCollection.where({ selected: false}).forEach((model)=>{
-    //   model.hide();
-    // });
   },
   getInvadedCountries: function (countryNames) {
     this.getCountries(countryNames).forEach( (sceneModel)=> {
@@ -109,13 +106,51 @@ var SceneLoader = Backbone.Model.extend({
       eventController.trigger(eventController.LOAD_SPRITE_SHEET, spriteSheet);
     });
   },
-  changeCountryPower: function (countryArr) {
-    let countries = this.getCountries(countryArr);
-    countryArr.forEach((countryObj)=> {
-      let country = this.getCountry(countryObj.name);
-      country.set("power", countryObj.power);
+  updateSceneModels: function (currentDate) {
+      // console.log("currentDate", currentDate);
+    let date =  new Date(currentDate);
+    this.sceneModelCollection.each( (model)=> {
+
+      if (model.get("details").invasionStart) {
+
+        if ( date > new Date(model.get("details").invasionStart) ) {
+          model.set("invaded", true);
+          model.highlightMaterial();
+        } else {
+          model.set("invaded", false);
+          model.unhighlightMaterial();
+        }
+
+      } else if (model.get("details").joinedAxis && model.get("details").joinedAllies) {
+
+        if ( date < new Date(model.get("details").joinedAllies)  ) {
+          model.set("power", 0);
+        } else {
+          console.log("set Allies::", model.get("name"));
+          model.set("power", 1);
+        }
+        model.highlightMaterial();
+      } else if (model.get("details").joinedAxis ) {
+
+        if ( date > new Date(model.get("details").joinedAxis) ) {
+          model.set("power", 0);
+          model.highlightMaterial();
+        } else {
+          model.set("invaded", false);
+          model.unhighlightMaterial();
+        }
+      } else if (model.get("details").joinedAllies) {
+        if ( date > new Date(model.get("details").joinedAllies) ) {
+          console.log("joinedAllies name", model.get("name"));
+          model.set("power", 1);
+          model.highlightMaterial();
+        }
+      }
+
     });
-    console.log("klafjldsjaf");
+  },
+  compareDate: function () {
+
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
@@ -123,7 +158,7 @@ var SceneLoader = Backbone.Model.extend({
      eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene, this);
      eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene, this);
      eventController.on(eventController.INVADE_COUNTRY, this.getInvadedCountries, this);
-     eventController.on(eventController.CHANGE_COUNTRY_POWER, this.changeCountryPower, this);
+     eventController.on(eventController.UPDATE_SCENE_MODELS, this.updateSceneModels, this);
 
      eventController.on(eventController.SELECT_SCENE_MODELS, this.selectSceneModels, this);
      eventController.once(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );

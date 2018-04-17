@@ -10,7 +10,7 @@ let EventTitleView = Backbone.View.extend({
   },
   initialize: function () {
     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.selectAxisAlly, this);
-    eventController.on(eventController.LOAD_TIMELINE_MODEL, this.loadTimelineModel, this);
+    eventController.on(eventController.UPDATE_TIMELINE_MODEL_TEXT, this.loadTimelineModel, this);
   },
   startTimelineModel: function () {
     eventController.trigger(eventController.START_TIMELINE_MODEL);

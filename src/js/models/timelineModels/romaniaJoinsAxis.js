@@ -9,7 +9,7 @@ let RomaniaJoinsAxis = BaseTimelineModel.extend({
   defaults:{
     name: "romaniaJoinsAxis",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 5000,
+    animationDuration: 2000,
     historyDetails: {
       countries: [
         { name:"rumania", power: 0, invaded: true, silent: false}

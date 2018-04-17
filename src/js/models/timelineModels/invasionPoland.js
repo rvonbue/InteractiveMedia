@@ -9,7 +9,7 @@ let InvasionPoland = BaseTimelineModel.extend({
   defaults:{
     name: "invasionPoland",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 5000,
+    animationDuration: 3000,
     modelDetails: {
       arrows: [
              {

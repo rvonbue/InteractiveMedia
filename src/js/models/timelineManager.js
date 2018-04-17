@@ -11,7 +11,7 @@ let TimelineManager = Backbone.Model.extend({
     this.addListeners();
     this.createTimeEvent(0);
     let timelineModel = this.startTimelineModel();
-    eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel.get("historyDetails"));
+    eventController.trigger(eventController.UPDATE_TIMELINE_MODEL_TEXT, timelineModel.get("historyDetails"));
   },
   addListeners: function () {
     eventController.on(eventController.TIMELINE_MANAGER_UPDATE, this.updateTimeline, this);
@@ -55,12 +55,12 @@ let TimelineManager = Backbone.Model.extend({
   },
   stopPreviousTimelineModel: function (oldtimelinePosition ) {
     this.stopTimeline();
-    eventController.trigger(eventController.LOAD_TIMELINE_MODEL, null);
+    eventController.trigger(eventController.UPDATE_TIMELINE_MODEL_TEXT, null);
 
   },
   selectTimelineModel: function (timelineModel) {
-    eventController.trigger(eventController.LOAD_TIMELINE_MODEL, timelineModel.get("historyDetails"));
-    eventController.trigger(eventController.SELECT_SCENE_MODELS, timelineModel.get("historyDetails").countries );
+    eventController.trigger(eventController.UPDATE_TIMELINE_MODEL_TEXT, timelineModel.get("historyDetails"));
+    eventController.trigger(eventController.UPDATE_SCENE_MODELS, timelineModel.get("historyDetails").date);
     timelineModel.animateCamera();
   },
   startTimelineModel: function (timelineModel) {
