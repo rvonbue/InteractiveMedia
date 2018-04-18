@@ -25,3 +25,17 @@
   margin: auto;
   text-align: center;
 }
+
+@keyframes colorTransition2 {
+    from {
+      text-decoration: underline;
+      text-decoration-color: rgba(255,0,0,1);
+    }
+    to {text-decoration-color: rgba(255,0,0,0);}
+}
+
+.title {
+  text-decoration: none;
+  animation-name: colorTransition2;
+  animation-duration: 1.5s;
+}

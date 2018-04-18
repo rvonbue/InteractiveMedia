@@ -36,7 +36,7 @@ let timelineControlPanel = Backbone.View.extend({
     this.playTimeline();
   },
   clickAutoPlayPauseTimeline: function () {
-    // this.options.autoplay = false;
+    this.options.autoplay = false;
     this.$el.removeClass("auto-playing");
   },
   clickPlayTimeline: function () {

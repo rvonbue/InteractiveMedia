@@ -25,7 +25,12 @@
 
 }
 .timeline-buttons {
-  margin: 20px 0px 0px 6px;
+  margin: 8px 0px 0px 18px;
+  padding: 2px;
+  display: inline-block;
+  border: 2px solid #949494;
+  background-color: darkslategray;
+  border-radius: 6px;
 }
 .play, .pause, .auto-play, .auto-play-pause {
   cursor: pointer;
@@ -40,12 +45,19 @@
     background-image: url(../sprites/play-hover-64px.svg);
   }
 }
-.pause, .auto-play-pause {
+.pause {
   display: none;
   background-image: url(../sprites/pause-64px.svg);
   &:hover {
     background-image: url(../sprites/pause-hover-64px.svg);
   }
+}
+.auto-play-pause {
+ display: none;
+ background-image: url(../sprites/auto-play-pause-64px.svg);
+ &:hover {
+   background-image: url(../sprites/auto-play-pause-hover-64px.svg);
+ }
 }
 .auto-play {
   display: inline-block;

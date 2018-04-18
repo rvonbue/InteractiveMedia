@@ -110,7 +110,7 @@ let AppView3d = Backbone.View.extend({
     scene.add( arrowHelper );
   },
   getWidthHeight: function () {
-    return {w: this.$el.width(), h: this.$el.height() };
+    return {w: this.$el.width(), h: this.$el.height() - 150 };
   },
   resize: function () {
     let size = this.getWidthHeight();

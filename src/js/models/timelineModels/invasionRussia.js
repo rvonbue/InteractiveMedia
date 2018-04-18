@@ -13,8 +13,8 @@ let InvasionRussia = BaseTimelineModel.extend({
     modelDetails: {
       arrows: [
              {
-                start: {x: -5.559, y: 0.2, z: 4.029},
-                end: {x: -3.155, y: 0.2, z: 3.477},
+                start: {x: -0.452, y: 0.2, z: 2.33},
+                end: {x: 1.836, y: 0.2, z: -1.34},
                 width: ARROW_WIDTH,
                 height:  ARROW_HEIGHT
              },

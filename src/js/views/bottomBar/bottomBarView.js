@@ -12,8 +12,8 @@ let BottomBarView = Backbone.View.extend({
   },
   render: function () {
     let gridCell1 = this.getGridCell(2),
-        gridCell2 = this.getGridCell(4),
-        gridCell3 = this.getGridCell(6);
+        gridCell2 = this.getGridCell(2),
+        gridCell3 = this.getGridCell(8);
 
     this.$el.append(templateHtml);
 
