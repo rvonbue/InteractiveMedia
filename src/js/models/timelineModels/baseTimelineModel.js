@@ -3,6 +3,9 @@ import commandController from "../../controllers/commandController";
 import AnimatedModelCollection from "../../collections/animatedModelCollection";
 import TWEEN from "tween.js";
 import triangleJSON from "../../data/triangle.json";
+import { Color } from "three";
+import utils from "../../components/utils";
+var colorPallete = utils.getColorPallete();
 
 let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
@@ -152,7 +155,7 @@ let BaseTimelineModel = Backbone.Model.extend({
       arrowHead.visible = false;
       arrowHead.rotation.set(0, angleRadians ,0);
       arrowHead.position.set(arrow.start.x, arrow.start.y, arrow.start.z);
-
+      arrowHead.material.color = new Color(colorPallete.arrow.head);
       arrowHeadModels.push(arrowHead);
 
       eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [arrowHead] );

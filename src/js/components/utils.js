@@ -37,7 +37,7 @@ module.exports = {
       hemisphere: {
         sky:"#FFFFFF",
         ground: "#000000",
-        intensity: 1
+        intensity: 0.75
 
       },
       directional: {
@@ -51,6 +51,7 @@ module.exports = {
     return {
       axis: "#8b0000",
       ally: "#2C709D",
+      arrow: {head: "#ffffff", body: "#ffffff"},
       countryMap: "#555555"
     };
   }

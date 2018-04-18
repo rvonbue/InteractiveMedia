@@ -2,41 +2,59 @@ import eventController from "../../controllers/eventController";
 import template from "./timelineControlPanelView.html";
 import { length } from "../../models/timelineModels/timelineModelsCombined";
 import utils from "../../components/utils";
-let cameraAnimationDuration = utils.getCameraAnimationSpeed().duration;
+const cameraAnimationDuration = utils.getCameraAnimationSpeed().duration;
 
 let timelineControlPanel = Backbone.View.extend({
   className: "timeline-control-panel",
   events: {
+    "click .auto-play": "clickAutoPlayTimeline",
     "click .play": "clickPlayTimeline",
-    "click .pause": "clickPauseTimeline"
+    "click .pause": "clickPauseTimeline",
+    "click .auto-play-pause": "clickAutoPlayPauseTimeline"
   },
   initialize: function () {
-    _.bindAll(this, "clickPlayTimeline");
-    eventController.on(eventController.TIMELINE_MANAGER_END, ()=> {
-      this.clickPauseTimeline();
-      eventController.off(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);
-    }, this);
+    _.bindAll(this, "clickPlayTimeline", "clickAutoPlayPauseTimeline", "clickAutoPlayPauseTimeline", "clickPauseTimeline");
+    this.resetControls();
+    eventController.on(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.updateControls, this);
+    eventController.on(eventController.TIMELINE_MANAGER_END, this.clickPauseTimeline, this);
+    eventController.on(eventController.SLIDER_BAR_UPDATE, this.resetControls, this);
   },
-  addListeners: function () {
-    eventController.on(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);
+  updateControls: function () {
+    if ( this.options.autoplay) this.playTimeline();
+    if ( this.options.play) this.resetPlayButton();
   },
-  removeListeners: function () {
-    eventController.off(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);
+  resetControls: function () {
+    this.options = {
+      autoplay: false,
+      play: false
+    };
+    this.$el.removeClass("auto-playing playing");
   },
-  clickPlayTimeline: function () {
-    this.$el.addClass("playing");
-    this.addListeners();
+  clickAutoPlayTimeline: function () {
+    this.$el.addClass("auto-playing");
+    this.options.autoplay = true;
     this.playTimeline();
   },
+  clickAutoPlayPauseTimeline: function () {
+    // this.options.autoplay = false;
+    this.$el.removeClass("auto-playing");
+  },
+  clickPlayTimeline: function () {
+    this.options.play = true;
+    this.$el.addClass("playing");
+    eventController.trigger(eventController.START_TIMELINE_MODEL);
+  },
+  resetPlayButton: function () {
+    this.$el.removeClass("playing");
+    this.options.play = false;
+  },
   playTimeline: function () {
-    console.log("playTimeline");
     eventController.trigger(eventController.NEXT_TIMELINE_MODEL);
-    _.delay(()=>{ eventController.trigger(eventController.START_TIMELINE_MODEL); }, cameraAnimationDuration);
+    _.delay(() => eventController.trigger(eventController.START_TIMELINE_MODEL), cameraAnimationDuration);
   },
   clickPauseTimeline: function () {
-    console.log("clickPauseTimeline");
+    this.options.play = false;
     this.$el.removeClass("playing");
-    this.removeListeners();
   },
   render: function () {
     this.$el.append(template({numOfTimelineEvents: length - 1}));

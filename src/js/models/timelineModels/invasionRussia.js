@@ -21,18 +21,12 @@ let InvasionRussia = BaseTimelineModel.extend({
           ]
     },
     historyDetails: {
-      countries: [
-        { name:"russia", power: 1, invaded: false, silent: false },
-        { name:"latvia", power: 0, invaded: true, silent: false},
-        { name:"lithuania", power: 0, invaded: true, silent: false},
-        { name:"estonia", power: 0, invaded: true, silent: false}
-      ],
       eventPositions: {
         targetPosition: {x: 3.76, y: -1.52, z: 0.17},
         cameraPosition: {x: 3.73, y: 15.78, z: 5.50}
       },
       date:"Jun. 22, 1941",
-      title: "Germany Attacks Russia",
+      title: "Germany Attacks Russia. Russia joins Allies",
       text: "Germany invades Russia. Russia joins axis"
     }
   },

@@ -34,15 +34,6 @@ let MesserschmittModel = BaseAnimatedModel.extend({
     BaseAnimatedModel.prototype.setMesh3d.apply(this, arguments);
     if ( mesh3d.name === "spitfirePropeller" ) this.translateInitPropeller(mesh3d);
   },
-  createTween: function (from, to, duration) {
-    let tween = new TWEEN.Tween( from, {override:true} )
-        .to( to, duration )
-        .yoyo( true );
-
-    tween.timelineName = this.get("name");
-    this.get("tweens").push(tween);
-    return tween;
-  },
   setInitPivot: function () {
     this.getPivot().rotation.set(0, Math.PI / -2, 0 );
     this.getPivot().scale.set(3,3,3 );

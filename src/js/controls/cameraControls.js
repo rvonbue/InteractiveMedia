@@ -36,7 +36,11 @@ let CameraControls = Backbone.Model.extend({
     this.orbitControls.object.position.set( pos.x, pos.y, pos.z );  // this.orbitControls.object  is the camera
   },
   setCameraAnimatePosition: function (pos) {
-    this.getTween(this.orbitControls.object.position, new THREE.Vector3( pos.x, pos.y, pos.z ), cameraAnimationDuration).start();
+    this.getTween(this.orbitControls.object.position, new THREE.Vector3( pos.x, pos.y, pos.z ), cameraAnimationDuration)
+      // .onComplete(() => {
+      //   eventController.trigger(eventController.CAMERA_ANIMATION_COMPLETE);
+      // })
+      .start();
   },
   setCameraTarget: function (pos) {
     this.getTween(this.orbitControls.target, new THREE.Vector3( pos.x, pos.y, pos.z ), cameraAnimationDuration).start();
@@ -105,7 +109,6 @@ let CameraControls = Backbone.Model.extend({
     this.setCameraAnimatePosition(eventPositions.cameraPosition);
   },
   addListeners: function () {
-    eventController.on(eventController.SET_CAMERA_TARGET, this.setCameraTarget, this);
     eventController.on(eventController.ANIMATE_CAMERA, this.animateCamera, this);
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     commandController.reply(commandController.TEST_OFFSCREEN, this.testOffscreen, this);

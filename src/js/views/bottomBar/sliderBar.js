@@ -5,20 +5,23 @@ import { length } from "../../models/timelineModels/timelineModelsCombined";
 let SliderBar = Backbone.View.extend({
   className: "slider-bar",
   events: {
-    "input": "updateTimelineManager"
+    "input": "updateTimelineManager",
+    // "change input": "updateTimelineManager"
   },
   initialize: function () {
     eventController.on(eventController.NEXT_TIMELINE_MODEL, this.nextTimelineModel, this);
   },
   updateTimelineManager: function () {
-    eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, this.getInputValue());
+    let inputVal = this.getInputValue();
+    eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, inputVal);
+    eventController.trigger(eventController.SLIDER_BAR_UPDATE, inputVal);
   },
   nextTimelineModel: function () {
     let value = Number(this.$el.find("input").val()) + 1;
     if (value <= length - 1) {
       this.$el.find("input").val(value);
       eventController.trigger(eventController.TIMELINE_MANAGER_UPDATE, value);
-      // if(value === length - 1) eventController.trigger(eventController.TIMELINE_MANAGER_END);
+      if(value === length - 1) eventController.trigger(eventController.TIMELINE_MANAGER_END);
     }
 
   },

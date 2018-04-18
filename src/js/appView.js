@@ -14,6 +14,7 @@ import TimelineManager from "./models/timelineManager";
 import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
 import { EffectComposer, GlitchPass, FilmPass, RenderPass } from "postprocessing";
+import { Color } from "three";
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -73,23 +74,25 @@ let AppView3d = Backbone.View.extend({
     // this.renderer.composer = composer;
     this.addGround(this.scene);
     // this.addArrowHelper(this.scene);
+    this.addHelpers(this.scene);
     this.renderer.animate();
 
   },
   addHelpers: function (scene) {
-    let helper = new THREE.GridHelper( 100   , 100 );
-				helper.material.opacity = 0.5;
-				helper.material.transparent = false;
-      	helper.material.color.b = 0;
-        helper.material.color.g = 0;
+    let helper = new THREE.GridHelper( 100, 50 ,new Color("#ffff00"), new Color("#ffff00"));
+				helper.material.opacity = 0.15;
+				helper.material.transparent = true;
+        helper.material.lineWidth = 5;
+    helper.position.set(0, 0.25, 0);
+    console.log("helper", helper);
 		scene.add( helper );
   },
   addGround: function (scene) {
-    var geometry = new THREE.PlaneGeometry( 100, 100, 32 );
-    var material = new THREE.MeshBasicMaterial( {color: "#151515", side: THREE.DoubleSide} );
+    var geometry = new THREE.PlaneGeometry( 100, 100, 4 );
+    var material = new THREE.MeshBasicMaterial( {color: "#4682B4", side: THREE.DoubleSide} );
     var plane = new THREE.Mesh( geometry, material );
         plane.rotation.set(Math.PI /2, 0, 0);
-        plane.position.set(0, 0.1, 0);
+        // plane.position.set(0, 0.1, 0);
     scene.add( plane );
 
   },

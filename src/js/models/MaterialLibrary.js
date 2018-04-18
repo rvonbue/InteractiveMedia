@@ -4,9 +4,7 @@ import materialMapList from "../materials/combinedMaterials";
 import utils from "../components/utils";
 import countryFlags128 from "../data/countryFlags.js";
 let countryFlags256 = countryFlags128.frames;
-// import countryList from "../data/models3dList.js";
 let color = utils.getColorPallete();
-// import countryBordersBase64 from "../data/countryBordersBase64.json";
 
 var MaterialLibrary = Backbone.Model.extend({
   initialize: function () {
@@ -117,14 +115,7 @@ var MaterialLibrary = Backbone.Model.extend({
   },
   getImageSprite: function (name) {
     let sprite = _.findWhere(countryFlags256, {filename: name + ".png"});
-    let pos = sprite.frame;
-    let size = sprite.sourceSize;
-    let canvasCtx = this.getNewCanvas(size);
-    let imageObj = this.spriteSheetImages.countryFlags256;
-
-    // canvasCtx.context.drawImage(imageObj, pos.x, pos.y, size.w, size.h, 0, 0, size.w, size.h);
-
-    return {pos: pos, size: size, imageObj: imageObj};
+    return {pos: sprite.frame, size: sprite.sourceSize, imageObj: this.spriteSheetImages.countryFlags256};
   },
   getNewCanvas: function (size) {
     let canvas = document.createElement( 'canvas' );

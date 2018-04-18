@@ -10,16 +10,6 @@ let ItalyAlbaniaJoinsAxis = BaseTimelineModel.extend({
     name: "italyAlbaniaJoinsAxis",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 2000,
-    modelDetails: {
-      arrows: [
-             {
-                start: {x: -5.559, y: 0.2, z: 4.029},
-                end: {x: -3.155, y: 0.2, z: 3.477},
-                width: ARROW_WIDTH,
-                height:  ARROW_HEIGHT
-             }
-          ]
-    },
     historyDetails: {
       countries: [
         { name:"france", power: 0, invaded: true, silent: true},

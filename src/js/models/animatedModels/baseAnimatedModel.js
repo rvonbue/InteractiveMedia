@@ -50,7 +50,7 @@ let BaseAnimatedModel = Backbone.Model.extend({
       this.createTween(mesh3d.rotation,  { z: "+300" }, 10000);
     }, this);
 
-    this.createTween(this.getPivot().rotation,  { z: -0.15 }, 500)    // setRandomFlightNoise
+    this.getNoiseTween(this.getPivot().rotation,  { z: 0.25}, 1500)    // setRandomFlightNoise
   },
   startAnimation: function () {
     this.resetPosition();
@@ -60,6 +60,29 @@ let BaseAnimatedModel = Backbone.Model.extend({
   stopAnimation: function () {
     this.get("tweens").forEach( (tween)=> { tween.stop(); });
     this.set("tweens", []);
+  },
+  getNoiseTween: function (from, to, duration) {
+    let tween = new TWEEN.Tween( from)
+        .to(  { z: -0.25}, duration )
+        .repeat( Infinity )
+				// .delay( 1000 )
+				.yoyo( true );
+
+    // let tween2 = new TWEEN.Tween( from)
+    //     .to(  { z: 0.25}, duration );
+    //
+    // tween.chain(tween2);
+    this.get("tweens").push(tween);
+    return tween;
+  },
+  createTween: function (from, to, duration) {
+    let tween = new TWEEN.Tween( from, {override:true} )
+        .to( to, duration )
+        .yoyo( true );
+
+    tween.timelineName = this.get("name");
+    this.get("tweens").push(tween);
+    return tween;
   },
   setMesh3d: function (mesh3d) {
     this.set("totalLoaded", this.get("totalLoaded") + 1 );

@@ -8,9 +8,10 @@ var LightControls = Backbone.View.extend({
   initialize: function (options) {
     this.worldLights = [];
     this.addLight();
-    this.addListeners();
+    // this.addListeners();
   },
   addListeners: function () {
+    eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.moveDirectionalLight, this);
   },
   removeListeners: function () {
   },
@@ -25,6 +26,16 @@ var LightControls = Backbone.View.extend({
   resetToSceneDetails: function (sceneModel) {
     var sceneDetails = sceneModel.get("sceneDetails");
     if ( sceneDetails ) this.toggleWorldLighting(sceneDetails.get("intialAmbientLights"));
+  },
+  moveDirectionalLight: function (raycast) {
+    let light = this.getWorldLight("DirectionalLight");
+
+    if (raycast && raycast.point) {
+      console.log("light", raycast.point);
+      light.position.set(raycast.point.x / 5, 5, raycast.point.z / 5);
+    } else if (raycast) {
+      light.position.set(raycast.x, 5, raycast.z);
+    }
   },
   getResetLightSettings: function () {
     return {
@@ -85,13 +96,13 @@ var LightControls = Backbone.View.extend({
     return _.findWhere(this.worldLights, {type: lightType});
   },
   addDirectionalLight: function () {
-    var directionalLight = new THREE.DirectionalLight(
+    let directionalLight = new THREE.DirectionalLight(
       worldColor.directional.color,
       worldColor.directional.intensity
-    )
-    var pos = worldColor.directional.position;
+    );
+    let {x, y ,z} = worldColor.directional.position;
 
-    directionalLight.position.set(pos.x, pos.y, pos.z);
+    directionalLight.position.set(x, y, z);
     this.worldLights.push(directionalLight);
     // this.worldLights.push(new THREE.DirectionalLightHelper( directionalLight, 5 ));
   },

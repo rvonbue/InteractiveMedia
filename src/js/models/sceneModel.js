@@ -27,7 +27,7 @@ let SceneModel = Backbone.Model.extend({
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
-    this.on("change:hover", this.onChangeHover);
+    // this.on("change:hover", this.onChangeHover);
     this.on("change:power", this.onChangePower);
     let self = this;
     this.once("change:mesh3d", ()=> {
@@ -46,11 +46,11 @@ let SceneModel = Backbone.Model.extend({
       this.unhighlightMaterial();
     }
 
-    this.getTween(
-      this.getMesh3d().position,
-      { y: this.get("initPos").y + this.get("hover") ? 0.05 : 0 }
-    )
-    .start();
+    // this.getTween(
+    //   this.getMesh3d().position,
+    //   { y: this.get("initPos").y + this.get("hover") ? 0.05 : 0 }
+    // )
+    // .start();
   },
   onChangeSelected: function () {
     // if (this.get("hover")) return;
@@ -145,7 +145,6 @@ let SceneModel = Backbone.Model.extend({
     return this.get("mesh3d");
   },
   getHighlightColor: function () {
-
     if (this.get("invaded")) {
       return colorPallete.axis;
     } else {
@@ -155,6 +154,7 @@ let SceneModel = Backbone.Model.extend({
   getTween: function (to, from) {
     let self = this;
     self.set("animating", true);
+
     return new TWEEN.Tween(to)
       .easing(TWEEN.Easing.Circular.Out)
       .interpolation(TWEEN.Interpolation.Bezier)

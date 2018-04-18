@@ -11,26 +11,49 @@
       display: inline-block;
     }
   }
-}
+  &.auto-playing {
+    .auto-play {
+      display: none;
+    }
+    .auto-play-pause {
+      display: inline-block;
+    }
+    .play, .pause {
+      opacity: 0.25;
+    }
+  }
 
-.play, .pause {
+}
+.timeline-buttons {
+  margin: 20px 0px 0px 6px;
+}
+.play, .pause, .auto-play, .auto-play-pause {
   cursor: pointer;
-  margin: 20px 0px 0px 24px;
-  width: 44px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
 }
 
 .play {
   display: inline-block;
-  background-image: url(../sprites/ic_play_arrow_48px.svg);
+  background-image: url(../sprites/play-64px.svg);
   &:hover {
-    background-image: url(../sprites/ic_play_arrow_active_44x56px.svg);
+    background-image: url(../sprites/play-hover-64px.svg);
   }
 }
-.pause {
+.pause, .auto-play-pause {
   display: none;
-  background-image: url(../sprites/ic_pause_44x56px.svg);
+  background-image: url(../sprites/pause-64px.svg);
   &:hover {
-    background-image: url(../sprites/ic_pause_active_44x56px.svg);
+    background-image: url(../sprites/pause-hover-64px.svg);
+  }
+}
+.auto-play {
+  display: inline-block;
+  background-image: url(../sprites/auto-play-64px.svg);
+  &.disabled {
+    opacity: 0.25;
+  }
+  &:hover {
+    background-image: url(../sprites/auto-play-hover-64px.svg);
   }
 }
