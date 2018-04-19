@@ -9,12 +9,13 @@ import MeshSelector from "./controls/meshSelector";
 import SceneAnimator from "./controls/sceneAnimator";
 import Renderer from "./controls/renderer";
 import TimelineManager from "./models/timelineManager";
+import Extras from "./components/extras";
 // import StatsView from "./components/statsView";
 
 import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
 import { EffectComposer, GlitchPass, FilmPass, RenderPass } from "postprocessing";
-import { Color } from "three";
+
 
 let AppView3d = Backbone.View.extend({
   className: "appView",
@@ -56,58 +57,27 @@ let AppView3d = Backbone.View.extend({
     new SceneAnimator();
     new LightControls();
     new TimelineManager();
+    new Extras();
 
 		// let composer = new EffectComposer( this.renderer.renderer );
 		// composer.addPass( new RenderPass( this.scene, this.controls.orbitControls.object ) );
 		// let glitchPass = new FilmPass(
     //   {
     //     noise: true,
-    //     noiseIntensity:0.50,
+    //     noiseIntensity: 0.05,
+    //     scanlineIntensity: 0.05,
     //     scanlines: false,
-    //     scanlineIntensity:0.5,
     //     greyscale: false,
-    //     sepia: false
+    //     sepia: false,
+    //     grid: false,
     //   }
     // );
 		// glitchPass.renderToScreen = true;
 		// composer.addPass( glitchPass );
     // this.renderer.composer = composer;
-    this.addGround(this.scene);
-    // this.addArrowHelper(this.scene);
-    this.addHelpers(this.scene);
+
     this.renderer.animate();
 
-  },
-  addHelpers: function (scene) {
-    let helper = new THREE.GridHelper( 100, 50 ,new Color("#ffff00"), new Color("#ffff00"));
-				helper.material.opacity = 0.15;
-				helper.material.transparent = true;
-        helper.material.lineWidth = 5;
-    helper.position.set(0, 0.25, 0);
-    console.log("helper", helper);
-		scene.add( helper );
-  },
-  addGround: function (scene) {
-    var geometry = new THREE.PlaneGeometry( 100, 100, 4 );
-    var material = new THREE.MeshBasicMaterial( {color: "#4682B4", side: THREE.DoubleSide} );
-    var plane = new THREE.Mesh( geometry, material );
-        plane.rotation.set(Math.PI /2, 0, 0);
-        // plane.position.set(0, 0.1, 0);
-    scene.add( plane );
-
-  },
-  addArrowHelper: function (scene) {
-    var dir = new THREE.Vector3( 1, 2, 0 );
-
-    //normalize the direction vector (convert to vector of length 1)
-    dir.normalize();
-
-    var origin = new THREE.Vector3( 0, 0, 0 );
-    var length = 1;
-    var hex = 0xffff00;
-
-    var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-    scene.add( arrowHelper );
   },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() - 150 };

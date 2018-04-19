@@ -22,8 +22,8 @@ let SceneModel = Backbone.Model.extend({
   },
   initialize: function( options ) {
     this.addModelListeners();
-    console.log(this.get("name"));
-    console.log(this);
+    // console.log(this.get("name"));
+    // console.log(this);
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
@@ -92,7 +92,7 @@ let SceneModel = Backbone.Model.extend({
           self.drawInvasionDirection(direction, context, canvas.width, val);
         });
 
-        context.drawImage(self.getBorderImage(), 0,0);
+        // context.drawImage(self.getBorderImage(), 0,0);
         self.updateTextureMap();
       })
       .start();

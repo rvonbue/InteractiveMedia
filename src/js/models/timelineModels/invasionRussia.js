@@ -13,11 +13,23 @@ let InvasionRussia = BaseTimelineModel.extend({
     modelDetails: {
       arrows: [
              {
-                start: {x: -0.452, y: 0.2, z: 2.33},
-                end: {x: 1.836, y: 0.2, z: -1.34},
+                start: {x: -0.452, y: 0.25, z: 2.33},
+                end: {x: 1.836, y: 0.25, z: -1.34},
                 width: ARROW_WIDTH,
                 height:  ARROW_HEIGHT
              },
+             {
+                 start: {x: -0.50, y: 0.25, z: 4.185},
+                 end: {x: 3.11, y: 0.25, z: 3.56},
+                 width: ARROW_WIDTH,
+                 height:  ARROW_HEIGHT
+              },
+              {
+                  start: {x: 0.38, y: 0.25, z: 8.30},
+                  end: {x: 4.59, y: 0.25, z: 5.97},
+                  width: ARROW_WIDTH,
+                  height:  ARROW_HEIGHT
+               }
           ]
     },
     historyDetails: {
@@ -33,7 +45,6 @@ let InvasionRussia = BaseTimelineModel.extend({
     initialize: function () {
       // BaseTimelineModel.prototype.initialize.apply(this, arguments);
       BaseTimelineModel.prototype.initialize.apply(this, arguments);
-
     },
     startAnimation: function () {
       BaseTimelineModel.prototype.startAnimation.apply(this, arguments);

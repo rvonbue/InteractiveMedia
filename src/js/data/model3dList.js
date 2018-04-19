@@ -8,7 +8,7 @@ module.exports = [
   { name: "estonia", baseUrl: baseUrl, power: 1, details: {invasionStart: "Jun. 14, 1940"}, invasionDirection: ["rtl"] },
   { name: "eastprussia", baseUrl: baseUrl, power: 0, details: {joinedAxis: "Aug. 28, 1939"} },
   { name: "finland", baseUrl: baseUrl, power: 1 },
-  { name: "france", baseUrl: baseUrl, power: 1, details: {invasionStart: "May. 10, 1940", invasionEnd: "May. 6, 1941"}, invasionDirection: ["ttb"] },
+  { name: "france", baseUrl: baseUrl, power: 1, details: {joinedAllies: "Sept. 1, 1939", invasionStart: "May. 10, 1940", invasionEnd: "May. 6, 1941"}, invasionDirection: ["ttb"] },
   { name: "germany", baseUrl: baseUrl, power: 0, details: {joinedAxis: "Aug. 28, 1939"} },
   { name: "greece", baseUrl: baseUrl, power: 0, details: {invasionStart: "Apr. 6, 1941", invasionEnd: "May. 6, 1941"}, invasionDirection: ["ttb"] },
   { name: "hungary", baseUrl: baseUrl, power: 0, details: {joinedAxis: "Aug. 28, 1939"} },
@@ -25,6 +25,6 @@ module.exports = [
   { name: "spain", baseUrl: baseUrl, power: 3 },
   { name: "switzerland", baseUrl: baseUrl, power: 3 },
   { name: "sweden", baseUrl: baseUrl, power: 3 },
-  { name: "unitedkingdom", baseUrl: baseUrl, details: {joinedAllies: "Aug. 15, 1940"}, power: 1 },
+  { name: "unitedkingdom", baseUrl: baseUrl, details: {joinedAllies: "Sept. 1, 1939"}, power: 1 },
   { name: "yugoslovia", baseUrl: baseUrl, power: 0, details: {invasionStart: "Apr. 6, 1941", invasionEnd: "May. 6, 1941"}, invasionDirection: ["ttb"] }
 ];

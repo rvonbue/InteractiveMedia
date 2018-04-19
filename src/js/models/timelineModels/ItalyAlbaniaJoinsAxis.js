@@ -12,9 +12,6 @@ let ItalyAlbaniaJoinsAxis = BaseTimelineModel.extend({
     animationDuration: 2000,
     historyDetails: {
       countries: [
-        { name:"france", power: 0, invaded: true, silent: true},
-        { name:"belgium", power: 0, invaded: true, silent: true},
-        { name:"netherlands", power: 0, invaded: true, silent: true},
         { name:"italy", power: 0, invaded: true, silent: false},
         { name:"albania", power: 0, invaded: true, silent: false}
       ],
@@ -26,6 +23,13 @@ let ItalyAlbaniaJoinsAxis = BaseTimelineModel.extend({
       title: "Italy Albania joins Axis",
       text: "After the fall of France facist Italy joins the war"
     }
+  },
+  startAnimation: function () {
+    BaseTimelineModel.prototype.startAnimation.apply(this, arguments);
+    this.animateFlagPole();
+  },
+  animateFlagPole: function () {
+
   }
 });
 

@@ -147,25 +147,21 @@ let BaseTimelineModel = Backbone.Model.extend({
     let arrowHeadModels = [];
 
     _.each(this.get("modelDetails").arrows, (arrow)=> {
-
       let arrowHead = commandController.request(commandController.PARSE_JSON_MODEL, triangleJSON);
-      let angleRadians = Math.atan2(arrow.end.x - arrow.start.x, arrow.end.z - arrow.start.z);
-      angleRadians += Math.PI;
-      // console.log("angleRadians:aD", (angleRadians * 57.295779513));
-      arrowHead.visible = false;
-      arrowHead.rotation.set(0, angleRadians ,0);
-      arrowHead.position.set(arrow.start.x, arrow.start.y, arrow.start.z);
-      arrowHead.material.color = new Color(colorPallete.arrow.head);
+      this.setArrowHeadProps(arrow, arrowHead);
       arrowHeadModels.push(arrowHead);
-
       eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [arrowHead] );
     }, this);
 
     this.set("modelArrowHeads", arrowHeadModels);
-
-
-    // var angleRadians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-
+  },
+  setArrowHeadProps: function (arrow, arrowHead) {
+    let angleRadians = Math.atan2(arrow.end.x - arrow.start.x, arrow.end.z - arrow.start.z);
+    angleRadians += Math.PI;
+    arrowHead.visible = false;
+    arrowHead.rotation.set(0, angleRadians ,0);
+    arrowHead.position.set(arrow.start.x, arrow.start.y, arrow.start.z);
+    arrowHead.material.color = new Color(colorPallete.arrow.head);
   },
   loadAnimatedModels: function () {
     let modelUrls = [];
