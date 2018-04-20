@@ -9,7 +9,7 @@ let InvasionPoland = BaseTimelineModel.extend({
   defaults:{
     name: "invasionPoland",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 3000,
+    animationDuration: 6000,
     modelDetails: {
       arrows: [
              {
@@ -42,11 +42,9 @@ let InvasionPoland = BaseTimelineModel.extend({
     },
     historyDetails: {
       countries: [
-        { name:"germany", power: 0, invaded: false},
         { name:"eastprussia", power: 0, invaded: false},
         { name:"hungary", power: 0, invaded: false},
-        { name:"russia", power: 0, invaded: false},
-        { name: "poland", power: 0, invaded: true, silent: false}
+        { name: "poland", power: 0, invaded: true, silent: false, invasionSpeed: 5000 }
       ],
       eventPositions: {
         targetPosition: {x: -2.336991143750445, y: -2.153566862780448, z: 3.0383154047995986},

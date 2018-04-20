@@ -39,7 +39,10 @@ let InvasionRussia = BaseTimelineModel.extend({
       },
       date:"Jun. 22, 1941",
       title: "Germany Attacks Russia. Russia joins Allies",
-      text: "Germany invades Russia. Russia joins axis"
+      text: "Germany invades Russia. Russia joins axis",
+      countries: [
+        { name: "russia", power: 1, invaded: false, silent: false},
+      ],
     }
   },
     initialize: function () {

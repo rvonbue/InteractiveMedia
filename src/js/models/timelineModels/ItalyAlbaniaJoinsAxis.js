@@ -9,27 +9,24 @@ let ItalyAlbaniaJoinsAxis = BaseTimelineModel.extend({
   defaults:{
     name: "italyAlbaniaJoinsAxis",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 2000,
+    animationDuration: 5000,
+    modelDetails: {
+      flagpole: { "position": {x: -4.350654225887182, y: 0.14273291744144823, z: 14.798987595289432}},
+      arrows: []
+    },
     historyDetails: {
       countries: [
-        { name:"italy", power: 0, invaded: true, silent: false},
-        { name:"albania", power: 0, invaded: true, silent: false}
+        { name:"italy", power: 0, invaded: true, silent: false, invasionSpeed: 10000},
+        { name:"albania", power: 0, invaded: true, silent: false, invasionSpeed: 10000}
       ],
       eventPositions: {
-        targetPosition: {x: -4.4520841521091405, y: -7.490935873153017, z: 13.535923446935033},
-        cameraPosition: {x: -4.265773147992161, y: 10.348847621719013, z: 18.833682794289064}
+        targetPosition:  {x: -3.560305652986994, y: -7.10822409765946, z: 12.336295922213042},
+        cameraPosition:  {x: -3.343181488391319, y: 7.138979917963304, z: 19.517912044415517}
       },
       date:"Jun. 10 1940",
       title: "Italy Albania joins Axis",
       text: "After the fall of France facist Italy joins the war"
     }
-  },
-  startAnimation: function () {
-    BaseTimelineModel.prototype.startAnimation.apply(this, arguments);
-    this.animateFlagPole();
-  },
-  animateFlagPole: function () {
-
   }
 });
 

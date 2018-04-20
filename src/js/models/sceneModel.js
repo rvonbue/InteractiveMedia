@@ -3,6 +3,7 @@ import commandController from "../controllers/commandController"
 import utils from "../components/utils";
 import TWEEN from "tween.js";
 let colorPallete = utils.getColorPallete();
+const SPRITE_SIZE = 512;
 
 let SceneModel = Backbone.Model.extend({
   defaults: {
@@ -27,12 +28,25 @@ let SceneModel = Backbone.Model.extend({
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
-    // this.on("change:hover", this.onChangeHover);
+    this.on("change:hover", this.onChangeHover);
     this.on("change:power", this.onChangePower);
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
+        self.get("mesh3d").material.map = self.setInitalCanvasTexture();
     });
+    this.once("change:ready", this.initialTexture);
+  },
+  setInitalCanvasTexture: function () {
+    let texture = new THREE.Texture(this.getCanvasAndContext().canvas);
+    return texture;
+  },
+  getCanvasAndContext: function () {
+    let canvas = document.createElement( 'canvas' );
+        canvas.width = SPRITE_SIZE;
+        canvas.height = SPRITE_SIZE;
+    let context = canvas.getContext( '2d' );
+    return { canvas: canvas, context: context };
   },
   removeModelListeners: function () {
     this.off("change:selected", this.onChangeSelected);
@@ -41,7 +55,8 @@ let SceneModel = Backbone.Model.extend({
   onChangeHover: function () {
     if ( this.get("selected") === true || this.get("animating" === true)) return;
     if (this.get("hover") === true ) {
-      this.highlightMaterial();
+      // this.highlightMaterial();
+      this.drawImageSprite();
     } else {
       this.unhighlightMaterial();
     }
@@ -63,36 +78,42 @@ let SceneModel = Backbone.Model.extend({
   onChangePower: function () {
     this.animateInvasion();
   },
-  resetImageTexture: function (context) {
-    context.fillStyle = colorPallete.countryMap;
-    context.fillRect(0,0,512,512);
-    context.drawImage(this.getBorderImage(), 0, 0);
-    this.updateTextureMap();
+  getContext: function () {
+    return this.get("mesh3d").material.map.image.getContext( '2d' );;
   },
-  animateInvasion: function () {
+  initialTexture: function () {
+    let context = this.getContext();
+    context.fillStyle = colorPallete.countryMap;
+    context.fillRect(0,0,SPRITE_SIZE,SPRITE_SIZE);
+    this.drawImageSprite("countryBorder");
+  },
+  resetImageTexture: function (context) {
+    context = context ? context : this.getContext();
+    context.fillStyle = colorPallete.countryMap;
+    context.fillRect(0,0,SPRITE_SIZE,SPRITE_SIZE);
+    this.drawBorder(context);
+  },
+  animateInvasion: function (speed) {
     let self = this;
-    let borderImage = this.getBorderImage();
+    speed = speed ? speed : 2500;
     let canvas = document.createElement( 'canvas' );
-        canvas.width = borderImage.width;
-        canvas.height = borderImage.height;
+        canvas.width = SPRITE_SIZE;
+        canvas.height = SPRITE_SIZE;
     let context = canvas.getContext( '2d' );
 
     this.get("mesh3d").material.map = new THREE.Texture(canvas);
-    this.get("mesh3d").material.map.borderImage = borderImage;
-
+    // this.get("mesh3d").material.map.borderImage = borderImage;
     this.resetImageTexture(context);
     context.fillStyle = colorPallete.axis;
 
     new TWEEN.Tween(0)
       .easing(TWEEN.Easing.Quadratic.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
-      .to(1, 1500)
+      .to(1, speed)
       .onUpdate(function (val) {
         _.each( self.get('invasionDirection'), (direction)=> {
           self.drawInvasionDirection(direction, context, canvas.width, val);
         });
-
-        // context.drawImage(self.getBorderImage(), 0,0);
         self.updateTextureMap();
       })
       .start();
@@ -121,25 +142,27 @@ let SceneModel = Backbone.Model.extend({
         break;
       }
   },
-  drawFlagBackground: function () {
+  drawImageSprite: function () {
     let canvas = this.getTextureCanvas();
     let context = canvas.getContext( '2d' );
-
-    context.fillStyle = colorPallete.countryMap;
-    context.fillRect(0,0,canvas.width, canvas.height);
 
     let sprite = commandController.request(commandController.GET_IMAGE_SPRITE, this.get("name"), this);
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
     let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
-    let centerPoint = {x: canvasCenter.x - spritePos.x, y: canvasCenter.y - spritePos.y};
-    let newPos = {x:128, y:128};
 
-
-    context.drawImage(sprite.imageObj, sprite.pos.x, sprite.pos.y, sprite.size.w, sprite.size.h, newPos.x * 2 - spritePos.x, newPos.y * 2 - spritePos.y, sprite.size.w, sprite.size.h);
-    context.drawImage(this.getBorderImage(), 0,0);
+    console.log("drawImageSprite", sprite);
+    context.drawImage(sprite.imageObj,
+       sprite.pos.x,  //source start
+       sprite.pos.y,
+       sprite.size.w, //source size
+       sprite.size.h,
+       0,         // draw image location on existing canvas
+       0,
+       sprite.size.w,
+       sprite.size.h
+    );
 
     this.updateTextureMap();
-
   },
   getMesh3d: function () {
     return this.get("mesh3d");
@@ -167,6 +190,7 @@ let SceneModel = Backbone.Model.extend({
     return this.get("mesh3d").material.map.borderImage;
   },
   getTextureCanvas: function () {
+    console.log("matalksdlfdasf", this.get("mesh3d").material);
     return this.get("mesh3d").material.map.image;
   },
   getCanvasContext: function () {
@@ -179,8 +203,8 @@ let SceneModel = Backbone.Model.extend({
     let context = this.getCanvasContext();
     context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,512,512);
+    this.drawBorder(context);
     this.updateTextureMap();
-    context.drawImage(this.getBorderImage(), 0,0);
   },
   highlightMaterial: function () {
     let context = this.getCanvasContext();
@@ -189,11 +213,17 @@ let SceneModel = Backbone.Model.extend({
     context.fillRect(0,0,512,512);
 
     // this.createNoise(context, highlightcolor);
-    this.updateTextureMap();
+
     // this.drawFlagBackground();
     // context.globalCompositeOperation = "destination-in";
-    context.drawImage(this.getBorderImage(), 0,0);
+    this.drawBorder(context);
+    this.updateTextureMap();
     // context.globalCompositeOperation = "source-over";
+  },
+  drawBorder: function (context) {
+    if (this.get("power") !== 0 && !this.get("invaded")) {
+      this.drawImageSprite("countryBorder");
+    }
   },
   reset: function (showHideBool) {
     this.set("selected", false);

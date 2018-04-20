@@ -1,15 +1,25 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
 import materialMapList from "../materials/combinedMaterials";
-import utils from "../components/utils";
+
 import countryFlags128 from "../data/countryFlags.js";
-let countryFlags256 = countryFlags128.frames;
+import spriteSheetCountryBorders from "../data/countryBorders.json";
+
+let spriteSheetJSON = {
+  "countryBorders": spriteSheetCountryBorders.frames,
+  "countryFlags256": countryFlags128.frames
+};
+
+import utils from "../components/utils";
 let color = utils.getColorPallete();
 
+
 var MaterialLibrary = Backbone.Model.extend({
+  defaults: {
+    spriteSheetImages: {}
+  },
   initialize: function () {
     this.materialCollection = [];
-    this.spriteSheetImages = {};
     this.addListeners();
   },
   addListeners: function () {
@@ -22,13 +32,14 @@ var MaterialLibrary = Backbone.Model.extend({
 
     if ( !matFromLib ) { // if material doesn't exist
       matFromLib = this.makeNewMaterial(oldMat);
-      // this.materialCollection.push(matFromLib);
-      newMaterial =  matFromLib;
+      this.materialCollection.push(matFromLib);
+      newMaterial = matFromLib;
     } else {
       newMaterial = matFromLib;
     }
-    this.setMaterialProperties(newMaterial);
 
+    this.setMaterialProperties(newMaterial);
+    console.log("materialMapList", materialMapList);
     return newMaterial;
   },
   makeNewMaterial: function (mat) {
@@ -84,23 +95,6 @@ var MaterialLibrary = Backbone.Model.extend({
         canvas.height = image.height;
         context.fillStyle = color.countryMap;
         context.fillRect(0,0,512,512);
-        // context.shadowColor = "black";
-        // context.shadowBlur = 25;
-        //
-        // context.shadowOffsetX = 3;
-        // context.shadowOffsetY = 3;
-    		// context.drawImage( image, 0, 0 );
-        //
-        // context.shadowOffsetX = -3;
-        // context.shadowOffsetY = -3;
-        // context.drawImage( image, 0, 0 );
-        //
-        // context.shadowOffsetX = 3;
-        // context.shadowOffsetY = 3;
-        // context.drawImage( image, 0, 0 );
-        //
-        // context.shadowOffsetX = -3;
-        // context.shadowOffsetY = -3;
         context.drawImage( image, 0, 0 );
 
         texture.needsUpdate = true;
@@ -114,8 +108,8 @@ var MaterialLibrary = Backbone.Model.extend({
     return texture;
   },
   getImageSprite: function (name) {
-    let sprite = _.findWhere(countryFlags256, {filename: name + ".png"});
-    return {pos: sprite.frame, size: sprite.sourceSize, imageObj: this.spriteSheetImages.countryFlags256};
+    let sprite = spriteSheetJSON.countryBorders[name];
+    return {pos: sprite.frame, size: sprite.sourceSize, imageObj: this.get("spriteSheetImages").countryBorders};
   },
   getNewCanvas: function (size) {
     let canvas = document.createElement( 'canvas' );
@@ -125,10 +119,12 @@ var MaterialLibrary = Backbone.Model.extend({
     return {canvas: canvas, context: context };
   },
   loadSpriteSheet: function (spriteSheet) {
-    let loader = new THREE.ImageLoader(this.get("manager"));
-    let spriteSheetImages = this.spriteSheetImages;
+    let spriteSheetImages = this.get("spriteSheetImages");
 
-    loader.load( spriteSheet.url,function ( image ) { spriteSheetImages[spriteSheet.name] = image; });
+    new THREE.ImageLoader(this.get("manager")).load( spriteSheet.url, ( image ) => {
+      spriteSheetImages[spriteSheet.name] = image;
+      this.set("spriteSheetImages", spriteSheetImages );
+    });
   },
   setMaterialAttributes: function (mat, props) {
     // console.log("mat:", mat);

@@ -56,7 +56,7 @@ let ModelLoader = Backbone.Model.extend({
     let matLib = this.materialLibrary;
     let newMaterials = [];
 
-    materials.forEach( function (mat) {
+    materials.forEach( function (mat, index) {
       newMaterials.push(this.materialLibrary.getMaterial(mat));
     }, this);
 

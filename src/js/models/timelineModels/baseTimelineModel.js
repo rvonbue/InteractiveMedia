@@ -11,6 +11,7 @@ let BaseTimelineModel = Backbone.Model.extend({
   defaults:{
     name: "DEFAULT",
     animationDuration: 5000,
+    invasionDuration: 2500,
     animatedModels: [], //this.animatedModelsCollection
     models: [],
     modelArrows: [],
@@ -41,7 +42,8 @@ let BaseTimelineModel = Backbone.Model.extend({
     this.resetModel();
     this.showAllModels();
     this.animateArrowModels();
-    _.delay(_.bind(this.animateInvasion, this), 1000);
+    this.animateFlagPole();
+    _.delay( () => this.animateInvasion(this.get("invasionDuration")), 1000);
 
     this.animationTimer = setTimeout(function () {
         eventController.trigger(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE);
@@ -54,6 +56,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     });
     this.get("tweens").forEach( (tween)=> { tween.stop(); });
     this.set("tweens", []);
+
     // this.hideModels();
   },
   hideModels: function () {
@@ -90,6 +93,17 @@ let BaseTimelineModel = Backbone.Model.extend({
         _.delay(_.bind(this.addRemoveArrowSegment, this), delayTime, arrowMesh, index );
 
       })
+    });
+  },
+  animateFlagPole: function () {
+    if ( !this.get("modelDetails").flagpole ) return;
+
+    eventController.trigger(eventController.UPDATE_SCENE_DETAIL, {
+      name: "flagPole",
+      country: this.get("historyDetails").countries[0],
+      position: this.get("modelDetails").flagpole.position,
+      visible: true,
+      func: "raiseFlag"
     });
   },
   moveArrowhead: function (mesh, arrowHead) {

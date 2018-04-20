@@ -9,11 +9,9 @@ let OccupationBalticStates = BaseTimelineModel.extend({
   defaults:{
     name: "occupationBalticStates",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 3000,
+    animationDuration: 4000,
     historyDetails: {
       countries: [
-        { name:"italy", power: 0, invaded: true, silent: true},
-        { name:"albania", power: 0, invaded: true, silent: true},
         { name:"latvia", power: 0, invaded: true, silent: false},
         { name:"lithuania", power: 0, invaded: true, silent: false},
         { name:"estonia", power: 0, invaded: true, silent: false}

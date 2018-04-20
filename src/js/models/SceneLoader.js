@@ -8,8 +8,8 @@ import model3dList from "../data/model3dList";
 var SceneLoader = Backbone.Model.extend({
   defaults: {
     spriteSheets: [{
-      name: "countryFlags256",
-      url: "textures/countryFlags256.png"
+      name: "countryBorders",
+      url: "textures/spriteSheets/countryBorders.png"
     }]
   },
   initialize: function (options) {
@@ -45,6 +45,9 @@ var SceneLoader = Backbone.Model.extend({
   allSceneModelsLoaded: function () {
     eventController.trigger(eventController.RESET_RAYCASTER, this.getAllMesh3d());
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
+    this.sceneModelCollection.each( (model)=> {
+      model.set("ready", true);
+    })
   },
   sceneModelHoverSet: function (bool) {
     let hoverSceneModels = this.sceneModelCollection.where({"hover": true});
@@ -89,8 +92,9 @@ var SceneLoader = Backbone.Model.extend({
 
   },
   getInvadedCountries: function (countryNames) {
-    this.getCountries(countryNames).forEach( (sceneModel)=> {
-      sceneModel.animateInvasion();
+
+    this.getCountries(countryNames).forEach( (sceneModel, index)=> {
+      sceneModel.animateInvasion(countryNames[index].invasionSpeed);
     });
   },
   addModelsToScene: function (sceneModelArray) {

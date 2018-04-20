@@ -6,7 +6,10 @@ let colorPallete = utils.getColorPallete();
 import flagPole from "../data/flagPole.json";
 
 let SceneAnimator = Backbone.Model.extend({
-  animating: false,
+  defaults : {
+    animating: false,
+    sceneDetails: []
+  },
   initialize: function (options) {
     this.addListeners();
   },
@@ -78,24 +81,6 @@ let SceneAnimator = Backbone.Model.extend({
     mesh.visible = false;
     mesh.curvePoints = points;
     return mesh;
-  },
-  getFlagPole: function () {
-    let flagPoleModel = commandController.request(commandController.PARSE_JSON_MODEL, flagPole);
-    let pivot = new THREE.Object3D();
-        pivot.name = "flagPole";
-        pivot.add(flagPoleModel);
-
-    let geometry = new THREE.PlaneGeometry( 5, 10, 4 );
-    let material = new THREE.MeshBasicMaterial( {color: "#4682B4", side: THREE.DoubleSide} );
-    let plane = new THREE.Mesh( geometry, material );
-        plane.position.set(0, 2, 0);
-        plane.rotation.set(0, 0, 0);
-
-        pivot.add(plane);
-
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [ pivot ] );
-    console.log("PIfffVOT", pivot);
-    return pivot;
   },
   addListeners: function () {
     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.mouseClickSelect, this);

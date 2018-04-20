@@ -10,10 +10,13 @@ let BulgariaJoinsAxis = BaseTimelineModel.extend({
     name: "bulgariaJoinsAxis",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
     animationDuration: 5000,
+    modelDetails: {
+      flagpole: { "position": {x: 4.19562006826561, y: 0.14166200955899155, z: 13.078605091479453}},
+      arrows: []
+    },
     historyDetails: {
       countries: [
-        { name:"hungary", power: 0, invaded: false, silent: true},
-        { name:"bulgaria", power: 0, invaded: true, silent: false}
+        { name:"bulgaria", power: 0, invaded: true, silent: false, invasionSpeed: 5000}
       ],
       eventPositions: {
         targetPosition: {x: -1.54, y: -6.77, z: 12.56},

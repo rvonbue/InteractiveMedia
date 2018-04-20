@@ -24,7 +24,7 @@ let invasionBelgiumNetherlandsFrance = BaseTimelineModel.extend({
         targetPosition: {x: -9.493636621329921, y: -3.1703219797763666, z: 5.764996518844365},
         cameraPosition: {x: -8.213446037442132, y: 9.54110862597878, z: 12.041183658558928}
       },
-      date:"Apr. 9, 1940",
+      date:"Apr. 10, 1940",
       title: "Invasion of Belgium, Netherlands, and France",
       text: "Germany invaded Belgium and the Netherlands to secure air fields and to flank the Maginot line setup on the border of France and Germany"
     },
