@@ -1,22 +1,13 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
 import materialMapList from "../materials/combinedMaterials";
-
-import countryFlags128 from "../data/countryFlags.js";
-import spriteSheetCountryBorders from "../data/countryBorders.json";
-
-let spriteSheetJSON = {
-  "countryBorders": spriteSheetCountryBorders.frames,
-  "countryFlags256": countryFlags128.frames
-};
-
 import utils from "../components/utils";
-let color = utils.getColorPallete();
-
+const color = utils.getColorPallete();
 
 var MaterialLibrary = Backbone.Model.extend({
   defaults: {
-    spriteSheetImages: {}
+    spriteSheetImages: {},
+    spriteSheetJSON: {}
   },
   initialize: function () {
     this.materialCollection = [];
@@ -39,7 +30,6 @@ var MaterialLibrary = Backbone.Model.extend({
     }
 
     this.setMaterialProperties(newMaterial);
-    console.log("materialMapList", materialMapList);
     return newMaterial;
   },
   makeNewMaterial: function (mat) {
@@ -98,7 +88,6 @@ var MaterialLibrary = Backbone.Model.extend({
         context.drawImage( image, 0, 0 );
 
         texture.needsUpdate = true;
-        texture.borderImage = image;
     	}
     );
     if (options && options.repeatScale) {
@@ -107,9 +96,10 @@ var MaterialLibrary = Backbone.Model.extend({
       }
     return texture;
   },
-  getImageSprite: function (name) {
-    let sprite = spriteSheetJSON.countryBorders[name];
-    return {pos: sprite.frame, size: sprite.sourceSize, imageObj: this.get("spriteSheetImages").countryBorders};
+  getImageSprite: function (obj) {
+    let sprite = this.get("spriteSheetJSON")[obj.spriteSheet][obj.spriteName];
+
+    return {pos: sprite.frame, size: sprite.sourceSize, imageObj: this.get("spriteSheetImages")[obj.spriteSheet]};
   },
   getNewCanvas: function (size) {
     let canvas = document.createElement( 'canvas' );
@@ -120,6 +110,10 @@ var MaterialLibrary = Backbone.Model.extend({
   },
   loadSpriteSheet: function (spriteSheet) {
     let spriteSheetImages = this.get("spriteSheetImages");
+    let spritesheetJSON = this.get("spriteSheetJSON");
+        spritesheetJSON[spriteSheet.name] = spriteSheet.data;
+
+    this.set("spriteSheetJSON", spritesheetJSON);
 
     new THREE.ImageLoader(this.get("manager")).load( spriteSheet.url, ( image ) => {
       spriteSheetImages[spriteSheet.name] = image;

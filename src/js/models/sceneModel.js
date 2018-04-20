@@ -28,6 +28,7 @@ let SceneModel = Backbone.Model.extend({
   },
   addModelListeners: function () {
     this.on("change:selected", this.onChangeSelected);
+    this.on("change:invaded", this.onChangeInvaded);
     this.on("change:hover", this.onChangeHover);
     this.on("change:power", this.onChangePower);
     let self = this;
@@ -55,8 +56,11 @@ let SceneModel = Backbone.Model.extend({
   onChangeHover: function () {
     if ( this.get("selected") === true || this.get("animating" === true)) return;
     if (this.get("hover") === true ) {
-      // this.highlightMaterial();
-      this.drawImageSprite();
+      this.highlightMaterial();
+      this.drawImageSprite({
+        spriteSheet: "sprite_flags",
+        spriteName: this.get("name")
+      });
     } else {
       this.unhighlightMaterial();
     }
@@ -76,7 +80,14 @@ let SceneModel = Backbone.Model.extend({
     }
   },
   onChangePower: function () {
-    this.animateInvasion();
+    this.highlightMaterial();
+  },
+  onChangeInvaded: function () {
+    if ( this.get("invaded") ) {
+      this.highlightMaterial();
+    } else {
+      this.unhighlightMaterial();
+    }
   },
   getContext: function () {
     return this.get("mesh3d").material.map.image.getContext( '2d' );;
@@ -85,7 +96,10 @@ let SceneModel = Backbone.Model.extend({
     let context = this.getContext();
     context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,SPRITE_SIZE,SPRITE_SIZE);
-    this.drawImageSprite("countryBorder");
+    this.drawImageSprite({
+      spriteSheet: "sprite_flags",
+      spriteName: this.get("name")
+    });
   },
   resetImageTexture: function (context) {
     context = context ? context : this.getContext();
@@ -142,11 +156,15 @@ let SceneModel = Backbone.Model.extend({
         break;
       }
   },
-  drawImageSprite: function () {
+  getImageSprite: function (imgSprite) {
+    return commandController.request(commandController.GET_IMAGE_SPRITE, imgSprite, this);
+  },
+  drawImageSprite: function (sprObj) {
     let canvas = this.getTextureCanvas();
     let context = canvas.getContext( '2d' );
 
-    let sprite = commandController.request(commandController.GET_IMAGE_SPRITE, this.get("name"), this);
+    let sprite = this.getImageSprite(sprObj);
+
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
     let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
 
@@ -222,7 +240,10 @@ let SceneModel = Backbone.Model.extend({
   },
   drawBorder: function (context) {
     if (this.get("power") !== 0 && !this.get("invaded")) {
-      this.drawImageSprite("countryBorder");
+      this.drawImageSprite({
+        spriteSheet: "sprite_countryBorders",
+        spriteName: this.get("name")
+      });
     }
   },
   reset: function (showHideBool) {

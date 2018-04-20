@@ -4,12 +4,20 @@ import commandController from "../controllers/commandController";
 import SceneModelCollection from "../collections/SceneModelCollection";
 import ModelLoader from "../models/ModelLoader";
 import model3dList from "../data/model3dList";
+import sprite_flags from "../data/sprites/sprite_flags.json";
+import sprite_countryBorders from "../data/sprites/sprite_countryBorders.json";
 
 var SceneLoader = Backbone.Model.extend({
   defaults: {
     spriteSheets: [{
-      name: "countryBorders",
-      url: "textures/spriteSheets/countryBorders.png"
+      name: "sprite_countryBorders",
+      url: "textures/spriteSheets/sprite_countryBorders.png",
+      data: sprite_countryBorders.frames
+    },
+    {
+      name: "sprite_flags",
+      url: "textures/spriteSheets/sprite_flags.png",
+      data: sprite_flags.frames
     }]
   },
   initialize: function (options) {
@@ -119,10 +127,8 @@ var SceneLoader = Backbone.Model.extend({
 
         if ( date > new Date(model.get("details").invasionStart) ) {
           model.set("invaded", true);
-          model.highlightMaterial();
         } else {
           model.set("invaded", false);
-          model.unhighlightMaterial();
         }
 
       } else if (model.get("details").joinedAxis && model.get("details").joinedAllies) {
@@ -130,10 +136,8 @@ var SceneLoader = Backbone.Model.extend({
         if ( date < new Date(model.get("details").joinedAllies)  ) {
           model.set("power", 0);
         } else {
-          console.log("set Allies::", model.get("name"));
           model.set("power", 1);
         }
-        model.highlightMaterial();
       } else if (model.get("details").joinedAxis ) {
 
         if ( date > new Date(model.get("details").joinedAxis) ) {
@@ -145,7 +149,6 @@ var SceneLoader = Backbone.Model.extend({
         }
       } else if (model.get("details").joinedAllies) {
         if ( date > new Date(model.get("details").joinedAllies) ) {
-          console.log("joinedAllies name", model.get("name"));
           model.set("power", 1);
           model.highlightMaterial();
         }

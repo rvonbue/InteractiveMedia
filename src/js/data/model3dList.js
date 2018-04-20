@@ -12,7 +12,7 @@ module.exports = [
   { name: "germany", baseUrl: baseUrl, power: 0, details: {joinedAxis: "Aug. 28, 1939"} },
   { name: "greece", baseUrl: baseUrl, power: 0, details: {invasionStart: "Apr. 6, 1941", invasionEnd: "May. 6, 1941"}, invasionDirection: ["ttb"] },
   { name: "hungary", baseUrl: baseUrl, power: 0, details: {joinedAxis: "Aug. 28, 1939"} },
-  // { name: "ireland",baseUrl: baseUrl,  power: 1 },
+  { name: "ireland",baseUrl: baseUrl,  power: 1 },
   { name: "italy", baseUrl: baseUrl, power: 0, details: {joinedAxis: "Jun. 10, 1940"}, invasionDirection: ["mid"] },
   { name: "latvia", baseUrl: baseUrl, power: 1, details: {invasionStart: "Jun. 14 1940"}, invasionDirection: ["rtl"] },
   { name: "lithuania", baseUrl: baseUrl, power: 1,details: {invasionStart: "Jun. 14 1940"}, invasionDirection: ["rtl"] },

@@ -22,7 +22,7 @@
         },
         "belgium": {
             "frame": {
-                "x": 512,
+                "x": 1024,
                 "y": 1536,
                 "w": 512,
                 "h": 512
@@ -180,27 +180,27 @@
                 "h": 512
             }
         },
-        "greece": {
+        "germanyAlpha": {
             "frame": {
-                "x": 1536,
-                "y": 0,
-                "w": 512,
-                "h": 512
+                "x": 2688,
+                "y": 512,
+                "w": 128,
+                "h": 128
             },
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 512,
-                "h": 512
+                "w": 128,
+                "h": 128
             },
             "sourceSize": {
-                "w": 512,
-                "h": 512
+                "w": 128,
+                "h": 128
             }
         },
-        "hungary": {
+        "greece": {
             "frame": {
                 "x": 1536,
                 "y": 512,
@@ -220,7 +220,7 @@
                 "h": 512
             }
         },
-        "ireland": {
+        "hungary": {
             "frame": {
                 "x": 1536,
                 "y": 1024,
@@ -240,9 +240,29 @@
                 "h": 512
             }
         },
-        "italy": {
+        "ireland": {
             "frame": {
                 "x": 0,
+                "y": 1536,
+                "w": 512,
+                "h": 512
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 512,
+                "h": 512
+            },
+            "sourceSize": {
+                "w": 512,
+                "h": 512
+            }
+        },
+        "italy": {
+            "frame": {
+                "x": 512,
                 "y": 1536,
                 "w": 512,
                 "h": 512
@@ -282,7 +302,7 @@
         },
         "lithuania": {
             "frame": {
-                "x": 1024,
+                "x": 1536,
                 "y": 1536,
                 "w": 512,
                 "h": 512
@@ -302,8 +322,8 @@
         },
         "netherlands": {
             "frame": {
-                "x": 1536,
-                "y": 1536,
+                "x": 2048,
+                "y": 0,
                 "w": 512,
                 "h": 512
             },
@@ -323,7 +343,7 @@
         "norway": {
             "frame": {
                 "x": 2048,
-                "y": 0,
+                "y": 512,
                 "w": 512,
                 "h": 512
             },
@@ -343,7 +363,7 @@
         "poland": {
             "frame": {
                 "x": 2048,
-                "y": 512,
+                "y": 1024,
                 "w": 512,
                 "h": 512
             },
@@ -363,26 +383,6 @@
         "portugal": {
             "frame": {
                 "x": 2048,
-                "y": 1024,
-                "w": 512,
-                "h": 512
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 512,
-                "h": 512
-            },
-            "sourceSize": {
-                "w": 512,
-                "h": 512
-            }
-        },
-        "rumania": {
-            "frame": {
-                "x": 2048,
                 "y": 1536,
                 "w": 512,
                 "h": 512
@@ -400,7 +400,7 @@
                 "h": 512
             }
         },
-        "russia": {
+        "rumania": {
             "frame": {
                 "x": 0,
                 "y": 2048,
@@ -420,7 +420,7 @@
                 "h": 512
             }
         },
-        "spain": {
+        "russia": {
             "frame": {
                 "x": 512,
                 "y": 2048,
@@ -440,9 +440,49 @@
                 "h": 512
             }
         },
-        "sweden": {
+        "spain": {
             "frame": {
                 "x": 1024,
+                "y": 2048,
+                "w": 512,
+                "h": 512
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 512,
+                "h": 512
+            },
+            "sourceSize": {
+                "w": 512,
+                "h": 512
+            }
+        },
+        "stripe": {
+            "frame": {
+                "x": 2560,
+                "y": 512,
+                "w": 128,
+                "h": 128
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 128
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 128
+            }
+        },
+        "sweden": {
+            "frame": {
+                "x": 2048,
                 "y": 2048,
                 "w": 512,
                 "h": 512
@@ -482,8 +522,8 @@
         },
         "unitedkingdom": {
             "frame": {
-                "x": 2048,
-                "y": 2048,
+                "x": 1536,
+                "y": 0,
                 "w": 512,
                 "h": 512
             },
@@ -523,7 +563,7 @@
     },
     "meta": {
         "app": "https://github.com/Ensighten/spritesmith",
-        "image": "countryBorders.png",
+        "image": "sprite_flags.png",
         "format": "RGBA8888",
         "size": {
             "w": 3072,
