@@ -8,7 +8,7 @@ const SPRITE_SIZE = 512;
 let SceneModel = Backbone.Model.extend({
   defaults: {
     "name": "Caesar_Salad",
-    "details": {},
+    "dates": {},
     "mesh3d": null,
     "text3d": null,  // mesh
     "selected": false,
@@ -30,46 +30,21 @@ let SceneModel = Backbone.Model.extend({
     this.on("change:selected", this.onChangeSelected);
     this.on("change:invaded", this.onChangeInvaded);
     this.on("change:hover", this.onChangeHover);
-    this.on("change:power", this.onChangePower);
+    // this.on("change:power", this.onChangePower);
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
-        self.get("mesh3d").material.map = self.setInitalCanvasTexture();
+        self.setInitalCanvasTexture();
+        self.setInitialMaterialOptions();
     });
-    this.once("change:ready", this.initialTexture);
-  },
-  setInitalCanvasTexture: function () {
-    let texture = new THREE.Texture(this.getCanvasAndContext().canvas);
-    return texture;
-  },
-  getCanvasAndContext: function () {
-    let canvas = document.createElement( 'canvas' );
-        canvas.width = SPRITE_SIZE;
-        canvas.height = SPRITE_SIZE;
-    let context = canvas.getContext( '2d' );
-    return { canvas: canvas, context: context };
-  },
-  removeModelListeners: function () {
-    this.off("change:selected", this.onChangeSelected);
-    this.off("change:hover", this.onChangeHover);
+    this.once("change:ready", () => this.resetImageTexture());
   },
   onChangeHover: function () {
-    if ( this.get("selected") === true || this.get("animating" === true)) return;
     if (this.get("hover") === true ) {
-      this.highlightMaterial();
-      this.drawImageSprite({
-        spriteSheet: "sprite_flags",
-        spriteName: this.get("name")
-      });
+      this.drawFlags();
     } else {
-      this.unhighlightMaterial();
+      this.resetImageTexture();
     }
-
-    // this.getTween(
-    //   this.getMesh3d().position,
-    //   { y: this.get("initPos").y + this.get("hover") ? 0.05 : 0 }
-    // )
-    // .start();
   },
   onChangeSelected: function () {
     // if (this.get("hover")) return;
@@ -89,23 +64,54 @@ let SceneModel = Backbone.Model.extend({
       this.unhighlightMaterial();
     }
   },
-  getContext: function () {
-    return this.get("mesh3d").material.map.image.getContext( '2d' );;
+  setInitalCanvasTexture: function () {
+    this.get("mesh3d").material.map = this.getNewThreeTexture(this.getCanvasAndContext().canvas);
+    // this.get("mesh3d").material.normalMap = this.getNewThreeTexture(this.getCanvasAndContext().canvas);
   },
-  initialTexture: function () {
-    let context = this.getContext();
-    context.fillStyle = colorPallete.countryMap;
-    context.fillRect(0,0,SPRITE_SIZE,SPRITE_SIZE);
-    this.drawImageSprite({
-      spriteSheet: "sprite_flags",
-      spriteName: this.get("name")
-    });
+  setInitialMaterialOptions: function () {
+    this.get("mesh3d").material.shininess = 10;
+  },
+  getNewThreeTexture: function (canvas) {
+    return new THREE.CanvasTexture(canvas);
+  },
+  getCanvasAndContext: function () {
+    let canvas = document.createElement( 'canvas' );
+        canvas.width = SPRITE_SIZE;
+        canvas.height = SPRITE_SIZE;
+
+    return { canvas: canvas, context: canvas.getContext( '2d' ) };
+  },
+  getCanvasContext: function () {
+    return this.getTextureCanvas().getContext( '2d' );
+  },
+  getTextureCanvas: function () {
+    return this.get("mesh3d").material.map.image;
+  },
+  getMaterial: function () {
+    return this.get("mesh3d").material
+  },
+  removeModelListeners: function () {
+    this.off("change:selected", this.onChangeSelected);
+    this.off("change:hover", this.onChangeHover);
+  },
+  drawNormals: function () {
+    let canvas = this.get("mesh3d").material.normalMap.image;
+    this.drawImageSprite({ spriteSheet: "sprite_otherMaps", spriteName: "normalMap", "canvas": canvas, "context": canvas.getContext( '2d' ) });
+  },
+  drawFlags: function () {
+    let canvas = this.get("mesh3d").material.map.image;
+    this.drawImageSprite({ spriteSheet: "sprite_flags", spriteName: this.get("name"), "canvas": canvas, "context": canvas.getContext( '2d' ) });
   },
   resetImageTexture: function (context) {
-    context = context ? context : this.getContext();
-    context.fillStyle = colorPallete.countryMap;
+    context = context ? context : this.getCanvasContext();
+
+    this.drawFlags();
+    context.globalAlpha = 0.25;
+    context.fillStyle = "#000000";
     context.fillRect(0,0,SPRITE_SIZE,SPRITE_SIZE);
-    this.drawBorder(context);
+    context.globalAlpha = 1;
+    // this.drawNormals();
+    this.updateTextureMap();
   },
   animateInvasion: function (speed) {
     let self = this;
@@ -119,7 +125,7 @@ let SceneModel = Backbone.Model.extend({
     // this.get("mesh3d").material.map.borderImage = borderImage;
     this.resetImageTexture(context);
     context.fillStyle = colorPallete.axis;
-
+    // console.log("drawImageSprite", sprite);
     new TWEEN.Tween(0)
       .easing(TWEEN.Easing.Quadratic.Out)
       .interpolation(TWEEN.Interpolation.Bezier)
@@ -160,8 +166,8 @@ let SceneModel = Backbone.Model.extend({
     return commandController.request(commandController.GET_IMAGE_SPRITE, imgSprite, this);
   },
   drawImageSprite: function (sprObj) {
-    let canvas = this.getTextureCanvas();
-    let context = canvas.getContext( '2d' );
+    let canvas = sprObj.canvas; //? sprObj.canvas : this.getTextureCanvas();
+    let context = sprObj.context;// ? sprObj.context : canvas.getContext( '2d' );
 
     let sprite = this.getImageSprite(sprObj);
 
@@ -204,16 +210,6 @@ let SceneModel = Backbone.Model.extend({
         self.set("animating", false);
       });
   },
-  getBorderImage: function () {
-    return this.get("mesh3d").material.map.borderImage;
-  },
-  getTextureCanvas: function () {
-    console.log("matalksdlfdasf", this.get("mesh3d").material);
-    return this.get("mesh3d").material.map.image;
-  },
-  getCanvasContext: function () {
-    return this.getTextureCanvas().getContext( '2d' );
-  },
   updateTextureMap: function () {
     this.get("mesh3d").material.map.needsUpdate = true;
   },
@@ -233,18 +229,28 @@ let SceneModel = Backbone.Model.extend({
     // this.createNoise(context, highlightcolor);
 
     // this.drawFlagBackground();
-    // context.globalCompositeOperation = "destination-in";
-    this.drawBorder(context);
+    if (this.get("name") === "germany") this.drawFlags();
     this.updateTextureMap();
-    // context.globalCompositeOperation = "source-over";
   },
-  drawBorder: function (context) {
-    if (this.get("power") !== 0 && !this.get("invaded")) {
+  highlightBorders: function () {
+    let context = this.getCanvasContext();
+    context.fillStyle = "#ff0000";
+    context.fillRect(0,0,512,512);
+    context.globalCompositeOperation = "destination-in";
+    this.drawBorder(context);
+    context.globalCompositeOperation = "source-over";
+  },
+  drawBorder: function () {
+    // if (this.get("power") !== 0 && !this.get("invaded")) {
+      let canvas = this.getTextureCanvas();
       this.drawImageSprite({
         spriteSheet: "sprite_countryBorders",
-        spriteName: this.get("name")
+        spriteName: this.get("name"),
+        "canvas": canvas,
+        "context": canvas.getContext( '2d' )
       });
-    }
+
+    // }
   },
   reset: function (showHideBool) {
     this.set("selected", false);
@@ -252,12 +258,6 @@ let SceneModel = Backbone.Model.extend({
   },
   isReady: function () {
     return this.get("ready") && !this.get("loading");
-  },
-  showHide: function () { // show = true
-
-  },
-  hide: function () {
-      // console.log("asdfasdf", this.get("mesh3d").material.opacity = 0.25);
   },
   createNoise: function (ctx, color) {
     let idata = ctx.createImageData(512, 512); // create image data

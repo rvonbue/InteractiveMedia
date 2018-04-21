@@ -19,8 +19,8 @@ let RomaniaJoinsAxis = BaseTimelineModel.extend({
         { name:"rumania", power: 0, invaded: true, silent: false, invasionSpeed: 5000}
       ],
       eventPositions: {
-        targetPosition: {x: -0.324677168207853, y: -5.976441993077807, z: 9.253439383848784},
-        cameraPosition: {x: 0.14584201852700707, y: 7.7529204035074395, z: 15.235220303286109}
+        targetPosition: {x: 1.635976786499171, y: -3.963037058869359, z: 6.2114534499649325},
+        cameraPosition: {x: 2.429083440024451, y: 6.140005709778508, z: 15.164381811307525}
       },
       date:"Nov. 23, 1940",
       title: "Romania joins Axis",

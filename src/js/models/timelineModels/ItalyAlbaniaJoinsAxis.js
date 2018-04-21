@@ -20,8 +20,8 @@ let ItalyAlbaniaJoinsAxis = BaseTimelineModel.extend({
         { name:"albania", power: 0, invaded: true, silent: false, invasionSpeed: 10000}
       ],
       eventPositions: {
-        targetPosition:  {x: -3.560305652986994, y: -7.10822409765946, z: 12.336295922213042},
-        cameraPosition:  {x: -3.343181488391319, y: 7.138979917963304, z: 19.517912044415517}
+        targetPosition:  {x: -4.600048023448743, y: -4.773534336107032, z: 9.441719898207875},
+        cameraPosition:  {x: -3.9105547913902665, y: 6.004131147163015, z: 20.07882747099204}
       },
       date:"Jun. 10 1940",
       title: "Italy Albania joins Axis",

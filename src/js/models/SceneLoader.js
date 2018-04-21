@@ -4,8 +4,11 @@ import commandController from "../controllers/commandController";
 import SceneModelCollection from "../collections/SceneModelCollection";
 import ModelLoader from "../models/ModelLoader";
 import model3dList from "../data/model3dList";
+
 import sprite_flags from "../data/sprites/sprite_flags.json";
+import sprite_otherMaps from "../data/sprites/sprite_otherMaps.json";
 import sprite_countryBorders from "../data/sprites/sprite_countryBorders.json";
+import sprite_icons from "../data/sprites/sprite_icons.json";
 
 var SceneLoader = Backbone.Model.extend({
   defaults: {
@@ -18,6 +21,16 @@ var SceneLoader = Backbone.Model.extend({
       name: "sprite_flags",
       url: "textures/spriteSheets/sprite_flags.png",
       data: sprite_flags.frames
+    },
+    {
+      name: "sprite_otherMaps",
+      url: "textures/spriteSheets/sprite_otherMaps.png",
+      data: sprite_otherMaps.frames
+    },
+    {
+      name: "sprite_icons",
+      url: "textures/spriteSheets/sprite_icons.png",
+      data: sprite_icons.frames
     }]
   },
   initialize: function (options) {
@@ -121,34 +134,36 @@ var SceneLoader = Backbone.Model.extend({
   updateSceneModels: function (currentDate) {
       // console.log("currentDate", currentDate);
     let date =  new Date(currentDate);
+
     this.sceneModelCollection.each( (model)=> {
+      let dates = model.get("dates");
 
-      if (model.get("details").invasionStart) {
+      if (dates.invasionStart) {
 
-        if ( date > new Date(model.get("details").invasionStart) ) {
+        if ( date > new Date(dates.invasionStart) ) {
           model.set("invaded", true);
         } else {
           model.set("invaded", false);
         }
 
-      } else if (model.get("details").joinedAxis && model.get("details").joinedAllies) {
+      } else if (dates.joinedAxis && dates.joinedAllies) {
 
-        if ( date < new Date(model.get("details").joinedAllies)  ) {
+        if ( date < new Date(dates.joinedAllies)  ) {
           model.set("power", 0);
         } else {
           model.set("power", 1);
         }
-      } else if (model.get("details").joinedAxis ) {
+      } else if (dates.joinedAxis ) {
 
-        if ( date > new Date(model.get("details").joinedAxis) ) {
+        if ( date > new Date(dates.joinedAxis) ) {
           model.set("power", 0);
           model.highlightMaterial();
         } else {
           model.set("invaded", false);
           model.unhighlightMaterial();
         }
-      } else if (model.get("details").joinedAllies) {
-        if ( date > new Date(model.get("details").joinedAllies) ) {
+      } else if (dates.joinedAllies) {
+        if ( date > new Date(dates.joinedAllies) ) {
           model.set("power", 1);
           model.highlightMaterial();
         }

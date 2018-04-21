@@ -45,6 +45,7 @@ let MeshSelector = Backbone.Model.extend({
     pivot.add(sphere);
 
     this.selectMesh = pivot;
+    pivot.scale.set(3,3,3);
     this.selectMesh.position.set(-5, 0 , 0);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },

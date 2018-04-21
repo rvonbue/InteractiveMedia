@@ -26,22 +26,72 @@ let SceneModel = Backbone.Model.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [ helper ] );
   },
   updateSceneDetails: function (details) {
-    console.log("updateSceneDetails");
+
     let model = this.getModel(details.name);
+    console.log("updateSceneDetails", model.children[1].material);
+
 
     if (details.position) {
+      let canvas = document.createElement( 'canvas' );
+          canvas.width = 128;
+          canvas.height = 128;
+
+      this.drawImageSprite({
+        spriteSheet: "sprite_icons",
+        spriteName: "germany", //details.country.name,
+        "canvas": canvas,
+        "context": canvas.getContext( '2d' )
+      });
+
+      let texture = new THREE.CanvasTexture(canvas);
+      model.children[1].material.map = texture;
+
+
+      this.updateFlagMaterialMap(details);
       let { x , y, z } = details.position;
       model.position.set( x , y + 5, z );
     }
     if (details.func) this[details.func](model);
     if (details.visible) model.visible = details.visible;
   },
+  getImageSprite: function (imgSprite) {
+    return commandController.request(commandController.GET_IMAGE_SPRITE, imgSprite, this);
+  },
+  drawImageSprite: function (sprObj) {
+    let canvas = sprObj.canvas; //? sprObj.canvas : this.getTextureCanvas();
+    let context = sprObj.context;// ? sprObj.context : canvas.getContext( '2d' );
+
+    let sprite = this.getImageSprite(sprObj);
+
+    let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
+    let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
+
+    context.fillStyle = "#dc0000";
+    context.fillRect(0,0,128,128)
+    context.fillStyle = "#000000";
+    context.lineWidth = 8;
+    context.strokeRect(0,0,128,128);
+    console.log("drawImageSprite", sprite);
+    context.drawImage(sprite.imageObj,
+       sprite.pos.x,  //source start
+       sprite.pos.y,
+       sprite.size.w, //source size
+       sprite.size.h,
+       24,         // draw image location on existing canvas
+       24,
+       sprite.size.w / 1.5,
+       sprite.size.h / 1.5
+    );
+
+  },
   raiseFlag: function (model) {
-      console.log("raiseFlag", model);
       model.children[1].position.set(0.75, 1, 0); //flag mesh Object3D
 
       this.getTweenEasing(model.position, {y:0.25}, 1500).start();      //animate drop Flag stand
-      this.getTween(model.children[1].position, {x: 0.75, y:3.2,z: 0}, 1500).delay(1500).start();  //raiseFlag
+      this.getTween(model.children[1].position, {x: 0.75, y:3,z: 0}, 1500).delay(1500).start();  //raiseFlag
+  },
+  updateFlagMaterialMap: function (details) {
+      console.log("raiseFlag", details);
   },
   getTween: function (from, to, duration) {
     return new TWEEN.Tween(from)
@@ -84,8 +134,8 @@ let SceneModel = Backbone.Model.extend({
         pivot.name = "flagPole"
         pivot.add(flagPoleModel);
 
-    let geometry = new THREE.PlaneGeometry( 1.5, 0.75, 4 );
-    let material = new THREE.MeshLambertMaterial( {color: "#ff0000", side: THREE.DoubleSide} );
+    let geometry = new THREE.PlaneGeometry( 1.5, 1, 4 );
+    let material = new THREE.MeshLambertMaterial( { side: THREE.DoubleSide } );
     let plane = new THREE.Mesh( geometry, material );
         plane.position.set(0.75, 1, 0);
         plane.rotation.set(0, 0, 0);

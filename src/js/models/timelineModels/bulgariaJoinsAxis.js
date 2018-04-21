@@ -19,8 +19,8 @@ let BulgariaJoinsAxis = BaseTimelineModel.extend({
         { name:"bulgaria", power: 0, invaded: true, silent: false, invasionSpeed: 5000}
       ],
       eventPositions: {
-        targetPosition: {x: -1.54, y: -6.77, z: 12.56},
-        cameraPosition: {x: -0.34, y: 8.216, z: 17.51}
+        targetPosition: {x: 1.351056136588252, y: -4.7795605584761125, z: 8.11454068858119},
+        cameraPosition: {x: 3.556235953785195, y: 5.478943484953555, z: 18.328718338285242}
       },
       date:"Mar. 1, 1941",
       title: "Bulgaria joins Axis",
