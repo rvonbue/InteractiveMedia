@@ -6,7 +6,7 @@
     "materials": [{
         "wireframe": false,
         "visible": true,
-        "shading": "lambert",
+        "shading": "phong",
         "colorDiffuse": [0.64,0.64,0.64],
         "blending": "NormalBlending",
         "DbgColor": 15658734,

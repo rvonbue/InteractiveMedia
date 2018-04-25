@@ -18,7 +18,8 @@ let BaseTimelineModel = Backbone.Model.extend({
     modelArrowHeads: [],
     modelDetails: [],
     tweens: [],
-    ready: false
+    ready: false,
+    played: false,
   },
   initialize: function () {
     this.animatedModelsCollection = new AnimatedModelCollection();
@@ -46,6 +47,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     _.delay( () => this.animateInvasion(this.get("invasionDuration")), 1000);
 
     this.animationTimer = setTimeout(function () {
+          console.log("TIMELINE_MODEL_ANIMATION_COMPLETE");
         eventController.trigger(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE);
     }, this.get("animationDuration"));
   },
@@ -56,7 +58,7 @@ let BaseTimelineModel = Backbone.Model.extend({
     });
     this.get("tweens").forEach( (tween)=> { tween.stop(); });
     this.set("tweens", []);
-
+    clearTimeout(this.animationTimer);
     // this.hideModels();
   },
   hideModels: function () {

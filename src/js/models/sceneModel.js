@@ -23,6 +23,7 @@ let SceneModel = Backbone.Model.extend({
   },
   initialize: function( options ) {
     this.addModelListeners();
+    _.bindAll(this, "drawFlags");
     // console.log(this.get("name"));
     // console.log(this);
   },
@@ -30,7 +31,7 @@ let SceneModel = Backbone.Model.extend({
     this.on("change:selected", this.onChangeSelected);
     this.on("change:invaded", this.onChangeInvaded);
     this.on("change:hover", this.onChangeHover);
-    // this.on("change:power", this.onChangePower);
+    this.on("change:power", this.onChangePower);
     let self = this;
     this.once("change:mesh3d", ()=> {
         self.set("initPos", _.clone(self.get("mesh3d").position));
@@ -69,7 +70,7 @@ let SceneModel = Backbone.Model.extend({
     // this.get("mesh3d").material.normalMap = this.getNewThreeTexture(this.getCanvasAndContext().canvas);
   },
   setInitialMaterialOptions: function () {
-    this.get("mesh3d").material.shininess = 10;
+    // this.get("mesh3d").material.shininess = 10;
   },
   getNewThreeTexture: function (canvas) {
     return new THREE.CanvasTexture(canvas);
@@ -99,31 +100,29 @@ let SceneModel = Backbone.Model.extend({
     this.drawImageSprite({ spriteSheet: "sprite_otherMaps", spriteName: "normalMap", "canvas": canvas, "context": canvas.getContext( '2d' ) });
   },
   drawFlags: function () {
+    console.log("this", this);
     let canvas = this.get("mesh3d").material.map.image;
     this.drawImageSprite({ spriteSheet: "sprite_flags", spriteName: this.get("name"), "canvas": canvas, "context": canvas.getContext( '2d' ) });
   },
   resetImageTexture: function (context) {
     context = context ? context : this.getCanvasContext();
 
-    this.drawFlags();
-    context.globalAlpha = 0.25;
-    context.fillStyle = "#000000";
+    // this.drawFlags();
+    context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,SPRITE_SIZE,SPRITE_SIZE);
-    context.globalAlpha = 1;
-    // this.drawNormals();
+    this.drawBorder();
     this.updateTextureMap();
   },
   animateInvasion: function (speed) {
     let self = this;
     speed = speed ? speed : 2500;
-    let canvas = document.createElement( 'canvas' );
-        canvas.width = SPRITE_SIZE;
-        canvas.height = SPRITE_SIZE;
+
+    let canvas = this.getTextureCanvas();
     let context = canvas.getContext( '2d' );
 
-    this.get("mesh3d").material.map = new THREE.Texture(canvas);
+    // this.get("mesh3d").material.map = new THREE.Texture(canvas);
     // this.get("mesh3d").material.map.borderImage = borderImage;
-    this.resetImageTexture(context);
+    // this.resetImageTexture(context);
     context.fillStyle = colorPallete.axis;
     // console.log("drawImageSprite", sprite);
     new TWEEN.Tween(0)
@@ -174,7 +173,6 @@ let SceneModel = Backbone.Model.extend({
     let spritePos = {x: sprite.size.w / 2, y: sprite.size.h / 2 };
     let canvasCenter = {x: canvas.width / 2, y: canvas.height / 2 };
 
-    console.log("drawImageSprite", sprite);
     context.drawImage(sprite.imageObj,
        sprite.pos.x,  //source start
        sprite.pos.y,
@@ -217,7 +215,7 @@ let SceneModel = Backbone.Model.extend({
     let context = this.getCanvasContext();
     context.fillStyle = colorPallete.countryMap;
     context.fillRect(0,0,512,512);
-    this.drawBorder(context);
+    // this.drawBorder(context);
     this.updateTextureMap();
   },
   highlightMaterial: function () {
@@ -225,10 +223,8 @@ let SceneModel = Backbone.Model.extend({
     let highlightcolor = this.getHighlightColor();
     context.fillStyle = highlightcolor;
     context.fillRect(0,0,512,512);
-
+    // this.drawBorder(context);
     // this.createNoise(context, highlightcolor);
-
-    // this.drawFlagBackground();
     if (this.get("name") === "germany") this.drawFlags();
     this.updateTextureMap();
   },
@@ -264,7 +260,6 @@ let SceneModel = Backbone.Model.extend({
     let buffer32 = new Uint8Array(idata.data.buffer);
     let len = buffer32.length - 1;
     let countryColor = this.getHexadecimalColor(colorPallete.countryMap);
-    console.log("color:", color);
     let powerColor = this.getHexadecimalColor(color);
 
     for (var y = 0; y < 512; ++y) {

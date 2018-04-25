@@ -22,7 +22,14 @@
       opacity: 0.25;
     }
   }
-
+  &.audio {
+    .audio-play {
+      display: inline-block;
+    }
+    .audio-mute {
+      display: none;
+    }
+  }
 }
 .timeline-buttons {
   margin: 8px 0px 0px 18px;
@@ -68,4 +75,22 @@
   &:hover {
     background-image: url(../sprites/auto-play-hover-64px.svg);
   }
+}
+
+.audio-play, .audio-mute {
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+
+  display: inline-block;
+}
+
+.audio-play {
+  display: none;
+   background-image: url(../sprites/ic_volume_up_white_48px.svg);
+   &:hover { background-image: url(../sprites/ic_volume_up_black_48px.svg);}
+}
+.audio-mute {
+   background-image: url(../sprites/ic_volume_off_white_48px.svg);
+   &:hover { background-image: url(../sprites/ic_volume_off_black_48px.svg);}
 }

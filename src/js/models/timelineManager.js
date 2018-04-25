@@ -30,7 +30,6 @@ let TimelineManager = Backbone.Model.extend({
 
     this.set("currentPosition", timePosition);
 
-
     if (newTimeEventExist) {
       this.restartExsitingTimeline();
       return;
@@ -56,7 +55,6 @@ let TimelineManager = Backbone.Model.extend({
   stopPreviousTimelineModel: function (oldtimelinePosition ) {
     this.stopTimeline();
     eventController.trigger(eventController.UPDATE_TIMELINE_MODEL_TEXT, null);
-
   },
   selectTimelineModel: function (timelineModel) {
     eventController.trigger(eventController.UPDATE_TIMELINE_MODEL_TEXT, timelineModel.get("historyDetails"));

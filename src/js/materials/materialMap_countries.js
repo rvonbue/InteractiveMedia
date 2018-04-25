@@ -36,7 +36,7 @@ module.exports = {
     normalMap: "textures/normalMap.png"
   }] },
   germany: {maps: [{
-    // map: "textures/pngs/germany.png",
+    // specularMap: "textures/germanySPEC.png",
     normalMap: "textures/normalMap.png"
    }] },
   greece: {maps: [{

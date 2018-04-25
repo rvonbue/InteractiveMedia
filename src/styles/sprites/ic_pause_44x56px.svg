@@ -9,10 +9,10 @@
 	<path display="inline" fill="none" d="M0,0h48v48H0V0z"/>
 </g>
 <g id="Layer_2">
-	
+
 		<rect x="2.958" y="-2.916" fill="#2C709D" stroke="#FFFFFF" stroke-width="3" stroke-miterlimit="10" width="7.25" height="53.958"/>
-	<text transform="matrix(1 0 0 1 123.5 123.5)" font-family="'Myriad-Roman'" font-size="12">eventController.on(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.playTimeline, this);</text>
-	
+	<text transform="matrix(1 0 0 1 123.5 123.5)" font-family="'Myriad-Roman'" font-size="12"></text>
+
 		<rect x="24.709" y="-2.916" fill="#2C709D" stroke="#FFFFFF" stroke-width="3" stroke-miterlimit="10" width="7.25" height="53.958"/>
 </g>
 </svg>

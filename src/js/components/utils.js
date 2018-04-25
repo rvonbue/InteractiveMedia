@@ -37,13 +37,13 @@ module.exports = {
       hemisphere: {
         sky:"#FFFFFF",
         ground: "#000000",
-        intensity: 0.75
+        intensity: 0.5
 
       },
       directional: {
         color: "#ffffff",
-        intensity: 0.9, //0.3
-        position: {x: 0, y: 10, z: 5}
+        intensity: 0.1, //0.3
+        position: {x: 0, y: 10, z: 0}
       }
     };
   },

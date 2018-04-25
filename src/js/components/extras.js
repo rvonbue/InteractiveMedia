@@ -71,7 +71,6 @@ let SceneModel = Backbone.Model.extend({
     context.fillStyle = "#000000";
     context.lineWidth = 8;
     context.strokeRect(0,0,128,128);
-    console.log("drawImageSprite", sprite);
     context.drawImage(sprite.imageObj,
        sprite.pos.x,  //source start
        sprite.pos.y,

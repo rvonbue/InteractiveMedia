@@ -5,15 +5,15 @@ import utils from "../../components/utils";
 const cameraAnimationDuration = utils.getCameraAnimationSpeed().duration;
 
 let timelineControlPanel = Backbone.View.extend({
-  className: "timeline-control-panel",
+  className: "timeline-control-panel audio",
   events: {
     "click .auto-play": "clickAutoPlayTimeline",
     "click .play": "clickPlayTimeline",
-    "click .pause": "clickPauseTimeline",
-    "click .auto-play-pause": "clickAutoPlayPauseTimeline"
+    "click .auto-play-pause, .pause": "clickPauseTimeline",
+    "click .audio-play, .audio-mute": "clickToggleAudio"
   },
   initialize: function () {
-    _.bindAll(this, "clickPlayTimeline", "clickAutoPlayPauseTimeline", "clickAutoPlayPauseTimeline", "clickPauseTimeline");
+    _.bindAll(this, "clickPlayTimeline","clickPauseTimeline");
     this.resetControls();
     eventController.on(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE, this.updateControls, this);
     eventController.on(eventController.TIMELINE_MANAGER_END, this.clickPauseTimeline, this);
@@ -26,35 +26,46 @@ let timelineControlPanel = Backbone.View.extend({
   resetControls: function () {
     this.options = {
       autoplay: false,
-      play: false
+      play: false,
+      audioMute: false
     };
     this.$el.removeClass("auto-playing playing");
   },
   clickAutoPlayTimeline: function () {
     this.$el.addClass("auto-playing");
     this.options.autoplay = true;
+    eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: !this.options.audioMute});
     this.playTimeline();
-  },
-  clickAutoPlayPauseTimeline: function () {
-    this.options.autoplay = false;
-    this.$el.removeClass("auto-playing");
   },
   clickPlayTimeline: function () {
     this.options.play = true;
     this.$el.addClass("playing");
     eventController.trigger(eventController.START_TIMELINE_MODEL);
+    eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: !this.options.audioMute});
   },
   resetPlayButton: function () {
     this.$el.removeClass("playing");
     this.options.play = false;
   },
+  clickToggleAudio: function () {
+    this.$el.toggleClass("audio");
+    this.options.audioMute = !this.options.audioMute;
+
+    if(!this.options.audioMute && this.$el.hasClass("audio")) {
+      eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: true});
+    } else {
+      eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: false});
+    }
+
+  },
   playTimeline: function () {
-    eventController.trigger(eventController.NEXT_TIMELINE_MODEL);
     _.delay(() => eventController.trigger(eventController.START_TIMELINE_MODEL), cameraAnimationDuration);
+    eventController.trigger(eventController.NEXT_TIMELINE_MODEL);
   },
   clickPauseTimeline: function () {
-    this.options.play = false;
-    this.$el.removeClass("playing");
+    this.options.autoplay = this.options.play = false;
+    this.$el.removeClass("auto-playing playing");
+    eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: false});
   },
   render: function () {
     this.$el.append(template({numOfTimelineEvents: length - 1}));

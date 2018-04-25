@@ -12,7 +12,8 @@ import sprite_icons from "../data/sprites/sprite_icons.json";
 
 var SceneLoader = Backbone.Model.extend({
   defaults: {
-    spriteSheets: [{
+    spriteSheets: [
+    {
       name: "sprite_countryBorders",
       url: "textures/spriteSheets/sprite_countryBorders.png",
       data: sprite_countryBorders.frames
@@ -92,11 +93,16 @@ var SceneLoader = Backbone.Model.extend({
     });
     return countries;
   },
+  showAllFlags: function () {
+    console.log("showAllFlags")
+    this.sceneModelCollection.each( (model, i) =>  {
+
+      _.delay(model.drawFlags, i * 100);
+    });
+  },
   selectSceneModels: function (countryNames) {
     if (countryNames.length === 0 ) {
-      this.sceneModelCollection.each( (model)=> {
-        model.unhighlightMaterial();
-      });
+      this.sceneModelCollection.each( model => model.unhighlightMaterial() );
     }
 
     countryNames.forEach( (countryObj)=> {
@@ -133,43 +139,65 @@ var SceneLoader = Backbone.Model.extend({
   },
   updateSceneModels: function (currentDate) {
       // console.log("currentDate", currentDate);
-    let date =  new Date(currentDate);
+    currentDate =  new Date(currentDate);
+
 
     this.sceneModelCollection.each( (model)=> {
       let dates = model.get("dates");
+      let axisDate = dates.joinedAxis ? new Date(dates.joinedAxis) : null;
+      let alliesDate = dates.joinedAllies ? new Date(dates.joinedAllies) : null;
 
-      if (dates.invasionStart) {
+      this.setModelInvaded(model, dates, currentDate);
 
-        if ( date > new Date(dates.invasionStart) ) {
-          model.set("invaded", true);
-        } else {
-          model.set("invaded", false);
+      if (dates.joinedAxis && dates.joinedAllies) {
+
+
+        console.log("axisDate", axisDate);
+        console.log("alliesDate", alliesDate);
+        if (axisDate < alliesDate ) {
+
         }
 
-      } else if (dates.joinedAxis && dates.joinedAllies) {
-
-        if ( date < new Date(dates.joinedAllies)  ) {
+        if ( currentDate < alliesDate  ) {
           model.set("power", 0);
         } else {
           model.set("power", 1);
         }
-      } else if (dates.joinedAxis ) {
 
-        if ( date > new Date(dates.joinedAxis) ) {
-          model.set("power", 0);
-          model.highlightMaterial();
+      }
+
+      if ( axisDate ) {
+
+        if ( currentDate > axisDate ) {
+          model.set("power", 0).trigger('change:power');
         } else {
-          model.set("invaded", false);
-          model.unhighlightMaterial();
+          // model.set("invaded", false);
+          // model.unhighlightMaterial();
         }
-      } else if (dates.joinedAllies) {
-        if ( date > new Date(dates.joinedAllies) ) {
+
+      }
+
+       if ( alliesDate ) {
+
+        if ( currentDate > alliesDate ) {
           model.set("power", 1);
           model.highlightMaterial();
         }
+
       }
 
     });
+  },
+  setModelInvaded: function (model , dates, date) {
+    if (dates.invasionStart) {
+
+      if ( date > new Date(dates.invasionStart) ) {
+        model.set("invaded", true);
+      } else {
+        model.set("invaded", false);
+      }
+
+    }
   },
   compareDate: function () {
 
@@ -181,7 +209,7 @@ var SceneLoader = Backbone.Model.extend({
      eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene, this);
      eventController.on(eventController.INVADE_COUNTRY, this.getInvadedCountries, this);
      eventController.on(eventController.UPDATE_SCENE_MODELS, this.updateSceneModels, this);
-
+     eventController.on(eventController.SHOW_ALL_FLAGS, this.showAllFlags, this);
      eventController.on(eventController.SELECT_SCENE_MODELS, this.selectSceneModels, this);
      eventController.once(eventController.ALL_ITEMS_LOADED, this.allSceneModelsLoaded, this );
 

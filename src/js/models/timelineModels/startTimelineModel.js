@@ -5,7 +5,7 @@ let StartTimelineModel = BaseTimelineModel.extend({
   defaults:{
     name: "startTimelineModel",
     animatedModels: [], //this.animatedModelsCollection = new AnimatedModelCollection();
-    animationDuration: 50,
+    animationDuration: 10000,
     historyDetails: {
       countries: [],
       eventPositions: {
@@ -18,7 +18,12 @@ let StartTimelineModel = BaseTimelineModel.extend({
     }
   },
   startAnimation: function () {
-    eventController.trigger(eventController.SELECT_SCENE_MODELS, []);
+    // eventController.trigger(eventController.SELECT_SCENE_MODELS, []);
+    eventController.trigger(eventController.SHOW_ALL_FLAGS);
+
+    this.animationTimer = setTimeout(function () {
+        eventController.trigger(eventController.TIMELINE_MODEL_ANIMATION_COMPLETE);
+    }, this.get("animationDuration"));
   }
 });
 

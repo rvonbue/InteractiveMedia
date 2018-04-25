@@ -11,7 +11,7 @@ import Renderer from "./controls/renderer";
 import TimelineManager from "./models/timelineManager";
 import Extras from "./components/extras";
 // import StatsView from "./components/statsView";
-
+import AudioControls from "./controls/AudioControls";
 import bottomBarView from "./views/bottomBar/bottomBarView";
 import loadingBarView from "./views/loadingBarView";
 import { EffectComposer, GlitchPass, FilmPass, RenderPass } from "postprocessing";
@@ -21,6 +21,7 @@ let AppView3d = Backbone.View.extend({
   className: "appView",
   initialize: function (options) {
     _.bindAll(this, "resize");
+    // let audioControls = new AudioControls();
   },
   addListeners: function () {
     $(window).on("resize", this.resize);
