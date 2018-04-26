@@ -1,5 +1,5 @@
 import eventController from "../../controllers/eventController";
-import template from "./timelineControlPanelView.html";
+import html from "./timelineControlPanelView.html";
 import { length } from "../../models/timelineModels/timelineModelsCombined";
 import utils from "../../components/utils";
 const cameraAnimationDuration = utils.getCameraAnimationSpeed().duration;
@@ -48,15 +48,10 @@ let timelineControlPanel = Backbone.View.extend({
     this.options.play = false;
   },
   clickToggleAudio: function () {
-    this.$el.toggleClass("audio");
     this.options.audioMute = !this.options.audioMute;
-
-    if(!this.options.audioMute && this.$el.hasClass("audio")) {
-      eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: true});
-    } else {
-      eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: false});
-    }
-
+    const shouldPlay = !this.options.audioMute && this.$el.hasClass("audio");
+    this.$el.toggleClass("audio");
+    eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: shouldPlay});
   },
   playTimeline: function () {
     _.delay(() => eventController.trigger(eventController.START_TIMELINE_MODEL), cameraAnimationDuration);
@@ -68,7 +63,7 @@ let timelineControlPanel = Backbone.View.extend({
     eventController.trigger(eventController.PLAY_AUDIO_SOUNDTRACK, {name: "axis", play: false});
   },
   render: function () {
-    this.$el.append(template({numOfTimelineEvents: length - 1}));
+    this.$el.append(html);
     return this;
   }
 });

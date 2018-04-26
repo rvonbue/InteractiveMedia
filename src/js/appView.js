@@ -21,7 +21,7 @@ let AppView3d = Backbone.View.extend({
   className: "appView",
   initialize: function (options) {
     _.bindAll(this, "resize");
-    // let audioControls = new AudioControls();
+    let audioControls = new AudioControls();
   },
   addListeners: function () {
     $(window).on("resize", this.resize);
